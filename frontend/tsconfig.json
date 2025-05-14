@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "ESNext",
+    "jsx": "react",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@assets/*": ["src/shared/assets/*"],
+      "@views/*": ["src/views/*"]
+    }
+  },
+  "include": ["src", "./src/declaration.d.ts", "__mocks__/sum.test.ts"],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,111 @@
+:root {
+  --bg-color: #13161D;
+  --secondary-color: #191C24;
+  --main-red-color: #C5073D;  // заменить название на просто акцентный цвет
+  --main-border-color: #25272E;
+  --border-radius: 8px;
+  --border-blocks: 10px;
+  --light-gray: #AAA;
+  --gray: #707070;
+  --hover-transition: 0.1s;
+  --short-transition: 0.2s;
+  --long-transition: 0.35s;
+}
+
+button {
+  appearance: none;
+  outline: none;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+input {
+  font-family: "Jost";
+  font-size: 16px;
+  appearance: none;
+  outline: none;
+  border: none;
+}
+
+textarea {
+  width: 100%;
+  font-family: "Jost";
+  background-color: var(--secondary-color);
+  border: none;
+  resize: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-color);
+  overflow-x: hidden;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  color: #fff;
+  margin-block: 10px 0;
+  font-family: "Brygada 1918";
+  font-size: 52px;
+  font-weight: 700;
+}
+
+h2 {
+  width: 100%;
+  text-align: center;
+  color: #B0B0B0;
+  margin: 20px 0;
+  margin-top: 100px;
+  font-family: "Brygada 1918";
+  font-size: 60px;
+  font-weight: 700;
+}
+
+h3 {
+  font-family: "Jost";
+  font-weight: 700;
+  font-size: 45px;
+  margin: 0;
+  color: #FFF;
+}
+
+h4 {
+  color: var(--main-red-color);
+  margin: 0;
+  font-family: "Jost";
+  font-size: 22px;
+  font-weight: 600;
+}
+
+p {
+  color: #B0B0B0;
+  font-family: "Jost";
+  font-size: 16px;
+  font-weight: 400;
+  margin: 10px 0;
+}
+
+span {
+  font-family: "Jost";
+}
+
+.text-red {
+  color: var(--main-red-color);
+}
+
+.disabled {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  cursor: default;
+}

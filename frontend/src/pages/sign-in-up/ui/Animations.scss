@@ -1,0 +1,119 @@
+.switch-block {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 400;
+  width: 106px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .svg-container {
+    height: 100%;
+    width: 26px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    svg {
+      * {
+        fill: var(--main-red-color);
+      }
+  
+      &.disabled {
+        * {
+          pointer-events: none;
+          fill: #383838;
+        }
+      }
+    }
+  }
+}
+
+.fadein-enter {
+  opacity: 0;
+  transform: translateX(-6%);
+}
+.fadein-exit {
+  opacity: 1;
+  transform: translateX(0%);
+}
+.fadein-enter-active {
+  opacity: 1;
+  transform: translateX(0%);
+}
+.fadein-exit-active {
+  opacity: 0;
+  transform: translateX(-6%);
+}
+.fadein-enter-active,
+.fadein-exit-active {
+  transition: opacity 300ms, transform 350ms;
+}
+
+.fadeout-enter {
+  opacity: 0;
+  transform: translateX(6%);
+}
+.fadeout-exit {
+  opacity: 1;
+  transform: translateX(0%);
+}
+.fadeout-enter-active {
+  opacity: 1;
+  transform: translateX(0%);
+}
+.fadeout-exit-active {
+  opacity: 0;
+  transform: translateX(6%);
+}
+.fadeout-enter-active,
+.fadeout-exit-active {
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+.text-red
+.switch-block,
+.Auth-window {
+  transition: inherit;
+}
+
+.fadeTextin-enter {
+  opacity: 0;
+  transform: translateX(-16%);
+}
+.fadeTextin-exit {
+  opacity: 1;
+  transform: translateX(0%);
+}
+.fadeTextin-enter-active {
+  opacity: 1;
+  transform: translateX(0%);
+}
+.fadeTextin-exit-active {
+  opacity: 0;
+  transform: translateX(-16%);
+}
+.fadeTextin-enter-active,
+.fadeTextin-exit-active {
+  transition: opacity 300ms, transform 350ms;
+}
+
+.fadeTextout-enter {
+  opacity: 0;
+  transform: translateX(16%);
+}
+.fadeTextout-exit {
+  opacity: 1;
+  transform: translateX(0%);
+}
+.fadeTextout-enter-active {
+  opacity: 1;
+  transform: translateX(0%);
+}
+.fadeTextout-exit-active {
+  opacity: 0;
+  transform: translateX(16%);
+}
+.fadeTextout-enter-active,
+.fadeTextout-exit-active {
+  transition: opacity 320ms ease, transform 320ms ease;
+}

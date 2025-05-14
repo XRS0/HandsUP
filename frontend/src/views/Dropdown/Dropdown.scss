@@ -1,0 +1,124 @@
+// @use "../../shared/ui/mixins" as mixin;
+
+.dropdown {
+  position: absolute;
+  right: -185px;
+  bottom: -13%;
+  background-color: #191C24;
+  border-radius: var(--border-blocks);
+  -moz-border-radius: var(--border-blocks);
+  -webkit-border-radius: var(--border-blocks);
+  padding: 5px;
+  max-width: 184px;
+  height: max-content;
+  z-index: 1;
+
+  
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    right: 97%;
+    top: 1%;
+    width: 0;
+    height: 0;
+    border-top: 1px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 62px solid transparent;
+  }
+
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(-10px);
+    transition: transform var(--hover-transition),
+      opacity var(--hover-transition),
+      visibility var(--hover-transition);
+  }
+
+  &.--enter {
+    animation: fadeIn var(--short-transition) cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+
+  &.--exit {
+    animation: fadeOut var(--short-transition) ease-in forwards;
+    cursor: default !important;
+  }
+
+  .dropdown-button {
+    color: var(--light-gray);
+    background-color: transparent;
+    font-size: 15px;
+    font-weight: 400;
+    border-radius: 6px;
+    padding: 5px;
+    padding-top: 3px;
+    padding-right: 10px;
+    width: 100%;
+    max-width: none;
+
+    &:hover {
+      background-color: var(--main-border-color);
+    }
+  }
+}
+
+.topic-dropdown {
+  animation: none;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  font-family: "Jost";
+  font-size: 15px;
+  background-color: #191C24;
+  border: 1px solid #2C2F3A;
+  border-radius: 0.875rem;
+  color: var(--light-gray);
+  transition: transform var(--short-transition), opacity var(--short-transition);
+
+  .dropdown-button {
+    margin: 0;
+    font-weight: 500;
+    border-radius: 0.625rem;
+    
+    &:hover {
+      background-color: #2C2F3A;
+    }
+  }
+
+  &.hidden {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  to {
+    transform: translateX(-10px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}

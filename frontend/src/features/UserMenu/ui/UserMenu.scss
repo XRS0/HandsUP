@@ -1,0 +1,81 @@
+:root {
+  --slide-from: 0%;
+  --slide-to: 100%;
+}
+
+.user-menu {
+  position: relative;
+  z-index: 4;
+  width: 520px;
+  background-color: #22252E;
+  border-radius: 2rem;
+  border: 1px solid #2C2F3A;
+  padding: 20px 30px;
+  transition: height var(--long-transition);
+  box-shadow: 0 0 6px 2px #111318;
+  overflow: hidden;
+  
+  span {
+    font-size: 24px;
+    font-weight: 600;
+    color: #6A6C79;
+    transition: color var(--short-transition);
+    user-select: none;
+    cursor: pointer;
+
+    &.active {
+      color: #E0E0E0;
+    }
+  }
+
+  .navigator {
+    position: relative;
+    width: 100%;
+    padding-inline: 10px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .hint-line {
+      position: absolute;
+      width: 75px;
+      top: 33px;
+      left: 8px;
+      border: 1px solid var(--main-red-color);
+      border-radius: 5px;
+      transition: width 0.3s, left 0.3s;
+    }
+  }
+
+  .trans-wrapper {
+    display: flex;
+    gap: 0px 40px;
+    margin-top: 24px;
+    transition: transformX var(--long-transition);
+  }
+
+  button {
+    font-weight: 400;
+    margin-top: 15px;
+    padding: 10px 14px;
+  }
+
+  .warning-button {
+    color: #EBEBEB;
+    background-color: #C50730;
+
+    &:hover {
+      background-color: rgba(197, 7, 48, 0.8);
+    }
+  }
+}
+
+@keyframes slideUserMenu {
+  from {
+    transform: translateX(var(--slide-from));
+  }
+  to {
+    transform: translateX(var(--slide-to));
+  }
+}

@@ -1,0 +1,93 @@
+@use "@/shared/ui/mixins" as mixin;
+
+.begin-action-block {
+  max-width: 680px;
+  width: 100%;
+
+  &.--exit {
+    animation: fadeOutBlock var(--short-transition) forwards;
+    cursor: default !important;
+  }
+
+  .title {
+    font-family: 'Brygada 1918';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 26px;
+    font-variant: small-caps;
+    color: #FFFFFF;
+    margin: 10px 0;
+
+    span {
+      color: var(--main-red-color);
+    }
+  }
+
+  .action-container {
+    @include mixin.flex-between;
+
+    .message-block {
+      font-family: "Jost";
+      font-size: 16px;
+      background-color: var(--secondary-color);
+      border: 0.8px solid var(--main-border-color);
+      border-radius: 20px;
+      padding: 20px;
+      max-width: 540px;
+      color: var(--light-gray);
+    }
+
+    .actions {
+      @include mixin.flex-between;
+      flex-direction: column;
+      position: relative;
+      z-index: 2;
+
+      .button {
+        font-size: 17px;
+        max-height: 45px;
+        width: 120px;
+        height: 100%;
+        border-radius: 40px;
+      }
+
+      .button-dropdown-container {
+        height: 45px;
+        
+        &:hover {
+          .secondary-button {
+            background-color: rgba(197, 7, 61, 0.1);
+            color: var(--main-red-color);
+            transition-delay: 0s;
+
+            & * {
+              fill: var(--main-red-color);
+              transition: fill var(--hover-transition);
+            }
+          }
+        }
+      }
+
+      .secondary-button {
+        background-color: #22252E;
+        color: #5E657A;
+        & * {
+          fill: #5E657A;
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeOutBlock {
+  from {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}

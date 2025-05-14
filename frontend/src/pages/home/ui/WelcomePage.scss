@@ -1,0 +1,329 @@
+@use "../../shared/ui/mixins" as mixin;
+
+body {
+  background-color: #13161D;
+}
+
+button {
+  padding-inline: 30px;
+}
+
+.container {
+  font-family: "Jost";
+  max-width: 920px;
+  width: 100%;
+  margin-inline: auto;
+  color: white;
+}
+
+.rank-circle {
+  font-weight: 700;
+  font-size: 20px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: var(--bg-color);
+  border: 5px solid var(--bg-color);
+  background-color: var(--main-red-color);
+  position: absolute;
+  text-align: center;
+  bottom: -15px;
+  left: -15px;
+}
+
+.line {
+  border: 1px solid var(--secondary-color);
+  border-radius: 2px;
+  width: 100%;
+}
+
+.waveform {
+  @include mixin.flex-between;
+  width: 650px;
+  max-height: 110px;
+  height: 10vw;
+  border-radius: 20px;
+  padding: 10px 35px;
+  align-items: center;
+  cursor: pointer;
+  border: 3.5px solid var(--secondary-color);
+  transition: background-color 0.2s, border 0.2s;
+
+  .wave {
+    position: relative;
+    display: flex;
+    align-items: center;
+    
+    .bg-wave {
+      transition: filter 0.2s;
+    }
+
+    .redwave {
+      position: absolute;
+      top: 0;
+      left: 0;
+      animation: waveform-filling 7s infinite;
+    }
+  }
+
+  .micro {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .redmicro {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+  }
+
+  &:hover {
+    border: 3.5px solid rgba(197, 7, 61, 0);
+    background-color: rgba(197, 7, 61, 0.1);
+
+    .bg-wave {
+      filter: brightness(0.7);
+    }
+
+    .redmicro {
+      opacity: 1;
+    }
+  }
+}
+
+
+nav {
+  @include mixin.flex-between;
+  font-size: 1rem;
+  align-items: center;
+  width: 100%;
+  padding-top: 25px;
+
+  .nav-bar {
+    @include mixin.flex-between;
+    font-weight: 500;
+    width: 100%;
+    max-width: 380px;
+    align-items: center;
+
+    div {
+      height: min-content;
+      cursor: pointer;
+
+      &:hover {
+        color: #C0C0C0;
+      }
+    }
+  }
+}
+
+.main-title {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+
+  .title {
+    margin-left: 40px;
+    max-width: min-content;
+    h1 {
+      white-space: nowrap;
+      max-width: fit-content;
+    }
+  }
+}
+
+.target-blocks {
+  @include mixin.flex-between;
+  gap: 36px;
+  padding-inline: 30px;
+  margin-top: 45px;
+  width: 100%;
+
+  .block {
+    float: left;
+    border-radius: var(--border-blocks);
+    max-width: 410px;
+    background-color: var(--secondary-color);
+    padding: 20px 25px;
+  }
+
+  button { float: right; }
+}
+
+.steps-block {
+  width: 100%;
+
+  .blocks-row {
+    @include mixin.flex-between;
+    gap: 25px;
+    width: 100%;
+    margin-top: 28px;
+
+    .block {
+      position: relative;
+      max-width: 288px;
+      padding: 15px 25px;
+      border-radius: var(--border-blocks);
+      background-color: var(--secondary-color);
+    }
+
+    .final-step-wrapper {
+      position: relative;
+
+      img {
+        position: absolute;
+        z-index: -1;
+      }
+
+      .content {
+        padding: 15px 25px;
+
+        p {
+          margin: 0;
+          padding-block: 10px;
+        }
+      }
+
+      button { margin-block: 10px 4px; }
+    }
+  }
+}
+
+.plans-container {
+  width: 100%;
+  font-weight: 500;
+  color: #b0b0b0;
+  @include mixin.flex-between;
+  gap: 25px;
+
+  .price-plan {
+    width: 100%;
+    max-width: 290px;
+    padding: 20px 25px;
+    background-color: var(--secondary-color);
+    border-radius: var(--border-blocks);
+
+    .header {
+      font-size: 28px;
+      font-weight: 600;
+      @include mixin.flex-between;
+      align-items: center;
+
+      span {
+        font-size: 18px;
+        font-weight: 500;
+      }
+    }
+
+    .line {
+      border: none;
+      height: 3px;
+      border-radius: 3px;
+      width: 100%;
+      margin-block: 10px 25px;
+      background-color: var(--bg-color);
+    }
+
+    .content {
+      .option {
+        color: #C0C0C0;
+        font-size: 20px;
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+
+        .dot {
+          background-color: var(--main-red-color);
+          width: 10px;
+          aspect-ratio: 1/1;
+          border-radius: 50%;
+          margin-right: 10px;
+        }
+      }
+
+      .option:first-child {
+        margin: 0;
+      }
+
+      .option.disabled {
+        color: #858585;
+
+        .dot {
+          background-color: transparent;
+          border: 1.5px solid #5c5c5c;
+        }
+      }
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    } 
+  }
+}
+
+.footer {
+  margin-top: 130px;
+  width: 100%; 
+  
+  .content {
+    padding-block: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #b0b0b0;
+    font-weight: 400;
+    font-size: 15px;
+  }
+}
+
+.absolute-decor {
+  z-index: -1;
+  position: absolute;
+}
+
+@keyframes waveform-filling {
+  0% {
+    clip-path: inset(0 99% 0 0);
+  }
+
+  92% {
+    clip-path: inset(0 0 0 0);
+  }
+
+  100% {
+    clip-path: inset(0 100% 0 0);
+  }
+}
+
+
+@media (max-width: 1500px) {
+  .absolute-decor { display: none; }
+}
+
+@media (max-width: 980px) {
+  .container {
+    padding-inline: 20px;
+  }
+
+  .main-decor {
+    width: 23%;
+  }
+
+  .title img {
+    width: 102%;
+  }
+
+  h1 {
+    font-size: 5.6vw;
+  }
+
+  h2 {
+    font-size: 5vw;
+  }
+}

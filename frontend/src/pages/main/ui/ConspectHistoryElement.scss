@@ -1,0 +1,29 @@
+.history-container {
+  width: 100%;
+  font-family: "Jost";
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 20px;
+
+  & div {
+    padding-left: 10px;
+  }
+
+  .header-date {
+    color: #707070;
+    font-size: 12px;
+    margin-bottom: 7px;
+  }
+
+  .conspect-name {
+    color: #AAA;
+    padding-block: 5px;
+    border-radius: 5px;
+    background-color: none;
+    cursor: pointer;
+
+    &:hover, &.active {
+      background-color: #22252E;
+    }
+  }
+}

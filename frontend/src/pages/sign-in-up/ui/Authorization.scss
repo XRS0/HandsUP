@@ -1,0 +1,187 @@
+@use "@/shared/ui/mixins" as mixin;
+
+body {
+  margin: 0;
+  height: 100vh;
+}
+
+.form-container {
+  height: 100vh;
+  background-size: cover;
+  background-position: center center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-logo {
+  position: absolute;
+  top: 40px;
+}
+
+.back-arrow {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  cursor: pointer;
+}
+
+form {
+  font-family: "Jost";
+  width: 100%;
+  max-width: 580px;
+  height: 100%;
+  max-height: 594px;
+  padding: 25px 60px;
+  background-color: var(--secondary-color);
+  border-radius: var(--border-blocks);
+  position: relative;
+  @include mixin.flex-between();
+  align-items: center;
+  flex-direction: column;
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    width: 144px;
+    text-align: start;
+  }
+
+  .input-row {
+    width: 100%;
+    @include mixin.flex-between();
+    gap: 30px;
+    margin: 20px 0;
+    
+    label {
+      margin: 0;
+    }
+  }
+
+  label {
+    width: 100%;
+    display: block;
+    margin: 20px 0;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 400;
+    pointer-events: none;
+
+    .label {
+      margin-left: 4px;
+    }
+
+    input {
+      width: 100%;
+      height: 46px;
+      margin-block: 3px 0;
+      padding-inline: 15px;
+      color: #fff;
+      background-color: transparent;
+      border-radius: 6px;
+      border: 1px solid #707070;
+      pointer-events: auto;
+
+      &::placeholder {
+        font-size: 14px;
+      }
+
+      &:hover {
+        border-color: #555555;
+      }
+
+      &:focus {
+        border-color: var(--main-red-color);
+      }
+    }
+  }
+
+  .reset-pass {
+    color: var(--main-red-color);
+    max-width: fit-content;
+    margin-bottom: 20px;
+    font-size: 12px;
+    font-weight: 400;
+    cursor: pointer;
+
+    &:hover {
+      color: rgba(197, 7, 61, 0.85);
+    }
+  }
+
+  button {
+    width: 100%;
+    justify-content: center;
+    height: 46px;
+    margin-block: 30px;
+    font-size: 1.0625rem;
+  }
+
+  .ads-container {
+    width: 100%;
+    height: 80px;
+    margin-top: 25px;
+    @include mixin.flex-between();
+
+    .ad-block {
+      background-color: rgba(197, 7, 61, 0.1);
+      border-radius: var(--border-radius);
+      padding: 5px 10px;
+      max-width: 138px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(197, 7, 61, 0.06);
+      }
+
+      // .header {
+      //   font-size: 14px;
+      //   font-weight: 500;
+      //   @include flex-between();
+      // }
+  
+      // .line {
+      //   border: none;
+      //   height: 1px;
+      //   border-radius: 1px;
+      //   width: 100%;
+      //   margin-block: 5px 10px;
+      //   background-color: var(--main-red-color);
+      // }
+  
+      // .content {
+      //   .option {
+      //     color: #fff;
+      //     font-size: 12px;
+      //     margin-bottom: 6px;
+      //     display: flex;
+      //     align-items: center;
+  
+      //     .dot {
+      //       background-color: var(--main-red-color);
+      //       width: 5px;
+      //       aspect-ratio: 1/1;
+      //       border-radius: 50%;
+      //       margin-right: 7px;
+      //     }
+      //   }
+  
+      //   .option.disabled {
+      //     color: #C0C0C0;
+  
+      //     .dot {
+      //       background-color: transparent;
+      //       border: 1.5px solid #848484;
+      //     }
+      //   }
+      // }
+    }
+  }
+}

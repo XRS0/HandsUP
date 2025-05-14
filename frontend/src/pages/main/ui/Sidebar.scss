@@ -1,0 +1,100 @@
+.sidebar {
+  min-width: 260px;
+  background-color: var(--secondary-color);
+  height: 100%;
+  padding: 25px 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .new-conspect-button {
+    height: 40px;
+    width: 136px;
+    margin-top: 40px;
+    padding: 10px 0;
+    justify-content: center;
+    color: #ebebeb;
+    font-size: 15px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .line {
+    height: 1px;
+    border-radius: 1px;
+    width: 92%;
+    margin-block: 30px;
+    background-color: var(--main-border-color);
+  }
+
+  .content {
+    width: 100%;
+    padding-bottom: 5px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: "Jost";
+    font-size: 16px;
+    color: #AAA;
+
+    .user-block {
+      padding-inline: 5px;
+
+      .upgrade-price-plan,
+      .profile {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+      }
+
+      .upgrade-price-plan {
+        padding: 8px 10px;
+        border: 1px solid var(--main-red-color);
+        border-radius: var(--border-blocks);
+
+        img {
+          margin-right: 8px;
+        }
+
+        div {
+          display: flex;
+          align-items: center;
+        }
+
+        .plan-level {
+          font-size: 15px;
+          color: #707070;
+          font-weight: 500;
+        }
+      }
+
+      .profile {
+        margin-top: 9px;
+        padding-block: 3px;
+        border-radius: var(--border-radius);
+        padding-right: 10px;
+        
+        
+        div {
+          display: flex;
+          align-items: center;
+
+          img {
+            margin-left: 3px;
+          }
+        }
+
+        .avatar {
+          margin-right: 8px;
+        }
+      }
+
+      .profile:hover,
+      .upgrade-price-plan:hover {
+        background-color: #22252E;
+      }
+    }
+  }
+}
