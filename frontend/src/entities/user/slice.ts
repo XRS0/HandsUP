@@ -1,7 +1,8 @@
-import { JwtPayload, RegisterRawData } from '@/features/Register/types';
+import { JwtPayload, JwtPayloadWithToken, RegisterRawData } from '@/features/Register/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserState {
+  uid: string;
   name: string;
   email: string;
   jwt: string;
@@ -10,6 +11,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
+  uid: "",
   name: "",
   email: "",
   jwt: "",
@@ -24,7 +26,12 @@ export const userSlice = createSlice({
     fetchRegisterRequest: (state, action: PayloadAction<RegisterRawData>) => {
       state.loading = true;
     },
-    fetchRegisterSuccess: (state, action: PayloadAction<JwtPayload>) => {
+    fetchRegisterSuccess: (state, action: PayloadAction<JwtPayloadWithToken>) => {
+      state.email = action.payload.email;
+      state.name = action.payload.name;
+      state.jwt = action.payload.jwt;
+      state.uid = action.payload.sub;
+
       state.loading = false;
     },
     fetchRegisterFailure: (state, action: PayloadAction<any>) => {
@@ -34,6 +41,5 @@ export const userSlice = createSlice({
   },
 });
 
-console.log("hello");
-
 export const userSliceActions = { ...userSlice.actions }
+export default userSlice.reducer;
