@@ -1,6 +1,4 @@
 //Types for websocket
-import { PayloadAction } from "@reduxjs/toolkit";
-
 export type callbackListener = (data: any) => void;
 
 //первое про рендер текста при записи, второе про передачу суммаризованного текста

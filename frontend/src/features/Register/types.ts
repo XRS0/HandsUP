@@ -7,6 +7,10 @@ export interface JwtPayload {
   name: string;
 }
 
+export interface JwtPayloadWithToken extends JwtPayload {
+  jwt: string;
+}
+
 export interface RegisterRawData {
   name: string;
   email: string;
