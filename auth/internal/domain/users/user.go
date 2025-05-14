@@ -14,14 +14,6 @@ type User struct {
 	updatedAt time.Time
 }
 
-type UserRepository interface {
-	Create(user *User) error
-	FindByEmail(email string) (*User, error)
-	FindByID(id uuid.UUID) (*User, error)
-	Update(user *User) error
-	Delete(user *User) error
-}
-
 func NewUser(email, password string) (*User, error) {
 	user := &User{
 		id:        uuid.New(),
