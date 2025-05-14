@@ -6,68 +6,125 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/google/uuid"
 )
+
+// TokenType определяет тип токена
+type TokenType string
+
+const (
+	// AccessToken используется для доступа к защищенным ресурсам
+	AccessToken TokenType = "access"
+	// RefreshToken используется для обновления access токена
+	RefreshToken TokenType = "refresh"
+)
+
+// TokenClaims представляет claims для JWT токена
+type TokenClaims struct {
+	UserID    string    `json:"user_id"`
+	Email     string    `json:"email"`
+	TokenType TokenType `json:"token_type"`
+	jwt.RegisteredClaims
+}
 
 // TokenService предоставляет методы для работы с JWT токенами
 type TokenService struct {
-	secretKey []byte
-	expiresIn time.Duration
-}
-
-// Claims представляет данные, хранящиеся в JWT токене
-type Claims struct {
-	UserID uuid.UUID `json:"user_id"`
-	Email  string    `json:"email"`
-	jwt.RegisteredClaims
+	secretKey       string
+	accessDuration  time.Duration
+	refreshDuration time.Duration
 }
 
 // NewTokenService создает новый экземпляр TokenService
 // secretKey - секретный ключ для подписи токенов
-// expiresIn - время жизни токена
-func NewTokenService(secretKey string, expiresIn time.Duration) *TokenService {
+// accessDuration - время жизни access токена
+// refreshDuration - время жизни refresh токена
+func NewTokenService(secretKey string, accessDuration, refreshDuration time.Duration) *TokenService {
 	return &TokenService{
-		secretKey: []byte(secretKey),
-		expiresIn: expiresIn,
+		secretKey:       secretKey,
+		accessDuration:  accessDuration,
+		refreshDuration: refreshDuration,
 	}
 }
 
-// GenerateToken создает новый JWT токен для пользователя
+// GenerateAccessToken создает access токен для пользователя
 // userID - идентификатор пользователя
 // email - email пользователя
-// Возвращает токен в виде строки и ошибку, если не удалось создать токен
-func (s *TokenService) GenerateToken(userID uuid.UUID, email string) (string, error) {
-	claims := &Claims{
-		UserID: userID,
-		Email:  email,
-		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(s.expiresIn)),
-			IssuedAt:  jwt.NewNumericDate(time.Now()),
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(s.secretKey)
+// Возвращает токен и ошибку, если не удалось создать токен
+func (s *TokenService) GenerateAccessToken(userID, email string) (string, error) {
+	return s.generateToken(userID, email, AccessToken, s.accessDuration)
 }
 
-// ValidateToken проверяет JWT токен и извлекает из него данные
-// tokenString - токен в виде строки
-// Возвращает данные из токена и ошибку, если токен недействителен
-func (s *TokenService) ValidateToken(tokenString string) (*Claims, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, errors.New("unexpected signing method")
-		}
-		return s.secretKey, nil
+// GenerateRefreshToken создает refresh токен для пользователя
+// userID - идентификатор пользователя
+// email - email пользователя
+// Возвращает токен и ошибку, если не удалось создать токен
+func (s *TokenService) GenerateRefreshToken(userID, email string) (string, error) {
+	return s.generateToken(userID, email, RefreshToken, s.refreshDuration)
+}
+
+// ValidateToken проверяет валидность токена
+// token - токен для проверки
+// Возвращает claims токена и ошибку, если токен невалиден
+func (s *TokenService) ValidateToken(token string) (*TokenClaims, error) {
+	claims := &TokenClaims{}
+	parsedToken, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte(s.secretKey), nil
 	})
 
 	if err != nil {
 		return nil, err
 	}
 
-	if claims, ok := token.Claims.(*Claims); ok && token.Valid {
-		return claims, nil
+	if !parsedToken.Valid {
+		return nil, errors.New("invalid token")
 	}
 
-	return nil, errors.New("invalid token")
+	return claims, nil
+}
+
+// RefreshTokens обновляет пару токенов
+// refreshToken - текущий refresh токен
+// Возвращает новую пару токенов (access и refresh) и ошибку, если:
+// - refresh токен невалиден
+// - refresh токен истек
+// - не удалось создать новые токены
+func (s *TokenService) RefreshTokens(refreshToken string) (string, string, error) {
+	claims, err := s.ValidateToken(refreshToken)
+	if err != nil {
+		return "", "", err
+	}
+
+	if claims.TokenType != RefreshToken {
+		return "", "", errors.New("invalid token type")
+	}
+
+	// Создаем новую пару токенов
+	accessToken, err := s.GenerateAccessToken(claims.UserID, claims.Email)
+	if err != nil {
+		return "", "", err
+	}
+
+	newRefreshToken, err := s.GenerateRefreshToken(claims.UserID, claims.Email)
+	if err != nil {
+		return "", "", err
+	}
+
+	return accessToken, newRefreshToken, nil
+}
+
+// generateToken создает JWT токен с указанными параметрами
+func (s *TokenService) generateToken(userID, email string, tokenType TokenType, duration time.Duration) (string, error) {
+	now := time.Now()
+	claims := &TokenClaims{
+		UserID:    userID,
+		Email:     email,
+		TokenType: tokenType,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(now.Add(duration)),
+			IssuedAt:  jwt.NewNumericDate(now),
+			NotBefore: jwt.NewNumericDate(now),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString([]byte(s.secretKey))
 }
