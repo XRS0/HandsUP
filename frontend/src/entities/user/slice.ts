@@ -34,4 +34,6 @@ export const userSlice = createSlice({
   },
 });
 
+console.log("hello");
+
 export const userSliceActions = { ...userSlice.actions }
