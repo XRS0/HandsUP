@@ -26,6 +26,18 @@ func NewUser(email, password string) (*User, error) {
 	return user, nil
 }
 
+func NewUserWithID(id uuid.UUID, email, password string) (*User, error) {
+	user := &User{
+		id:        id,
+		email:     email,
+		password:  password,
+		createdAt: time.Now(),
+		updatedAt: time.Now(),
+	}
+
+	return user, nil
+}
+
 func (u *User) ID() uuid.UUID {
 	return u.id
 }
