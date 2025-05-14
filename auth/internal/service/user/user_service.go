@@ -7,8 +7,8 @@ import (
 	"github.com/google/uuid"
 
 	"auth/internal/domain/users"
-	"auth/internal/infrastructure/security/jwt"
 	"auth/internal/infrastructure/security/password"
+	"auth/internal/service/token"
 )
 
 // UserService предоставляет методы для работы с пользователями
@@ -16,14 +16,14 @@ import (
 type UserService struct {
 	userRepo     users.UserRepository
 	hasher       *password.Hasher
-	tokenService *jwt.TokenService
+	tokenService *token.TokenService
 }
 
 // NewUserService создает новый экземпляр UserService
 // userRepo - репозиторий для работы с пользователями
 // hasher - сервис для хеширования паролей
-// tokenService - сервис для работы с JWT токенами
-func NewUserService(userRepo users.UserRepository, hasher *password.Hasher, tokenService *jwt.TokenService) *UserService {
+// tokenService - сервис для работы с токенами
+func NewUserService(userRepo users.UserRepository, hasher *password.Hasher, tokenService *token.TokenService) *UserService {
 	return &UserService{
 		userRepo:     userRepo,
 		hasher:       hasher,
@@ -85,12 +85,12 @@ func (s *UserService) Login(email, password string) (*users.User, error) {
 	return user, nil
 }
 
-// GenerateToken создает JWT токен для пользователя
+// GenerateToken создает пару токенов для пользователя
 // userID - идентификатор пользователя
 // email - email пользователя
-// Возвращает токен и ошибку, если не удалось создать токен
-func (s *UserService) GenerateToken(userID uuid.UUID, email string) (string, error) {
-	return s.tokenService.GenerateToken(userID, email)
+// Возвращает токены и ошибку, если не удалось создать токены
+func (s *UserService) GenerateToken(userID uuid.UUID, email string) (string, string, error) {
+	return s.tokenService.GenerateTokens(userID.String(), email)
 }
 
 // UpdateUser обновляет данные пользователя

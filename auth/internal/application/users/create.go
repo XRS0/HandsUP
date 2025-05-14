@@ -28,11 +28,3 @@ func NewCreateUserCommandHandler(userService *user.UserService) *CreateUserComma
 		userService: userService,
 	}
 }
-
-func (h *CreateUserCommandHandler) Handle(ctx context.Context, cmd *CreateUserCommand) (*users.User, error) {
-	user, err := h.userService.Register(cmd.Email, cmd.Password)
-	if err != nil {
-		return nil, err
-	}
-	return user, nil
-}
