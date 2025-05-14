@@ -5,7 +5,7 @@
 
 .user-menu {
   position: relative;
-  z-index: 4;
+  z-index: 8;
   width: 520px;
   background-color: #22252E;
   border-radius: 2rem;
@@ -14,6 +14,15 @@
   transition: height var(--long-transition);
   box-shadow: 0 0 6px 2px #111318;
   overflow: hidden;
+
+  &.--exit {
+    animation: fadeOutUserMenu var(--short-transition) forwards;
+    cursor: default !important;
+  }
+
+  &.--enter {
+    animation: fadeInUserMenu var(--short-transition) forwards;
+  }
   
   span {
     font-size: 24px;
@@ -77,5 +86,35 @@
   }
   to {
     transform: translateX(var(--slide-to));
+  }
+}
+
+@keyframes fadeInUserMenu {
+  from {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes fadeOutUserMenu {
+  from {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0px);
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-15px);
   }
 }
