@@ -9,10 +9,28 @@ import priceIcon from "@assets/main-page/price-plan.svg";
 import settingsIcon from "@assets/main-page/settings.svg";
 import avatarIcon from "@assets/main-page/avatar.svg";
 import plusIcon from "@assets/main-page/plus.svg?react";
+import useAnimation from "@/hooks/useAnimation";
+import UserMenu from "@/features/UserMenu";
+import ModalOverflow from "@/features/UserMenu/ui/ModalOverflow";
 
 const Sidebar = () => {
+  const {
+    isVisible,
+    isFadeOut,
+    handleOpen,
+    handleAnimationEnd,
+  } = useAnimation();
+
+  const handleMenuOpen = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const target = e.target as HTMLElement;
+    if (!target.classList.contains("overflow")) return;
+    
+    handleOpen(e);
+  }
+
   return (
-    <div className="sidebar">
+    <>
+      <div className="sidebar">
         <img src={logo} alt="Logo" />
         <Button
           onclick={() => {}}
@@ -40,7 +58,7 @@ const Sidebar = () => {
               <div className="plan-level">Free</div>
             </div>
 
-            <div className="profile">
+            <div className="profile" onClick={handleOpen}>
               <div>
                 <img src={avatarIcon} className="avatar" alt="icon" />
                 My profile
@@ -51,6 +69,16 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
+
+      {isVisible && 
+        <ModalOverflow isOpen={!isFadeOut} onClick={handleMenuOpen}>
+          <UserMenu
+            isFadeOut={isFadeOut}
+            onAnimationEnd={handleAnimationEnd}
+          />
+        </ModalOverflow>
+      }
+    </>
   );
 }
 

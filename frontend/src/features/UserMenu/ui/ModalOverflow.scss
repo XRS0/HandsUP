@@ -7,6 +7,15 @@
   width: 100vw;
   height: 100vh;
   @include mixin.flex-center();
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.15);
   z-index: 3;
+  opacity: 1;
+  transition: opacity var(--short-transition),
+  visibility var(--short-transition);
+
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
 }

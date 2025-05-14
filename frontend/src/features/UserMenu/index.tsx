@@ -7,7 +7,12 @@ import Profile from "./containers/profile/Profile";
 import Balance from "./containers/balance/Balance";
 import Settings from "./containers/settings/Settings";
 
-const UserMenu = () => {
+type OwnProps = {
+  isFadeOut: boolean;
+  onAnimationEnd: React.AnimationEventHandler<HTMLDivElement>;
+}
+
+const UserMenu: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd }) => {
   const menuBlock = useRef<HTMLDivElement>(null);
   const hintLine = useRef<HTMLDivElement>(null);
   const transitionBlock = useRef<HTMLDivElement>(null);
@@ -15,6 +20,8 @@ const UserMenu = () => {
   const profileRef = useRef<HTMLDivElement>(null);
   const balanceRef = useRef<HTMLDivElement>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
+
+  const translations = ["0px", "-498px", "-996px"];  // c вычетом border
 
   const [topics, setTopics] = useState<
     {[key: string]: boolean}
@@ -29,8 +36,6 @@ const UserMenu = () => {
     const parent = topic.parentElement;
 
     if ( !topic || !parent || !menuBlock.current) return;
-
-    const translations = ["0px", "-498px", "-996px"];  // c вычетом border
 
     const refList = [profileRef.current, balanceRef.current, settingsRef.current];
     const offsetLeft = topic.getBoundingClientRect().left - parent.getBoundingClientRect().left;
@@ -72,28 +77,30 @@ const UserMenu = () => {
   }
 
   return (
-    <ModalOverflow>
-        <div className="user-menu" ref={menuBlock}>
-          <div className="navigator">
-            {Object.keys(topics).map(topic => <span 
-              className={createClassName(topics[topic] && "active")}
-              children={topic}
-              onClick={handleTopicClick}
-            />)}
+    <div 
+      onAnimationEnd={onAnimationEnd}
+      className={createClassName("user-menu", !isFadeOut ? "--enter" : "--exit" )}
+      ref={menuBlock}
+    >
+      <div className="navigator">
+        {Object.keys(topics).map(topic => <span 
+          className={createClassName(topics[topic] && "active")}
+          children={topic}
+          onClick={handleTopicClick}
+        />)}
 
-            <div className="hint-line" ref={hintLine}></div>
-          </div>
+        <div className="hint-line" ref={hintLine}></div>
+      </div>
 
-          <div
-            ref={transitionBlock}
-            className="trans-wrapper"
-          >
-            <Profile ref={profileRef} />
-            <Balance ref={balanceRef} />
-            <Settings ref={settingsRef} />
-          </div>
-        </div>
-    </ModalOverflow>
+      <div
+        ref={transitionBlock}
+        className="trans-wrapper"
+      >
+        <Profile ref={profileRef} />
+        <Balance ref={balanceRef} />
+        <Settings ref={settingsRef} />
+      </div>
+    </div>
   );
 }
 
