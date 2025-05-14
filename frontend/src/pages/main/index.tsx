@@ -3,12 +3,11 @@ import React, { useEffect } from "react";
 import "./ui/MainPage.scss";
 
 import Sidebar from "./ui/Sidebar";
-import UserComposer from "./features/UserComposer/UserComposer";
+import UserComposer from "../../features/UserComposer/UserComposer";
 import useAnimation from "../../hooks/useAnimation";
-import UserFirstAction from "./features/UserFirstAction/UserFirstAction";
+import UserFirstAction from "../../features/UserFirstAction/UserFirstAction";
 import { useDispatch } from "react-redux";
 import ConspectMessageBlock from "./containers/ConspectMessageBlock";
-import UserManager from "@/features/UserMenu";
 
 const MainPage = () => {
   const {
@@ -31,8 +30,6 @@ const MainPage = () => {
   }, []);
 
   return (
-    <>
-    <UserManager />
     <div className="wrapper">
       <Sidebar />
 
@@ -53,7 +50,6 @@ const MainPage = () => {
         </div>
       </div>
     </div>
-    </>
   );
 }
 
