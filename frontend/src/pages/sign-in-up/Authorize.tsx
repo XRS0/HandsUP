@@ -7,8 +7,8 @@ import bg from "@assets/authorize/bg.svg";
 import logo from "@assets/welcome-page/logo.svg";
 import barkArrow from "@assets/authorize/back-arrow.svg";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import SignIn from "@/features/Log-in/ui/SignIn";
-import SignUp from "@/features/Register/ui/SignUp";
+import SignIn from "@/features/Auth/ui/SignIn";
+import SignUp from "@/features/Auth/ui/SignUp";
 
 const Authorize = () => {
   const [mode] = useState<"out-in" | "in-out" | undefined>("out-in");
