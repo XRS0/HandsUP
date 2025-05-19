@@ -9,12 +9,14 @@ export function* fetchSignInSaga({ payload }: ReturnType<typeof AuthSlice.fetchS
     const token: string = yield localStorage.getItem("token");
     if (!token) throw new Error("jwt is not defined");
 
-    const response: AxiosResponse<JwtTokens & {name: string}, null> = yield call(loginApiInstance, payload, token);
+    const response: JwtTokens & {name: string} = yield call(loginApiInstance, payload, token);
+
     console.log(response);
+    if (!response) throw new Error("response is null");
     
     const sucessPayload = {
-      user: { ...payload, name: response.data.name },
-      token: response.data.access_token
+      user: { ...payload, name: response.name },
+      token: response.access_token
     }
 
     yield put(AuthSlice.fetchSignInSuccess(sucessPayload));
