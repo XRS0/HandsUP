@@ -3,8 +3,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "../pages/main";
 
 import "./ui/index.scss";
-import WelcomePage from "../pages/home/ui/WelcomePage";
-import Authorize from "../pages/sign-in-up/ui/Authorize";
+import WelcomePage from "@/pages/home/WelcomePage";
+import Authorize from "@/pages/sign-in-up/Authorize";
 
 const App = () => {
   return (
