@@ -33,11 +33,11 @@ func NewRouter(userHandler *handlers.UserHandler, authMiddleware *middleware.Aut
 // Регистрирует публичные и защищенные маршруты
 func (r *Router) SetupRoutes() {
 	// Публичные маршруты
-	r.router.HandleFunc("/api/v1/register", r.userHandler.Register).Methods(http.MethodPost)
-	r.router.HandleFunc("/api/v1/login", r.userHandler.Login).Methods(http.MethodPost)
+	r.router.HandleFunc("/api/register", r.userHandler.Register).Methods(http.MethodPost)
+	r.router.HandleFunc("/api/login", r.userHandler.Login).Methods(http.MethodPost)
 
 	// Защищенные маршруты
-	protected := r.router.PathPrefix("/api/v1").Subrouter()
+	protected := r.router.PathPrefix("/api").Subrouter()
 	protected.Use(r.authMiddleware.Authenticate)
 
 	// TODO: Добавить защищенные маршруты
