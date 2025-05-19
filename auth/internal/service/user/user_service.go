@@ -147,3 +147,16 @@ func (s *UserService) DeleteUser(userID uuid.UUID) error {
 
 	return s.userRepo.Delete(user)
 }
+
+// GetUserByID получает пользователя по его ID
+// userID - идентификатор пользователя
+// Возвращает пользователя и ошибку, если:
+// - пользователь не найден
+// - произошла ошибка при получении пользователя
+func (s *UserService) GetUserByID(userID string) (*users.User, error) {
+	id, err := uuid.Parse(userID)
+	if err != nil {
+		return nil, err
+	}
+	return s.userRepo.FindByID(id)
+}

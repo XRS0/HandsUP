@@ -28,10 +28,11 @@ func (s *PostgresStorage) Create(user *users.User) error {
 
 // FindByID находит пользователя по идентификатору
 func (s *PostgresStorage) FindByID(id uuid.UUID) (*users.User, error) {
-	query := `SELECT id, email, password, name FROM users WHERE id = $1`
+	query := `SELECT id, email, password, name, created_at, updated_at FROM users WHERE id = $1`
 	var userID uuid.UUID
 	var email, password, name string
-	err := s.db.QueryRow(query, id).Scan(&userID, &email, &password, &name)
+	var createdAt, updatedAt time.Time
+	err := s.db.QueryRow(query, id).Scan(&userID, &email, &password, &name, &createdAt, &updatedAt)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
