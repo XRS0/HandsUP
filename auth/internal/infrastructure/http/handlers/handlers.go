@@ -2,11 +2,12 @@
 package handlers
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"auth/internal/service/token"
 	"auth/internal/service/user"
+
+	"github.com/gin-gonic/gin"
 )
 
 // UserHandler содержит зависимости для обработки HTTP запросов
@@ -25,13 +26,13 @@ func NewUserHandler(userService *user.UserService, tokenService *token.TokenServ
 
 // LoginRequest представляет запрос на аутентификацию
 type LoginRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required,min=6"`
 }
 
 // RefreshTokenRequest представляет запрос на обновление токенов
 type RefreshTokenRequest struct {
-	RefreshToken string `json:"refresh_token"`
+	RefreshToken string `json:"refresh_token" binding:"required"`
 }
 
 // TokenResponse представляет ответ с токенами
@@ -42,84 +43,74 @@ type TokenResponse struct {
 
 // RegisterRequest представляет запрос на регистрацию
 type RegisterRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required,min=6"`
 }
 
 // Login обрабатывает HTTP запрос на аутентификацию
 // POST /api/v1/login
-func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) Login(c *gin.Context) {
 	var req LoginRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 		return
 	}
 
 	user, err := h.userService.Login(req.Email, req.Password)
 	if err != nil {
 		switch err.Error() {
-		case "user not found":
-			http.Error(w, "Invalid credentials", http.StatusUnauthorized)
-		case "invalid password":
-			http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+		case "user not found", "invalid password":
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		default:
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		}
 		return
 	}
 
 	accessToken, refreshToken, err := h.tokenService.GenerateTokens(user.ID().String(), user.Email())
 	if err != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return
 	}
 
-	response := TokenResponse{
+	c.JSON(http.StatusOK, TokenResponse{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
+	})
 }
 
 // RefreshTokenHandler обрабатывает HTTP запрос на обновление токенов
 // POST /api/auth/refresh
-func (h *UserHandler) RefreshTokenHandler(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) RefreshTokenHandler(c *gin.Context) {
 	var req RefreshTokenRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 		return
 	}
 
 	accessToken, refreshToken, err := h.tokenService.RefreshTokens(req.RefreshToken)
 	if err != nil {
 		switch err.Error() {
-		case "invalid token":
-			http.Error(w, "Invalid refresh token", http.StatusUnauthorized)
-		case "invalid token type":
-			http.Error(w, "Invalid token type", http.StatusUnauthorized)
+		case "invalid token", "invalid token type":
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid refresh token"})
 		default:
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		}
 		return
 	}
 
-	response := TokenResponse{
+	c.JSON(http.StatusOK, TokenResponse{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
+	})
 }
 
 // Register обрабатывает HTTP запрос на регистрацию
 // POST /api/v1/register
-func (h *UserHandler) Register(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) Register(c *gin.Context) {
 	var req RegisterRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 		return
 	}
 
@@ -127,13 +118,12 @@ func (h *UserHandler) Register(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		switch err.Error() {
 		case "user already exists":
-			http.Error(w, err.Error(), http.StatusConflict)
+			c.JSON(http.StatusConflict, gin.H{"error": err.Error()})
 		default:
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		}
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(user)
+	c.JSON(http.StatusCreated, user)
 }

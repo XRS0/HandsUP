@@ -1,7 +1,6 @@
 package main
 
 import (
-	authhttp "auth/internal/infrastructure/http"
 	"auth/internal/infrastructure/http/handlers"
 	"auth/internal/infrastructure/http/middleware"
 	"auth/internal/infrastructure/security/jwt"
@@ -12,9 +11,9 @@ import (
 	"auth/internal/service/user"
 	"database/sql"
 	"log"
-	"net/http"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 )
 
@@ -42,14 +41,22 @@ func main() {
 	userHandler := handlers.NewUserHandler(userService, tokenService)
 	authMiddleware := middleware.NewAuthMiddleware(jwtService)
 
-	// Setup router
-	router := authhttp.NewRouter(userHandler, authMiddleware)
-	router.SetupRoutes()
+	// Setup Gin router
+	router := gin.Default()
+
+	// Public routes
+	router.POST("/api/register", userHandler.Register)
+	router.POST("/api/login", userHandler.Login)
+
+	// Protected routes
+	protected := router.Group("/api")
+	protected.Use(authMiddleware.Authenticate())
+	// TODO: Add protected routes here
 
 	// Start HTTP server
 	port := ":8080"
 	log.Printf("Starting HTTP server on port %s", port)
-	if err := http.ListenAndServe(port, router.GetRouter()); err != nil {
+	if err := router.Run(port); err != nil {
 		log.Fatal(err)
 	}
 }
