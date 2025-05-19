@@ -6,7 +6,6 @@ import { RegisterActions } from "@/features/Register/models/slice";
 const SignUp = () => {
   const dispatch = useAppDispatch();
 
-  const passInput = useRef<HTMLInputElement>(null);
   const confirmPassInput = useRef<HTMLInputElement>(null);
   
   const [value, setValue] = useState({
@@ -16,8 +15,6 @@ const SignUp = () => {
   });
   
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(value);
-    if (passInput.current?.value !== confirmPassInput.current?.value) return;
     setValue(prev => ({
       ...prev,
       [e.target.name]: e.target.value
@@ -25,6 +22,8 @@ const SignUp = () => {
   }
   
   const handleButtonClick = () => {
+    if (!value.email || !value.name || !value.password || !confirmPassInput.current?.value) return console.log("rejected");
+    if (value.password !== confirmPassInput.current?.value) return console.log("not the same pass");
     dispatch(RegisterActions.fetchRegisterRequest(value));
   };
 
@@ -57,7 +56,6 @@ const SignUp = () => {
       <label>
         <div className="label">Password</div>
         <input
-          ref={passInput}
           name="password"
           type="password"
           onChange={handleInput}
