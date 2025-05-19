@@ -15,6 +15,8 @@ const SignIn = () => {
   });
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(value);
+    
     setValue(prev => ({
       ...prev,
       [e.target.name]: e.target.value
@@ -24,8 +26,6 @@ const SignIn = () => {
   const handleButtonClick = () => {
     dispatch(LoginActions.fetchLoginRequest(value));
   };
-
-  console.log(value);
 
   return (
     <>
