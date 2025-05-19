@@ -11,10 +11,6 @@ const SignIn = () => {
   const dispatch = useAppDispatch();
   const {isSignSuccess} = useAppSelector(state => state.user);
 
-  if (isSignSuccess) {
-    return <Navigate to="/" replace />; // Автоматический редирект
-  }
-
   const [value, setValue] = useState({
     email: "",
     password: ""
@@ -37,6 +33,10 @@ const SignIn = () => {
   //     navigate('/main');
   //   }
   // }, [isSignSucess, navigate])
+
+  if (isSignSuccess) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <>
