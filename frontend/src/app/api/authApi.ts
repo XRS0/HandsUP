@@ -1,7 +1,7 @@
 import apiInstance from "@/app/api/axiosInstance";
-import { LoginResponseData, RegisterResponseData } from "@/features/types";
+import { SignInResponseData, SignUpResponseData } from "@/features/types";
 
-export const registerApiInstance = async (payload: RegisterResponseData) => { 
+export const registerApiInstance = async (payload: SignUpResponseData) => { 
   const response = await apiInstance.post("/register", payload);
   if (!response.data) {
     throw new Error('Failed to fetch register');
@@ -10,7 +10,7 @@ export const registerApiInstance = async (payload: RegisterResponseData) => {
   return response.data;
 }
 
-export const loginApiInstance = async (payload: LoginResponseData, token: string) => {
+export const loginApiInstance = async (payload: SignInResponseData, token: string) => {
   // let config = {
   //   headers: {
   //     Authorization: `Bearer ${token}`,
