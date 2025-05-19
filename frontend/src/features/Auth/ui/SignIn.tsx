@@ -3,11 +3,17 @@ import React, { ChangeEvent, useState } from "react";
 import googleIcon from "@assets/authorize/gmail-sign-in.svg";
 import mailIcon from "@assets/authorize/email-sign-in.svg";
 import Button from "../../../views/Button/ui/Button";
-import { useAppDispatch } from "@/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { AuthSlice } from "@/features/Auth/models/slice";
+import { Navigate } from "react-router-dom";
 
 const SignIn = () => {
   const dispatch = useAppDispatch();
+  const {isSignSuccess} = useAppSelector(state => state.user);
+
+  if (isSignSuccess) {
+    return <Navigate to="/" replace />; // Автоматический редирект
+  }
 
   const [value, setValue] = useState({
     email: "",
@@ -25,6 +31,12 @@ const SignIn = () => {
     if (!value.email || !value.password) return console.log("rejected");
     dispatch(AuthSlice.fetchSignInRequest(value));
   };
+
+  // useEffect(() => {
+  //   if (isSignSucess) {
+  //     navigate('/main');
+  //   }
+  // }, [isSignSucess, navigate])
 
   return (
     <>
