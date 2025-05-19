@@ -7,8 +7,8 @@ import bg from "@assets/authorize/bg.svg";
 import logo from "@assets/welcome-page/logo.svg";
 import barkArrow from "@assets/authorize/back-arrow.svg";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import SignIn from "./containers/SignIn";
-import SignUp from "./containers/SignUp";
+import SignIn from "@/features/Log-in/ui/SignIn";
+import SignUp from "@/features/Register/ui/SignUp";
 
 const Authorize = () => {
   const [mode] = useState<"out-in" | "in-out" | undefined>("out-in");
@@ -21,7 +21,7 @@ const Authorize = () => {
   return (
     <div className="form-container" style={{backgroundImage: `url(${bg}`}}>
       <img src={logo} alt="logo" className="auth-logo" />
-      <form className="Auth-window">
+      <div className="Auth-window">
         
         <img src={barkArrow} alt="arrow" className="back-arrow" />
 
@@ -88,7 +88,7 @@ const Authorize = () => {
             </svg>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
