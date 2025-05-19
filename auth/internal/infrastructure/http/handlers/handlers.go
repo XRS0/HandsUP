@@ -39,12 +39,14 @@ type RefreshTokenRequest struct {
 type TokenResponse struct {
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
+	Name         string `json:"name"`
 }
 
 // RegisterRequest представляет запрос на регистрацию
 type RegisterRequest struct {
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,min=6"`
+	Name     string `json:"name" binding:"required,min=2"`
 }
 
 // Login обрабатывает HTTP запрос на аутентификацию
@@ -106,15 +108,24 @@ func (h *UserHandler) RefreshTokenHandler(c *gin.Context) {
 }
 
 // Register обрабатывает HTTP запрос на регистрацию
-// POST /api/v1/register
+// POST /api/register
 func (h *UserHandler) Register(c *gin.Context) {
 	var req RegisterRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		switch {
+		case err.Error() == "Key: 'RegisterRequest.Password' Error:Field validation for 'Password' failed on the 'min' tag":
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Password must be at least 6 characters long"})
+		case err.Error() == "Key: 'RegisterRequest.Email' Error:Field validation for 'Email' failed on the 'email' tag":
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid email format"})
+		case err.Error() == "Key: 'RegisterRequest.Name' Error:Field validation for 'Name' failed on the 'min' tag":
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Name must be at least 2 characters long"})
+		default:
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		}
 		return
 	}
 
-	user, err := h.userService.Register(req.Email, req.Password)
+	user, err := h.userService.Register(req.Email, req.Password, req.Name)
 	if err != nil {
 		switch err.Error() {
 		case "user already exists":
@@ -125,5 +136,16 @@ func (h *UserHandler) Register(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, user)
+	// Генерируем токены после успешной регистрации
+	accessToken, refreshToken, err := h.tokenService.GenerateTokens(user.ID().String(), user.Email())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate tokens"})
+		return
+	}
+
+	c.JSON(http.StatusCreated, TokenResponse{
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+		Name:         user.Name(),
+	})
 }

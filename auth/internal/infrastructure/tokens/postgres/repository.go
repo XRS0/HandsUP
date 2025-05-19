@@ -5,6 +5,8 @@ import (
 	"time"
 
 	"auth/internal/domain/tokens"
+
+	"github.com/google/uuid"
 )
 
 type TokenRepository struct {
@@ -17,28 +19,40 @@ func NewTokenRepository(db *sql.DB) *TokenRepository {
 
 func (r *TokenRepository) Save(token *tokens.Token) error {
 	query := `INSERT INTO tokens (user_id, email, token_type, expires_at) VALUES ($1, $2, $3, $4)`
-	_, err := r.db.Exec(query, token.UserID(), token.Email(), token.Type(), token.ExpiresAt())
+	userID, err := uuid.Parse(token.UserID())
+	if err != nil {
+		return err
+	}
+	_, err = r.db.Exec(query, userID, token.Email(), token.Type(), token.ExpiresAt())
 	return err
 }
 
 func (r *TokenRepository) FindByID(id string) (*tokens.Token, error) {
 	query := `SELECT user_id, email, token_type, expires_at FROM tokens WHERE user_id = $1`
-	var userID, email string
+	userID, err := uuid.Parse(id)
+	if err != nil {
+		return nil, err
+	}
+	var email string
 	var tokenType tokens.TokenType
 	var expiresAt time.Time
-	err := r.db.QueryRow(query, id).Scan(&userID, &email, &tokenType, &expiresAt)
+	err = r.db.QueryRow(query, userID).Scan(&userID, &email, &tokenType, &expiresAt)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
 	if err != nil {
 		return nil, err
 	}
-	return tokens.NewToken(userID, email, tokenType, expiresAt), nil
+	return tokens.NewToken(userID.String(), email, tokenType, expiresAt), nil
 }
 
 func (r *TokenRepository) Delete(id string) error {
 	query := `DELETE FROM tokens WHERE user_id = $1`
-	_, err := r.db.Exec(query, id)
+	userID, err := uuid.Parse(id)
+	if err != nil {
+		return err
+	}
+	_, err = r.db.Exec(query, userID)
 	return err
 }
 

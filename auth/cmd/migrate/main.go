@@ -11,13 +11,6 @@ import (
 )
 
 func main() {
-	// Read the migration file
-	migrationPath := filepath.Join("..", "..", "migrations", "001_init.sql")
-	migrationSQL, err := ioutil.ReadFile(migrationPath)
-	if err != nil {
-		log.Fatalf("Failed to read migration file: %v", err)
-	}
-
 	// Connect to the database
 	db, err := sql.Open("postgres", "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable")
 	if err != nil {
@@ -25,11 +18,22 @@ func main() {
 	}
 	defer db.Close()
 
-	// Run the migration
-	_, err = db.Exec(string(migrationSQL))
-	if err != nil {
-		log.Fatalf("Failed to run migration: %v", err)
+	// Run migrations
+	migrations := []string{"001_init.sql", "002_add_name.sql"}
+	for _, migration := range migrations {
+		migrationPath := filepath.Join("migrations", migration)
+		migrationSQL, err := ioutil.ReadFile(migrationPath)
+		if err != nil {
+			log.Fatalf("Failed to read migration file %s: %v", migration, err)
+		}
+
+		fmt.Printf("Running migration %s...\n", migration)
+		_, err = db.Exec(string(migrationSQL))
+		if err != nil {
+			log.Fatalf("Failed to run migration %s: %v", migration, err)
+		}
+		fmt.Printf("Migration %s completed successfully\n", migration)
 	}
 
-	fmt.Println("Migration completed successfully")
+	fmt.Println("All migrations completed successfully")
 }
