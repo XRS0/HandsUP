@@ -5,6 +5,7 @@ import { AuthSlice } from "@/features/Auth/models/slice";
 
 const SignUp = () => {
   const dispatch = useAppDispatch();
+  const {isSignSuccess} = useAppSelector(state => state.user);
 
   const confirmPassInput = useRef<HTMLInputElement>(null);
   
@@ -26,6 +27,10 @@ const SignUp = () => {
     if (value.password !== confirmPassInput.current?.value) return console.log("not the same pass");
     dispatch(AuthSlice.fetchSignUpRequest(value));
   };
+
+  if (isSignSuccess) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <>
