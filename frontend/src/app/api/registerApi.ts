@@ -2,7 +2,7 @@ import apiInstance from "@/app/api/axiosInstance";
 import { LoginResponseData, RegisterResponseData } from "@/features/types";
 
 export const registerApiInstance = async (payload: RegisterResponseData) => { 
-  const response = await apiInstance.post("./auth", payload);
+  const response = await apiInstance.post("./api/register", payload);
   // const parsedResponce = JSON.parse(response);
   if (!response.data) {
     throw new Error('Failed to fetch register');
@@ -17,7 +17,7 @@ export const loginApiInstance = async (payload: LoginResponseData, token: string
       Authorization: `Bearer ${token}`,
     }
   }
-  const response = await apiInstance.post("./auth", payload, config);
+  const response = await apiInstance.post("./api/login", payload, config);
   if (!response.data) {
     throw new Error('Failed to fetch login');
   }
