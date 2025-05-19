@@ -2,11 +2,12 @@
 package middleware
 
 import (
-	"context"
 	"net/http"
 	"strings"
 
 	"auth/internal/infrastructure/security/jwt"
+
+	"github.com/gin-gonic/gin"
 )
 
 // AuthMiddleware предоставляет middleware для аутентификации запросов
@@ -25,31 +26,33 @@ func NewAuthMiddleware(tokenService *jwt.TokenService) *AuthMiddleware {
 // Authenticate проверяет JWT токен в заголовке Authorization
 // Если токен валиден, добавляет данные пользователя в контекст запроса
 // Возвращает 401 Unauthorized, если токен отсутствует или недействителен
-func (m *AuthMiddleware) Authenticate(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		authHeader := r.Header.Get("Authorization")
+func (m *AuthMiddleware) Authenticate() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
-			http.Error(w, "Authorization header is required", http.StatusUnauthorized)
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is required"})
+			c.Abort()
 			return
 		}
 
 		parts := strings.Split(authHeader, " ")
 		if len(parts) != 2 || parts[0] != "Bearer" {
-			http.Error(w, "Invalid authorization header format", http.StatusUnauthorized)
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid authorization header format"})
+			c.Abort()
 			return
 		}
 
 		claims, err := m.tokenService.ValidateToken(parts[1])
 		if err != nil {
-			http.Error(w, "Invalid token", http.StatusUnauthorized)
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+			c.Abort()
 			return
 		}
 
 		// Добавляем информацию о пользователе в контекст запроса
-		ctx := r.Context()
-		ctx = context.WithValue(ctx, "user_id", claims.UserID)
-		ctx = context.WithValue(ctx, "email", claims.Email)
+		c.Set("user_id", claims.UserID)
+		c.Set("email", claims.Email)
 
-		next.ServeHTTP(w, r.WithContext(ctx))
-	})
+		c.Next()
+	}
 }
