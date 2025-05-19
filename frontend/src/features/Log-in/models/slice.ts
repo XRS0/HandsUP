@@ -1,16 +1,8 @@
-import { JwtPayload, JwtPayloadWithToken, RegisterRawData } from '@/features/Register/types';
+import { JwtPayloadWithToken, LoginResponseData, RegisterResponseData } from '@/features/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { UserRawData } from '../../../entities/user/types';
 
-interface UserState {
-  uid: string;
-  name: string;
-  email: string;
-  jwt: string;
-  loading: boolean
-  error: Error | null;
-}
-
-const initialState: UserState = {
+const initialState: UserRawData = {
   uid: "",
   name: "",
   email: "",
@@ -23,10 +15,10 @@ export const userSlice = createSlice({
   name: 'register',
   initialState,
   reducers: {
-    fetchRegisterRequest: (state, action: PayloadAction<RegisterRawData>) => {
+    fetchLoginRequest: (state, action: PayloadAction<LoginResponseData>) => {
       state.loading = true;
     },
-    fetchRegisterSuccess: (state, action: PayloadAction<JwtPayloadWithToken>) => {
+    fetchLoginSuccess: (state, action: PayloadAction<JwtPayloadWithToken>) => {
       state.email = action.payload.email;
       state.name = action.payload.name;
       state.jwt = action.payload.jwt;
@@ -34,12 +26,12 @@ export const userSlice = createSlice({
 
       state.loading = false;
     },
-    fetchRegisterFailure: (state, action: PayloadAction<any>) => {
+    fetchLoginFailure: (state, action: PayloadAction<any>) => {
       state.error = action.payload;
       state.loading = false;
     },
-  },
+  }
 });
 
-export const userSliceActions = { ...userSlice.actions }
+export const LoginActions = { ...userSlice.actions }
 export default userSlice.reducer;

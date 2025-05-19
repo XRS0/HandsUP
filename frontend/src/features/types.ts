@@ -11,8 +11,13 @@ export interface JwtPayloadWithToken extends JwtPayload {
   jwt: string;
 }
 
-export interface RegisterRawData {
+export interface RegisterResponseData {
   name: string;
+  email: string;
+  password: string;
+}
+
+export interface LoginResponseData {
   email: string;
   password: string;
 }
@@ -20,4 +25,3 @@ export interface RegisterRawData {
 // interface JwtAuthorization {
 //   Authorization: `Bearer ${string}`,
 // }
-
