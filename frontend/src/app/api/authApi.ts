@@ -16,7 +16,13 @@ export const loginApiInstance = async (payload: SignInResponseData, token: strin
   //     Authorization: `Bearer ${token}`,
   //   }
   // }
-  const response = await apiInstance.post("/login", payload);
+  const response = await apiInstance({
+    method: 'post',
+    url: '/login',
+    data: payload,
+    // headers: { Authorization: `Bearer ${token}` },
+  });
+
   if (!response.data) {
     throw new Error('Failed to fetch login');
   }

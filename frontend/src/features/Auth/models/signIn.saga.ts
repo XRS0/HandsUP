@@ -1,6 +1,5 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import { JwtTokens } from "@/features/types";
-import { AxiosResponse } from "axios";
 import { loginApiInstance } from "@/app/api/authApi";
 import { AuthSlice } from "./slice";
 
@@ -15,6 +14,9 @@ export function* fetchSignInSaga({ payload }: ReturnType<typeof AuthSlice.fetchS
 
     console.log(response);
     if (!response) throw new Error("response is null");
+
+    yield localStorage.setItem("access_token", response.access_token);
+    yield localStorage.setItem("refresh_token", response.refresh_token);
     
     const sucessPayload = {
       user: { ...payload, name: response.name },
