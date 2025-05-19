@@ -6,10 +6,12 @@ import { AuthSlice } from "./slice";
 
 export function* fetchSignInSaga({ payload }: ReturnType<typeof AuthSlice.fetchSignInRequest>) {
   try {
-    const token: string = yield localStorage.getItem("token");
-    if (!token) throw new Error("jwt is not defined");
+    const access_token: string = yield localStorage.getItem("access_token");
+    const refresh_token: string = yield localStorage.getItem("refresh_token");
 
-    const response: JwtTokens & {name: string} = yield call(loginApiInstance, payload, token);
+    if (!access_token || !refresh_token) throw new Error("tokens is not defined");
+
+    const response: JwtTokens & {name: string} = yield call(loginApiInstance, payload, access_token);
 
     console.log(response);
     if (!response) throw new Error("response is null");
