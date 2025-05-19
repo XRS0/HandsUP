@@ -38,7 +38,7 @@ const SignUp = () => {
             name="name"
             onChange={handleInput}
             placeholder="Type here.."
-            autoComplete="off"
+            autoComplete="new-password"
           />
         </label>
 
@@ -49,7 +49,7 @@ const SignUp = () => {
             name="email"
             onChange={handleInput} 
             placeholder="Type here.."
-            autoComplete="off"
+            autoComplete="new-password"
           />
         </label>
       </div>
@@ -62,12 +62,13 @@ const SignUp = () => {
           type="password"
           onChange={handleInput}
           placeholder="Your password.." 
+          autoComplete="new-password"
         />
       </label>
 
       <label>
         <div className="label">Confirm password</div>
-        <input type="password" placeholder="Once again.." ref={confirmPassInput}  />
+        <input type="password" placeholder="Once again.." ref={confirmPassInput} autoComplete="new-password"  />
       </label>
 
       <Button children="Register" onclick={handleButtonClick} />
