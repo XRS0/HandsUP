@@ -90,8 +90,9 @@ body {
 
       &:autofill,
       &:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0 1000px #fff inset;
-        -webkit-text-fill-color: #000;
+        background-color: transparent !important;
+        -webkit-box-shadow: none !important;
+        -webkit-text-fill-color: none !important;
       }
 
       // &:hover {
