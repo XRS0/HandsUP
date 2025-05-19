@@ -7,7 +7,7 @@ interface UserSlice {
   token: string | null;    //для удобства
   loading: boolean;
   error: string | null;
-  isSignSucess: boolean;
+  isSignSuccess: boolean;
 }
 
 const initialState: UserSlice = {
@@ -15,7 +15,7 @@ const initialState: UserSlice = {
   token: localStorage.getItem("access_token"),
   loading: false,
   error: null,
-  isSignSucess: false,
+  isSignSuccess: false,
 };
 
 export const userSlice = createSlice({
@@ -29,11 +29,11 @@ export const userSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.loading = false;
-      state.isSignSucess = true;
+      state.isSignSuccess = true;
     },
     fetchSignInFailure: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
-      state.isSignSucess = false;
+      state.isSignSuccess = false;
       state.loading = false;
     },
     fetchSignUpRequest: (state, action: PayloadAction<SignUpResponseData>) => {
@@ -43,11 +43,11 @@ export const userSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.loading = false;
-      state.isSignSucess = true;
+      state.isSignSuccess = true;
     },
     fetchSignUpFailure: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
-      state.isSignSucess = false;
+      state.isSignSuccess = false;
       state.loading = false;
     },
     signOut(state) {

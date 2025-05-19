@@ -88,6 +88,12 @@ body {
         font-size: 14px;
       }
 
+      &:autofill,
+      &:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 1000px #fff inset;
+        -webkit-text-fill-color: #000;
+      }
+
       // &:hover {
       //   border-color: #555555;
       // }
