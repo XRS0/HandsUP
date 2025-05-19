@@ -11,8 +11,8 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" Component={MainPage} />
-        {/* <Route path="/welcome" Component={WelcomePage} /> */}
-        {/* <Route path="/authorize" Component={Authorize} /> */}
+        <Route path="/welcome" Component={WelcomePage} />
+        <Route path="/auth" Component={Authorize} />
       </Routes>
     </BrowserRouter>
   );
