@@ -4,7 +4,7 @@ import googleIcon from "@assets/authorize/gmail-sign-in.svg";
 import mailIcon from "@assets/authorize/email-sign-in.svg";
 import Button from "../../../views/Button/ui/Button";
 import { useAppDispatch } from "@/hooks/redux";
-import { LoginActions } from "@/features/Log-in/models/slice";
+import { AuthSlice } from "@/features/Auth/models/slice";
 
 const SignIn = () => {
   const dispatch = useAppDispatch();
@@ -15,8 +15,6 @@ const SignIn = () => {
   });
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(value);
-    
     setValue(prev => ({
       ...prev,
       [e.target.name]: e.target.value
@@ -24,7 +22,8 @@ const SignIn = () => {
   }
 
   const handleButtonClick = () => {
-    dispatch(LoginActions.fetchLoginRequest(value));
+    if (!value.email || !value.password) return console.log("rejected");
+    dispatch(AuthSlice.fetchSignInRequest(value));
   };
 
   return (
