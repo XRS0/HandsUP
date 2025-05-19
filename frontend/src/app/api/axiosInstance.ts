@@ -1,4 +1,3 @@
-// import process from "process";
 import axios from "axios";
 
 const apiInstance = axios.create({
