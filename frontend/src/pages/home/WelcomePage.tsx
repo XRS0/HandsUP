@@ -1,18 +1,18 @@
 import React from "react";
 
-import "./WelcomePage.scss";
+import "./ui/WelcomePage.scss";
 
-import logo from "../../shared/assets/welcome-page/logo.svg";
-import wave from "../../shared/assets/welcome-page/waveform/wave.svg";
-import redwave from "../../shared/assets/welcome-page/waveform/redwave.svg";
-import micro from "../../shared/assets/welcome-page/waveform/micro.svg";
-import redmicro from "../../shared/assets/welcome-page/waveform/redmicro.svg";
-import rectangleBlock from "../../shared/assets/welcome-page/rectangle.png";
+import logo from "@/shared/assets/welcome-page/logo.svg";
+import wave from "@/shared/assets/welcome-page/waveform/wave.svg";
+import redwave from "@/shared/assets/welcome-page/waveform/redwave.svg";
+import micro from "@/shared/assets/welcome-page/waveform/micro.svg";
+import redmicro from "@/shared/assets/welcome-page/waveform/redmicro.svg";
+import rectangleBlock from "@/shared/assets/welcome-page/rectangle.png";
 
-import mainDecor from "../../shared/assets/welcome-page/main-decoration.svg";
-import firstDecor from "../../shared/assets/welcome-page/first_decoration.svg"
-import secondDecor from "../../shared/assets/welcome-page/second-decoration.svg"
-import thirdDecor from "../../shared/assets/welcome-page/third-decoration.svg"
+import mainDecor from "@/shared/assets/welcome-page/main-decoration.svg";
+import firstDecor from "@/shared/assets/welcome-page/first_decoration.svg"
+import secondDecor from "@/shared/assets/welcome-page/second-decoration.svg";
+import thirdDecor from "@/shared/assets/welcome-page/third-decoration.svg";
 import Button from "@/views/Button/ui/Button";
 
 const WelcomePage = () => {
