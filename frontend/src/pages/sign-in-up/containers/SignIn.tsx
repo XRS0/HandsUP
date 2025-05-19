@@ -35,8 +35,8 @@ const SignIn = () => {
           name="email"
           type="text"
           onChange={handleInput}
-          autoComplete="off"
           placeholder="Type here.."
+          autoComplete="new-password"
         />
       </label>
 
@@ -47,6 +47,7 @@ const SignIn = () => {
           type="password"
           onChange={handleInput}
           placeholder="Your password.." 
+          autoComplete="new-password"
         />
       </label>
 
