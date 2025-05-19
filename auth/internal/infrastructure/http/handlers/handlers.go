@@ -78,6 +78,7 @@ func (h *UserHandler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, TokenResponse{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
+		Name:         user.Name(),
 	})
 }
 
@@ -101,9 +102,24 @@ func (h *UserHandler) RefreshTokenHandler(c *gin.Context) {
 		return
 	}
 
+	// Получаем информацию о пользователе из токена
+	claims, err := h.tokenService.ValidateToken(accessToken)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to validate token"})
+		return
+	}
+
+	// Получаем пользователя из базы данных
+	user, err := h.userService.GetUserByID(claims.UserID())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get user info"})
+		return
+	}
+
 	c.JSON(http.StatusOK, TokenResponse{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
+		Name:         user.Name(),
 	})
 }
 
@@ -146,6 +162,5 @@ func (h *UserHandler) Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, TokenResponse{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
-		Name:         user.Name(),
 	})
 }
