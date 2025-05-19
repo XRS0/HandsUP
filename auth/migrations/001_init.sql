@@ -7,8 +7,9 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS tokens (
-    user_id VARCHAR(255) PRIMARY KEY,
+    user_id UUID REFERENCES users(id),
     email VARCHAR(255) NOT NULL,
     token_type VARCHAR(50) NOT NULL,
-    expires_at TIMESTAMP NOT NULL
+    expires_at TIMESTAMP NOT NULL,
+    PRIMARY KEY (user_id, token_type)
 ); 

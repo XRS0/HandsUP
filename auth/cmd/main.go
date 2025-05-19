@@ -13,11 +13,12 @@ import (
 	"log"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 )
 
-const secretKey = "secret" // TODO: Move to config
+const secretKey = "your-256-bit-secret-key-here-make-it-long-and-secure" // TODO: Move to config and use a secure key in production
 
 func main() {
 	db, err := sql.Open("postgres", "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable")
@@ -43,6 +44,16 @@ func main() {
 
 	// Setup Gin router
 	router := gin.Default()
+
+	// Configure CORS
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	// Public routes
 	router.POST("/api/register", userHandler.Register)

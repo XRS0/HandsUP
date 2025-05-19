@@ -10,15 +10,17 @@ type User struct {
 	id        uuid.UUID
 	email     string
 	password  string
+	name      string
 	createdAt time.Time
 	updatedAt time.Time
 }
 
-func NewUser(email, password string) (*User, error) {
+func NewUser(email, password, name string) (*User, error) {
 	user := &User{
 		id:        uuid.New(),
 		email:     email,
 		password:  password,
+		name:      name,
 		createdAt: time.Now(),
 		updatedAt: time.Now(),
 	}
@@ -26,11 +28,12 @@ func NewUser(email, password string) (*User, error) {
 	return user, nil
 }
 
-func NewUserWithID(id uuid.UUID, email, password string) (*User, error) {
+func NewUserWithID(id uuid.UUID, email, password, name string) (*User, error) {
 	user := &User{
 		id:        id,
 		email:     email,
 		password:  password,
+		name:      name,
 		createdAt: time.Now(),
 		updatedAt: time.Now(),
 	}
@@ -57,6 +60,15 @@ func (u *User) Password() string {
 
 func (u *User) SetPassword(password string) {
 	u.password = password
+	u.updatedAt = time.Now()
+}
+
+func (u *User) Name() string {
+	return u.name
+}
+
+func (u *User) SetName(name string) {
+	u.name = name
 	u.updatedAt = time.Now()
 }
 

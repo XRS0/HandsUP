@@ -21,17 +21,17 @@ func NewPostgresStorage(db *sql.DB) *PostgresStorage {
 
 // Create сохраняет нового пользователя
 func (s *PostgresStorage) Create(user *users.User) error {
-	query := `INSERT INTO users (id, email, password, created_at, updated_at) VALUES ($1, $2, $3, $4, $5)`
-	_, err := s.db.Exec(query, user.ID(), user.Email(), user.Password(), time.Now(), time.Now())
+	query := `INSERT INTO users (id, email, password, name, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6)`
+	_, err := s.db.Exec(query, user.ID(), user.Email(), user.Password(), user.Name(), time.Now(), time.Now())
 	return err
 }
 
 // FindByID находит пользователя по идентификатору
 func (s *PostgresStorage) FindByID(id uuid.UUID) (*users.User, error) {
-	query := `SELECT id, email, password FROM users WHERE id = $1`
+	query := `SELECT id, email, password, name FROM users WHERE id = $1`
 	var userID uuid.UUID
-	var email, password string
-	err := s.db.QueryRow(query, id).Scan(&userID, &email, &password)
+	var email, password, name string
+	err := s.db.QueryRow(query, id).Scan(&userID, &email, &password, &name)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
@@ -39,7 +39,7 @@ func (s *PostgresStorage) FindByID(id uuid.UUID) (*users.User, error) {
 		return nil, err
 	}
 
-	user, err := users.NewUserWithID(userID, email, password)
+	user, err := users.NewUserWithID(userID, email, password, name)
 	if err != nil {
 		return nil, err
 	}
@@ -48,10 +48,10 @@ func (s *PostgresStorage) FindByID(id uuid.UUID) (*users.User, error) {
 
 // FindByEmail находит пользователя по email
 func (s *PostgresStorage) FindByEmail(email string) (*users.User, error) {
-	query := `SELECT id, email, password FROM users WHERE email = $1`
+	query := `SELECT id, email, password, name FROM users WHERE email = $1`
 	var userID uuid.UUID
-	var userEmail, password string
-	err := s.db.QueryRow(query, email).Scan(&userID, &userEmail, &password)
+	var userEmail, password, name string
+	err := s.db.QueryRow(query, email).Scan(&userID, &userEmail, &password, &name)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
@@ -59,7 +59,7 @@ func (s *PostgresStorage) FindByEmail(email string) (*users.User, error) {
 		return nil, err
 	}
 
-	user, err := users.NewUserWithID(userID, userEmail, password)
+	user, err := users.NewUserWithID(userID, userEmail, password, name)
 	if err != nil {
 		return nil, err
 	}
@@ -68,8 +68,8 @@ func (s *PostgresStorage) FindByEmail(email string) (*users.User, error) {
 
 // Update обновляет данные пользователя
 func (s *PostgresStorage) Update(user *users.User) error {
-	query := `UPDATE users SET email = $1, password = $2, updated_at = $3 WHERE id = $4`
-	_, err := s.db.Exec(query, user.Email(), user.Password(), time.Now(), user.ID())
+	query := `UPDATE users SET email = $1, password = $2, name = $3, updated_at = $4 WHERE id = $5`
+	_, err := s.db.Exec(query, user.Email(), user.Password(), user.Name(), time.Now(), user.ID())
 	return err
 }
 

@@ -34,11 +34,12 @@ func NewUserService(userRepo users.UserRepository, hasher *password.Hasher, toke
 // Register регистрирует нового пользователя
 // email - email пользователя
 // password - пароль пользователя
+// name - имя пользователя
 // Возвращает созданного пользователя и ошибку, если:
 // - пользователь с таким email уже существует
 // - не удалось создать пользователя
 // - не удалось сохранить пользователя
-func (s *UserService) Register(email, password string) (*users.User, error) {
+func (s *UserService) Register(email, password, name string) (*users.User, error) {
 	// Проверяем, существует ли пользователь
 	existingUser, err := s.userRepo.FindByEmail(email)
 	if err != nil {
@@ -48,8 +49,14 @@ func (s *UserService) Register(email, password string) (*users.User, error) {
 		return nil, errors.New("user already exists")
 	}
 
+	// Хешируем пароль
+	hashedPassword, err := s.hasher.Hash(password)
+	if err != nil {
+		return nil, err
+	}
+
 	// Создаем нового пользователя
-	user, err := users.NewUser(email, password)
+	user, err := users.NewUser(email, hashedPassword, name)
 	if err != nil {
 		return nil, err
 	}
