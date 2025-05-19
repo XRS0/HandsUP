@@ -6,15 +6,16 @@ import { AuthSlice, userSlice } from "./slice";
 
 export function* fetchRegisterSaga({ payload }: ReturnType<typeof AuthSlice.fetchSignUpRequest>) {
   try {
-    const response: AxiosResponse<JwtTokens, null> = yield call(registerApiInstance, payload);
+    const response: JwtTokens | null = yield call(registerApiInstance, payload);
     console.log(response);
+    if (!response) throw new Error("response is null");
 
-    yield localStorage.setItem("access_token", response.data.access_token);
-    yield localStorage.setItem("refresh_token", response.data.refresh_token);
+    yield localStorage.setItem("access_token", response.access_token);
+    yield localStorage.setItem("refresh_token", response.refresh_token);
 
     const sucessPayload = {
       user: { ...payload },
-      token: response.data.access_token
+      token: response.access_token
     }
 
     yield put(AuthSlice.fetchSignUpSuccess(sucessPayload));
