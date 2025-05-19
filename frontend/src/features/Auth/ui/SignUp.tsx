@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useRef, useState } from "react";
 import Button from "../../../views/Button/ui/Button";
-import { useAppDispatch } from "@/hooks/redux";
-import { RegisterActions } from "@/features/Register/models/slice";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { AuthSlice } from "@/features/Auth/models/slice";
 
 const SignUp = () => {
   const dispatch = useAppDispatch();
@@ -24,7 +24,7 @@ const SignUp = () => {
   const handleButtonClick = () => {
     if (!value.email || !value.name || !value.password || !confirmPassInput.current?.value) return console.log("rejected");
     if (value.password !== confirmPassInput.current?.value) return console.log("not the same pass");
-    dispatch(RegisterActions.fetchRegisterRequest(value));
+    dispatch(AuthSlice.fetchSignUpRequest(value));
   };
 
   return (
@@ -69,7 +69,7 @@ const SignUp = () => {
         <input type="password" placeholder="Once again.." ref={confirmPassInput} autoComplete="new-password"  />
       </label>
 
-      <Button children="Register" onclick={handleButtonClick} />
+      <Button children={"Sign Up"} onclick={handleButtonClick} />
     </>
   );
 }
