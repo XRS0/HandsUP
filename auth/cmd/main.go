@@ -18,7 +18,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-const secretKey = "your-256-bit-secret-key-here-make-it-long-and-secure" // TODO: Move to config and use a secure key in production
+const secretKey = "3igcZhRdWq96m3GUmTAiv9" // TODO: Move to config and use a secure key in production
 
 func main() {
 	db, err := sql.Open("postgres", "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable")

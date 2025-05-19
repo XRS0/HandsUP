@@ -64,14 +64,14 @@ func (h *UserHandler) Login(c *gin.Context) {
 		case "user not found", "invalid password":
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		default:
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error: " + err.Error()})
 		}
 		return
 	}
 
 	accessToken, refreshToken, err := h.tokenService.GenerateTokens(user.ID().String(), user.Email())
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate tokens: " + err.Error()})
 		return
 	}
 
@@ -103,14 +103,14 @@ func (h *UserHandler) RefreshTokenHandler(c *gin.Context) {
 	}
 
 	// Получаем информацию о пользователе из токена
-	claims, err := h.tokenService.ValidateToken(accessToken)
+	claims, err := h.tokenService.GetClaims(accessToken)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to validate token"})
 		return
 	}
 
 	// Получаем пользователя из базы данных
-	user, err := h.userService.GetUserByID(claims.UserID())
+	user, err := h.userService.GetUserByID(claims.UserID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get user info"})
 		return
