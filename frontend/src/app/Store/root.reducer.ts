@@ -1,5 +1,5 @@
 import socketReducer from "@/entities/websocket/slice";
-import userReducer from "@/entities/user/slice";
+import userReducer from "@/features/Register/models/slice";
 import { combineReducers } from "redux";
 
 const rootReducer = combineReducers({
