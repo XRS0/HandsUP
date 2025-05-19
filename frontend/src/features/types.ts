@@ -21,7 +21,3 @@ export interface LoginResponseData {
   email: string;
   password: string;
 }
-
-// interface JwtAuthorization {
-//   Authorization: `Bearer ${string}`,
-// }
