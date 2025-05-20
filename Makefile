@@ -22,6 +22,9 @@ run_summ:
 run_stt:
 	@./bin/stt
 
+run_auth:
+	./bin/auth
+
 build_auth:
 	@cd auth && go build -o ../bin/auth cmd/main.go
 
