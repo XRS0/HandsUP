@@ -10,7 +10,7 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
 
   switch (wsAction.type) {
     case 'socket/connect':
-      socket.connect('ws://localhost:8080/ws');
+      socket.connect(wsAction.url);
 
       socket.on('open', () => {
         console.log("[WS]: Connection opened");
