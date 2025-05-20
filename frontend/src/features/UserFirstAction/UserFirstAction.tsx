@@ -34,7 +34,7 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
   const dispatch = useAppDispatch();
 
   const handleButtonClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    dispatch({ type: 'socket/connect' });
+    dispatch({ type: 'socket/connect', url: process.env.REST_BASE_URL });
     onVoice(e);
   }
 
