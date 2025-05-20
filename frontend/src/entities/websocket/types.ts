@@ -8,8 +8,12 @@ type sendData = {
   }
 }
 
+type connectData = {
+  url: string
+}
+
 type socketActionType = {
-  "socket/connect": "",
+  "socket/connect": connectData,
   "socket/disconnect": "",
   "socket/sendMessage": sendData,
 }
