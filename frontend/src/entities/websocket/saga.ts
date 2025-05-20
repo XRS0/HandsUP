@@ -7,13 +7,9 @@ export function* handleRecievedMessage(action: { payload: string }) {
   yield put(socketSliceActions.addMessage(action.payload));
 }
 
-function* sendMessage(action: { payload: Blob }) {
-  const event = action.payload;
-
-  if (event.size > 0) {
-    console.log('blob', event);
-    store.dispatch({ type: 'socket/sendMessage', payload: { data: event } })
-  }
+function* sendMessage(action: ReturnType<typeof socketSliceActions.handleAvaliableData>) {
+  const data = action.payload;
+  store.dispatch({ type: 'socket/sendMessage', payload: data })
 }
 
 export default function* watchWsStatus() {

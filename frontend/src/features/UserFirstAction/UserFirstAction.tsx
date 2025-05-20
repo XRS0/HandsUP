@@ -1,4 +1,4 @@
-import React, { ChangeEvent, HTMLAttributes, useEffect } from "react";
+import React, { HTMLAttributes } from "react";
 import Button from "@/views/Button/ui/Button";
 import Dropdown from "@views/Dropdown/Dropdown";
 import useAnimation from "@/hooks/useAnimation";
@@ -11,6 +11,8 @@ import importIcon from "@assets/main-page/import-icon.svg?react";
 import linkIcon from "@assets/main-page/link.svg?react";
 import { createClassName } from "@/shared/utils/createClassName";
 import { useAppDispatch } from "@/hooks/redux";
+import { startRecording } from "@/entities/recorder/recorder";
+import Socket from "@/entities/websocket/models/socket";
 
 type OwnProps = HTMLAttributes<HTMLDivElement> & {
   isFadeOut: boolean,
@@ -34,7 +36,7 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
   const dispatch = useAppDispatch();
 
   const handleButtonClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    dispatch({ type: 'socket/connect', url: process.env.REST_BASE_URL });
+    dispatch({ type: 'socket/connect', url: process.env.WS_TRANSCRIBE_URL });
     onVoice(e);
   }
 
