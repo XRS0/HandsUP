@@ -13,12 +13,13 @@ import time
 app = Flask(__name__)
 sock = Sock(app)
 
-model = whisper.load_model('base')  # Using base model for better accuracy
+model = whisper.load_model('tiny')  # Using tiny model for better performance
 
 # Audio buffer for accumulating data
 audio_buffer = queue.Queue()
-BUFFER_DURATION = 2.0  # seconds
+BUFFER_DURATION = 5.0  # Increased buffer duration to reduce processing frequency
 SAMPLE_RATE = 16000
+MIN_AUDIO_LENGTH = 0.5  # Minimum audio length in seconds to process
 
 @app.route('/')
 def index():
@@ -46,13 +47,16 @@ def transcription_worker(ws):
     while True:
         try:
             # Get audio data from buffer
-            audio_chunk = audio_buffer.get(timeout=0.1)
+            audio_chunk = audio_buffer.get(timeout=0.5)
             accumulated_audio.append(audio_chunk)
+            
+            # Calculate total audio length
+            total_length = sum(len(chunk) for chunk in accumulated_audio) / SAMPLE_RATE
             
             # Check if we have enough data or enough time has passed
             current_time = time.time()
-            if (len(accumulated_audio) * len(audio_chunk) / SAMPLE_RATE >= BUFFER_DURATION or 
-                current_time - last_transcription_time >= BUFFER_DURATION):
+            if (total_length >= BUFFER_DURATION or 
+                (current_time - last_transcription_time >= BUFFER_DURATION and total_length >= MIN_AUDIO_LENGTH)):
                 
                 # Combine all chunks
                 audio_data = np.concatenate(accumulated_audio)
@@ -62,8 +66,7 @@ def transcription_worker(ws):
                 transcription = whisper.transcribe(
                     model, 
                     audio_data,
-                    language="ru",  # Specify Russian language
-                    task="transcribe"
+                    task="transcribe"  # Let Whisper detect language automatically
                 )
                 
                 # Send transcription if not empty
@@ -76,19 +79,20 @@ def transcription_worker(ws):
                 
         except queue.Empty:
             # If buffer is empty, check if we have accumulated data to process
-            if accumulated_audio and time.time() - last_transcription_time >= BUFFER_DURATION:
-                audio_data = np.concatenate(accumulated_audio)
-                audio_data = whisper.pad_or_trim(audio_data)
-                transcription = whisper.transcribe(
-                    model, 
-                    audio_data,
-                    language="ru",  # Specify Russian language
-                    task="transcribe"
-                )
-                if transcription['text'].strip():
-                    ws.send(transcription['text'])
-                accumulated_audio = []
-                last_transcription_time = time.time()
+            if accumulated_audio:
+                total_length = sum(len(chunk) for chunk in accumulated_audio) / SAMPLE_RATE
+                if time.time() - last_transcription_time >= BUFFER_DURATION and total_length >= MIN_AUDIO_LENGTH:
+                    audio_data = np.concatenate(accumulated_audio)
+                    audio_data = whisper.pad_or_trim(audio_data)
+                    transcription = whisper.transcribe(
+                        model, 
+                        audio_data,
+                        task="transcribe"  # Let Whisper detect language automatically
+                    )
+                    if transcription['text'].strip():
+                        ws.send(transcription['text'])
+                    accumulated_audio = []
+                    last_transcription_time = time.time()
             continue
         except Exception as e:
             traceback.print_exc()
