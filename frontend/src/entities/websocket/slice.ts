@@ -31,7 +31,7 @@ const socketSlice = createSlice({
 export const socketSliceActions = {
   ...socketSlice.actions,
   handleMessage: createAction<string>(`${socketSlice.name}/handleMessage`),
-  handleAvaliableData: createAction<Blob>(`${socketSlice.name}/handleAvaliableData`)
+  handleAvaliableData: createAction<string>(`${socketSlice.name}/handleAvaliableData`)
 };
 
 export default socketSlice.reducer;
