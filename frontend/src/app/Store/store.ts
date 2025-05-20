@@ -3,7 +3,8 @@ import createSagaMiddleware from 'redux-saga';
 
 import rootSaga from './root.saga';
 import rootReducer from './root.reducer';
-import { websocketMiddleware } from '../../entities/websocket/websocket-middleware';
+import { socketMiddleware } from '@/entities/websocket/middleware';
+import Socket from '@/entities/websocket/models/socket';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -12,7 +13,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
     .concat([
-      websocketMiddleware,
+      socketMiddleware(new Socket()),
       sagaMiddleware
     ])
 });

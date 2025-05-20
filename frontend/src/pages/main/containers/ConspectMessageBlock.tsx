@@ -7,7 +7,7 @@ type OwnProps = {
 }
 
 const ConspectMessageBlock: React.FC<OwnProps> = ({ socketName }) => {
-  const message = useSelector((state: RootState) => state.socket[socketName].message);
+  const { message } = useSelector((state: RootState) => state.socket);
 
   const [, forceUpdate] = useReducer(x => x + 1, 0);    // for update
 
@@ -22,7 +22,7 @@ const ConspectMessageBlock: React.FC<OwnProps> = ({ socketName }) => {
     const wordsToRender = renderedMessage.current.length 
     ? message.slice(message.length - renderedMessage.current.length)
     : message;
-    console.log(wordsToRender);
+    // console.log(wordsToRender);
 
     wordsToRender.map((word, i) => {
       if (messageRef.current) messageHeightRef.current = messageRef.current.offsetHeight;

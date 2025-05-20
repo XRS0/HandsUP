@@ -1,39 +1,21 @@
 //Types for websocket
-export type callbackListener = (data: any) => void;
-
-//первое про рендер текста при записи, второе про передачу суммаризованного текста
-export type socketNameType = "recordingConnection" | "sumConection";
-export type ActionType = "WS_CONNECT" | "WS_DISCONNECT" | "WS_SEND_MESSAGE";
-
-type connectData = {
-  payload: {
-    url: string;
-    socketName: socketNameType;
-  }
-}
-
-type disconnectData = {
-  payload: {
-    socketName: socketNameType;
-  }
-}
+// export type callbackListener = (data: any) => void;
+export type ActionType = "socket/connect" | "socket/disconnect" | "socket/sendMessage";
 
 type sendData = {
   payload: {
-    socket: WebSocket;
-    message: any;
+    data: Blob;
   }
 }
 
 type socketActionType = {
-  "WS_CONNECT": connectData,
-  "WS_DISCONNECT": disconnectData,
-  "WS_SEND_MESSAGE": sendData,
+  "socket/connect": "",
+  "socket/disconnect": "",
+  "socket/sendMessage": sendData,
 }
 
 export type socketAction = {
   [T in ActionType]: {type: T} & socketActionType[T];
 }[ActionType];
 
-
-export type messageType = { socketName: string, message: any }
+// export type messageType = { socketName: string, message: any }
