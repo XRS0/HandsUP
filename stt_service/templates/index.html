@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Speech to Text</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 20px;
+		}
+
+		#transcription {
+			margin-top: 20px;
+			padding: 10px;
+			border: 1px solid #ccc;
+			min-height: 100px;
+		}
+
+		#status {
+			margin-top: 10px;
+			color: #666;
+		}
+
+		#logs {
+			margin-top: 10px;
+			padding: 10px;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			height: 200px;
+			overflow-y: auto;
+			font-family: monospace;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Speech to Text</h1>
+	<button id="startButton">Start Recording</button>
+	<button id="stopButton" disabled>Stop Recording</button>
+	<div id="status">Not recording</div>
+	<div id="transcription"></div>
+	<div id="logs"></div>
+
+	<script>
+		let ws;
+		let mediaRecorder;
+		let audioContext;
+		let source;
+		let processor;
+		let isRecording = false;
+
+		function log(message) {
+			const logs = document.getElementById('logs');
+			const timestamp = new Date().toLocaleTimeString();
+			logs.innerHTML += `[${timestamp}] ${message}<br>`;
+			logs.scrollTop = logs.scrollHeight;
+		}
+
+		function connect() {
+			ws = new WebSocket('ws://127.0.0.1:5003/transcribe');
+
+			ws.onopen = () => {
+				log('WebSocket connection established');
+				document.getElementById('startButton').disabled = false;
+			};
+
+			ws.onclose = () => {
+				log('WebSocket connection closed');
+				document.getElementById('startButton').disabled = true;
+				document.getElementById('stopButton').disabled = true;
+			};
+
+			ws.onerror = (error) => {
+				log('WebSocket error: ' + error);
+			};
+
+			ws.onmessage = (event) => {
+				const transcription = document.getElementById('transcription');
+				transcription.textContent = event.data;
+				log('Received transcription: ' + event.data);
+			};
+		}
+
+		async function startRecording() {
+			try {
+				log('Requesting microphone access...');
+				const stream = await navigator.mediaDevices.getUserMedia({
+					audio: {
+						echoCancellation: true,
+						noiseSuppression: true,
+						autoGainControl: true,
+						sampleRate: 48000,
+						channelCount: 1
+					}
+				});
+				log('Microphone access granted');
+
+				audioContext = new AudioContext();
+				source = audioContext.createMediaStreamSource(stream);
+				processor = audioContext.createScriptProcessor(4096, 1, 1);
+
+				processor.onaudioprocess = (e) => {
+					if (isRecording) {
+						const inputData = e.inputBuffer.getChannelData(0);
+						const pcmData = new Int16Array(inputData.length);
+
+						// Convert float32 to int16
+						for (let i = 0; i < inputData.length; i++) {
+							pcmData[i] = Math.max(-32768, Math.min(32767, Math.round(inputData[i] * 32768)));
+						}
+
+						ws.send(pcmData.buffer);
+						log('Sending audio chunk: ' + pcmData.buffer.byteLength + ' bytes');
+					}
+				};
+
+				source.connect(processor);
+				processor.connect(audioContext.destination);
+
+				isRecording = true;
+				document.getElementById('status').textContent = 'Recording...';
+				document.getElementById('startButton').disabled = true;
+				document.getElementById('stopButton').disabled = false;
+				log('Recording started');
+			} catch (error) {
+				log('Error starting recording: ' + error);
+			}
+		}
+
+		function stopRecording() {
+			if (processor) {
+				processor.disconnect();
+				source.disconnect();
+				isRecording = false;
+				document.getElementById('status').textContent = 'Not recording';
+				document.getElementById('startButton').disabled = false;
+				document.getElementById('stopButton').disabled = true;
+				log('Recording stopped');
+			}
+		}
+
+		document.getElementById('startButton').onclick = startRecording;
+		document.getElementById('stopButton').onclick = stopRecording;
+
+		// Connect when page loads
+		connect();
+	</script>
+</body>
+
+</html>
