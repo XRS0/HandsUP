@@ -14,6 +14,7 @@ app = Flask(__name__)
 sock = Sock(app)
 
 model = whisper.load_model('tiny')  # Using tiny model for better performance
+LANGUAGE = "ru"  # Default language for transcription
 
 # Audio buffer for accumulating data
 audio_buffer = queue.Queue()
@@ -66,7 +67,8 @@ def transcription_worker(ws):
                 transcription = whisper.transcribe(
                     model, 
                     audio_data,
-                    task="transcribe"  # Let Whisper detect language automatically
+                    language=LANGUAGE,  # Use the language variable
+                    task="transcribe"
                 )
                 
                 # Send transcription if not empty
@@ -87,7 +89,8 @@ def transcription_worker(ws):
                     transcription = whisper.transcribe(
                         model, 
                         audio_data,
-                        task="transcribe"  # Let Whisper detect language automatically
+                        language=LANGUAGE,  # Use the language variable
+                        task="transcribe"
                     )
                     if transcription['text'].strip():
                         ws.send(transcription['text'])
