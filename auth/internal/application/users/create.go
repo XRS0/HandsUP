@@ -9,6 +9,7 @@ import (
 type CreateUserCommand struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
+	Name     string `json:"name"`
 }
 
 type CreateUserCommandHandler struct {
@@ -16,7 +17,7 @@ type CreateUserCommandHandler struct {
 }
 
 func (h *CreateUserCommandHandler) Handle(ctx context.Context, cmd *CreateUserCommand) (*users.User, error) {
-	user, err := h.userService.Register(cmd.Email, cmd.Password)
+	user, err := h.userService.Register(cmd.Email, cmd.Password, cmd.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -27,12 +28,4 @@ func NewCreateUserCommandHandler(userService *user.UserService) *CreateUserComma
 	return &CreateUserCommandHandler{
 		userService: userService,
 	}
-}
-
-func (h *CreateUserCommandHandler) Handle(ctx context.Context, cmd *CreateUserCommand) (*users.User, error) {
-	user, err := h.userService.Register(cmd.Email, cmd.Password)
-	if err != nil {
-		return nil, err
-	}
-	return user, nil
 }

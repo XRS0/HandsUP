@@ -5,24 +5,16 @@ import (
 	"errors"
 	"time"
 
+	"auth/internal/domain/tokens"
+
 	"github.com/golang-jwt/jwt/v5"
-)
-
-// TokenType определяет тип токена
-type TokenType string
-
-const (
-	// AccessToken используется для доступа к защищенным ресурсам
-	AccessToken TokenType = "access"
-	// RefreshToken используется для обновления access токена
-	RefreshToken TokenType = "refresh"
 )
 
 // TokenClaims представляет claims для JWT токена
 type TokenClaims struct {
-	UserID    string    `json:"user_id"`
-	Email     string    `json:"email"`
-	TokenType TokenType `json:"token_type"`
+	UserID    string           `json:"user_id"`
+	Email     string           `json:"email"`
+	TokenType tokens.TokenType `json:"token_type"`
 	jwt.RegisteredClaims
 }
 
@@ -50,7 +42,7 @@ func NewTokenService(secretKey string, accessDuration, refreshDuration time.Dura
 // email - email пользователя
 // Возвращает токен и ошибку, если не удалось создать токен
 func (s *TokenService) GenerateAccessToken(userID, email string) (string, error) {
-	return s.generateToken(userID, email, AccessToken, s.accessDuration)
+	return s.generateToken(userID, email, tokens.AccessToken, s.accessDuration)
 }
 
 // GenerateRefreshToken создает refresh токен для пользователя
@@ -58,7 +50,7 @@ func (s *TokenService) GenerateAccessToken(userID, email string) (string, error)
 // email - email пользователя
 // Возвращает токен и ошибку, если не удалось создать токен
 func (s *TokenService) GenerateRefreshToken(userID, email string) (string, error) {
-	return s.generateToken(userID, email, RefreshToken, s.refreshDuration)
+	return s.generateToken(userID, email, tokens.RefreshToken, s.refreshDuration)
 }
 
 // ValidateToken проверяет валидность токена
@@ -93,7 +85,7 @@ func (s *TokenService) RefreshTokens(refreshToken string) (string, string, error
 		return "", "", err
 	}
 
-	if claims.TokenType != RefreshToken {
+	if claims.TokenType != tokens.RefreshToken {
 		return "", "", errors.New("invalid token type")
 	}
 
@@ -112,7 +104,7 @@ func (s *TokenService) RefreshTokens(refreshToken string) (string, string, error
 }
 
 // generateToken создает JWT токен с указанными параметрами
-func (s *TokenService) generateToken(userID, email string, tokenType TokenType, duration time.Duration) (string, error) {
+func (s *TokenService) generateToken(userID, email string, tokenType tokens.TokenType, duration time.Duration) (string, error) {
 	now := time.Now()
 	claims := &TokenClaims{
 		UserID:    userID,

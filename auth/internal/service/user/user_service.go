@@ -7,8 +7,8 @@ import (
 	"github.com/google/uuid"
 
 	"auth/internal/domain/users"
-	"auth/internal/infrastructure/security/jwt"
 	"auth/internal/infrastructure/security/password"
+	"auth/internal/service/token"
 )
 
 // UserService предоставляет методы для работы с пользователями
@@ -16,14 +16,14 @@ import (
 type UserService struct {
 	userRepo     users.UserRepository
 	hasher       *password.Hasher
-	tokenService *jwt.TokenService
+	tokenService *token.TokenService
 }
 
 // NewUserService создает новый экземпляр UserService
 // userRepo - репозиторий для работы с пользователями
 // hasher - сервис для хеширования паролей
-// tokenService - сервис для работы с JWT токенами
-func NewUserService(userRepo users.UserRepository, hasher *password.Hasher, tokenService *jwt.TokenService) *UserService {
+// tokenService - сервис для работы с токенами
+func NewUserService(userRepo users.UserRepository, hasher *password.Hasher, tokenService *token.TokenService) *UserService {
 	return &UserService{
 		userRepo:     userRepo,
 		hasher:       hasher,
@@ -34,11 +34,12 @@ func NewUserService(userRepo users.UserRepository, hasher *password.Hasher, toke
 // Register регистрирует нового пользователя
 // email - email пользователя
 // password - пароль пользователя
+// name - имя пользователя
 // Возвращает созданного пользователя и ошибку, если:
 // - пользователь с таким email уже существует
 // - не удалось создать пользователя
 // - не удалось сохранить пользователя
-func (s *UserService) Register(email, password string) (*users.User, error) {
+func (s *UserService) Register(email, password, name string) (*users.User, error) {
 	// Проверяем, существует ли пользователь
 	existingUser, err := s.userRepo.FindByEmail(email)
 	if err != nil {
@@ -48,8 +49,14 @@ func (s *UserService) Register(email, password string) (*users.User, error) {
 		return nil, errors.New("user already exists")
 	}
 
+	// Хешируем пароль
+	hashedPassword, err := s.hasher.Hash(password)
+	if err != nil {
+		return nil, err
+	}
+
 	// Создаем нового пользователя
-	user, err := users.NewUser(email, password)
+	user, err := users.NewUser(email, hashedPassword, name)
 	if err != nil {
 		return nil, err
 	}
@@ -85,12 +92,12 @@ func (s *UserService) Login(email, password string) (*users.User, error) {
 	return user, nil
 }
 
-// GenerateToken создает JWT токен для пользователя
+// GenerateToken создает пару токенов для пользователя
 // userID - идентификатор пользователя
 // email - email пользователя
-// Возвращает токен и ошибку, если не удалось создать токен
-func (s *UserService) GenerateToken(userID uuid.UUID, email string) (string, error) {
-	return s.tokenService.GenerateToken(userID, email)
+// Возвращает токены и ошибку, если не удалось создать токены
+func (s *UserService) GenerateToken(userID uuid.UUID, email string) (string, string, error) {
+	return s.tokenService.GenerateTokens(userID.String(), email)
 }
 
 // UpdateUser обновляет данные пользователя
@@ -139,4 +146,17 @@ func (s *UserService) DeleteUser(userID uuid.UUID) error {
 	}
 
 	return s.userRepo.Delete(user)
+}
+
+// GetUserByID получает пользователя по его ID
+// userID - идентификатор пользователя
+// Возвращает пользователя и ошибку, если:
+// - пользователь не найден
+// - произошла ошибка при получении пользователя
+func (s *UserService) GetUserByID(userID string) (*users.User, error) {
+	id, err := uuid.Parse(userID)
+	if err != nil {
+		return nil, err
+	}
+	return s.userRepo.FindByID(id)
 }

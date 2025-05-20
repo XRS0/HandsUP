@@ -33,6 +33,11 @@ func NewTokenService(
 
 // GenerateTokens создает новую пару токенов для пользователя
 func (s *TokenService) GenerateTokens(userID, email string) (string, string, error) {
+	// Удаляем старые токены пользователя
+	if err := s.tokenRepo.Delete(userID); err != nil {
+		return "", "", err
+	}
+
 	// Создаем доменные объекты токенов
 	accessToken := tokens.NewToken(
 		userID,
@@ -117,4 +122,9 @@ func (s *TokenService) RevokeToken(token string) error {
 	}
 
 	return s.tokenRepo.Delete(claims.UserID)
+}
+
+// GetClaims получает claims из JWT токена
+func (s *TokenService) GetClaims(token string) (*jwt.TokenClaims, error) {
+	return s.jwtService.ValidateToken(token)
 }
