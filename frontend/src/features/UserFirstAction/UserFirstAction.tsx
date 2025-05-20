@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from "react";
+import React, { ChangeEvent, HTMLAttributes, useEffect } from "react";
 import Button from "@/views/Button/ui/Button";
 import Dropdown from "@views/Dropdown/Dropdown";
 import useAnimation from "@/hooks/useAnimation";
@@ -10,6 +10,7 @@ import computerIcon from "@assets/main-page/computer.svg?react";
 import importIcon from "@assets/main-page/import-icon.svg?react";
 import linkIcon from "@assets/main-page/link.svg?react";
 import { createClassName } from "@/shared/utils/createClassName";
+import { useAppDispatch } from "@/hooks/redux";
 
 type OwnProps = HTMLAttributes<HTMLDivElement> & {
   isFadeOut: boolean,
@@ -29,6 +30,19 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
     closeOnOutsideClick: true,
     initialVsibility: false
   });
+
+  const dispatch = useAppDispatch();
+
+  const handleButtonClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    dispatch({ type: 'socket/connect' });
+    onVoice(e);
+  }
+
+  // useEffect(() => {
+  //   return () => {
+  //     dispatch({ type: 'socket/disconnect' })
+  //   }
+  // }, []);
 
   return (
     <div 
@@ -51,7 +65,7 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
             children="Voice"
             IconLeft={audioIcon}
             cssClass="button"
-            onclick={onVoice}
+            onclick={handleButtonClick}
           />
           <div
             ref={containerRef}
