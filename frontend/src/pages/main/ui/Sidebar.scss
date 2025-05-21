@@ -7,6 +7,10 @@
   flex-direction: column;
   align-items: center;
 
+  img {
+    user-select: none;
+  }
+
   .new-conspect-button {
     height: 40px;
     width: 136px;
@@ -22,8 +26,9 @@
   .line {
     height: 1px;
     border-radius: 1px;
+    border: 0;
     width: 92%;
-    margin-block: 30px;
+    margin-block: 1.5rem;
     background-color: var(--main-border-color);
   }
 
@@ -40,6 +45,7 @@
 
     .user-block {
       padding-inline: 5px;
+      user-select: none;
 
       .upgrade-price-plan,
       .profile {

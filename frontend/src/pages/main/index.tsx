@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import "./ui/MainPage.scss";
 
 import Sidebar from "./ui/Sidebar";
-import UserComposer from "../../features/UserComposer/UserComposer";
 import useAnimation from "../../hooks/useAnimation";
 import UserFirstAction from "../../features/UserFirstAction/UserFirstAction";
-import { useDispatch } from "react-redux";
 import ConspectMessageBlock from "./containers/ConspectMessageBlock";
+import UserRecorder from "@/features/UserRecorder/ui/UserRecorder";
+import UserComposer from "@/features/UserComposer/UserComposer";
+import MDMessageBlock from "./containers/MDMessageBlock";
 
 const MainPage = () => {
   const {
@@ -17,17 +18,12 @@ const MainPage = () => {
     isFadeOut: isFadeOutBlock
   } = useAnimation({trigger: "click", initialVsibility: true});
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch({
-      type: "WS_CONNECT",
-      payload: {
-        url: "ws://placeholder.net/ws",
-        socketName: "bobon'ka"
-      }
-    });
-  }, []);
+  const {
+    handleAnimationEnd: handleRecorderUnmount,
+    handleOpen: handleComposerOpen,
+    isVisible: isRecorderVisible,
+    isFadeOut: isRecorderFadeOut
+  } = useAnimation({trigger: "click", initialVsibility: true});
 
   return (
     <div className="wrapper">
@@ -36,7 +32,8 @@ const MainPage = () => {
       <div className="chat-wrapper">
         <div className="chat-background">
           <div className="chat">
-            <ConspectMessageBlock socketName="realtimeTextRender" />
+            <ConspectMessageBlock />
+            <MDMessageBlock />
 
             { isVisible &&
             <UserFirstAction
@@ -45,7 +42,13 @@ const MainPage = () => {
               isFadeOut={isFadeOutBlock}
             />}
 
-            {(isFadeOutBlock || !isVisible) && <UserComposer />}
+            {((isFadeOutBlock || !isVisible) && isRecorderVisible)
+              && <UserRecorder
+              isFadeOut={isRecorderFadeOut}
+              onAnimationEnd={handleRecorderUnmount}
+              onStop={handleComposerOpen}
+            />}
+            {(isRecorderFadeOut || !isRecorderVisible) && <UserComposer />}
           </div>
         </div>
       </div>

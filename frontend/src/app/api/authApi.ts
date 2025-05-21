@@ -1,5 +1,5 @@
-import apiInstance from "@/app/api/axiosInstance";
-import { SignInResponseData, SignUpResponseData } from "@/features/types";
+import apiInstance from "@/app/api/instance/axiosInstance";
+import { SignInResponseData, SignUpResponseData } from "@/features/Auth/types/types";
 
 export const registerApiInstance = async (payload: SignUpResponseData) => { 
   const response = await apiInstance.post("/register", payload);
@@ -10,19 +10,8 @@ export const registerApiInstance = async (payload: SignUpResponseData) => {
   return response.data;
 }
 
-export const loginApiInstance = async (payload: SignInResponseData, token: string) => {
-  // let config = {
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   }
-  // }
-  const response = await apiInstance({
-    method: 'post',
-    url: '/login',
-    data: payload,
-    // headers: { Authorization: `Bearer ${token}` },
-  });
-
+export const loginApiInstance = async (payload: SignInResponseData) => {
+  const response = await apiInstance.post('/login', payload);
   if (!response.data) {
     throw new Error('Failed to fetch login');
   }

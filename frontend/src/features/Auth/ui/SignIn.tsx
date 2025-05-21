@@ -28,12 +28,6 @@ const SignIn = () => {
     dispatch(AuthSlice.fetchSignInRequest(value));
   };
 
-  // useEffect(() => {
-  //   if (isSignSucess) {
-  //     navigate('/main');
-  //   }
-  // }, [isSignSucess, navigate])
-
   if (isSignSuccess) {
     return <Navigate to="/" replace />;
   }

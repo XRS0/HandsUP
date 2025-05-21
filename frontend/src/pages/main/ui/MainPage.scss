@@ -2,10 +2,11 @@
 
 html, body, #root {
   height: 100%;
-  overflow-y: hidden;
+  // overflow-y: hidden;
 }
 
 .wrapper {
+  overflow-y: hidden;
   width: 100%;
   height: 100%;
   display: flex;
@@ -30,7 +31,8 @@ html, body, #root {
   background-repeat: no-repeat;
   border-radius: 16px;
   @include mixin.flex-center;
-  background-image: url('../../../shared/assets/main-page/maip-page-bg.svg');
+  background-image: url('@/shared/assets/main-page/main-page-bg.svg');
+  background-size: cover;
 
   position: relative;
   z-index: 1;
@@ -81,7 +83,7 @@ html, body, #root {
     font-family: "Jost";
     font-size: 16px;
     opacity: 0;
-    filter: blur(3px);
+    filter: blur(3px);    //change how cool will work sppechToText
     color: var(--light-gray);
 
     &::after { 

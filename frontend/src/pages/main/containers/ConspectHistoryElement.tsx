@@ -1,7 +1,7 @@
 import React from "react";
 
 import "../ui/ConspectHistoryElement.scss";
-import { getDateAgo } from "../../../shared/utils/date";
+import { getDateAgo } from "@/shared/utils/date";
 
 type OwnProps = {
   date: number | Date;
@@ -13,7 +13,7 @@ const ConspectHistoryElement: React.FC<OwnProps> = ({ date, topics }) => {
     <div className="history-container">
       <div className="header-date">{getDateAgo(date)}</div>
       {
-      topics.map(name => <div className="conspect-name">{name}</div>)
+      topics.map((name, i) => <div className="conspect-name" key={i}>{name}</div>)
       }
     </div>
   );

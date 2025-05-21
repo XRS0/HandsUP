@@ -1,0 +1,17 @@
+.edit-textarea {
+  width: 100%;
+  max-width: 740px;
+  background-color: var(--secondary-color);
+  border: 2px solid var(--main-color);
+  border-radius: 20px;
+  padding: 16px 20px;
+  overflow: hidden;
+
+  textarea {
+    height: 100%;
+    background-color: var(--secondary-color);
+    font-size: 16px;
+    min-height: 65px;
+    color: #cccccc;
+  }
+}
