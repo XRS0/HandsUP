@@ -1,12 +1,10 @@
-import React from "react";
-
 import "./ui/WelcomePage.scss";
 
 import logo from "@/shared/assets/welcome-page/logo.svg";
 import wave from "@/shared/assets/welcome-page/waveform/wave.svg";
-import redwave from "@/shared/assets/welcome-page/waveform/redwave.svg";
+import redwave from "@/shared/assets/welcome-page/waveform/hovered_wave.svg";
 import micro from "@/shared/assets/welcome-page/waveform/micro.svg";
-import redmicro from "@/shared/assets/welcome-page/waveform/redmicro.svg";
+import redmicro from "@/shared/assets/welcome-page/waveform/hovered_micro.svg";
 import rectangleBlock from "@/shared/assets/welcome-page/rectangle.png";
 
 import mainDecor from "@/shared/assets/welcome-page/main-decoration.svg";
@@ -14,6 +12,7 @@ import firstDecor from "@/shared/assets/welcome-page/first_decoration.svg"
 import secondDecor from "@/shared/assets/welcome-page/second-decoration.svg";
 import thirdDecor from "@/shared/assets/welcome-page/third-decoration.svg";
 import Button from "@/views/Button/ui/Button";
+import { Navigate, NavLink } from "react-router-dom";
 
 const WelcomePage = () => {
   return (
@@ -27,13 +26,13 @@ const WelcomePage = () => {
     <img 
     src={secondDecor} 
     className="absolute-decor" 
-    style={{top: "560px", left: "calc(20vw - 282px)"}}
+    style={{top: "600px", left: "calc(20vw - 282px)"}}
     alt="decor" />
 
     <img 
     src={thirdDecor} 
     className="absolute-decor" 
-    style={{bottom: "330px", right: "calc(20vw - 290px)"}}
+    style={{bottom: "-850px", right: "calc(20vw - 290px)"}}
     alt="decor" />
 
     <div className="container">
@@ -57,17 +56,19 @@ const WelcomePage = () => {
             customisable conspect message in a minute
           </p>
 
-          <div className="waveform">
-            <div className="wave">
-              <img src={wave} className="bg-wave" alt="pic" />
-              <img src={redwave} className="redwave" alt="pic" />
-            </div>
+          <NavLink to="/">
+            <div className="waveform">
+              <div className="wave">
+                <img src={wave} className="bg-wave" alt="pic" />
+                <img src={redwave} className="redwave" alt="pic" />
+              </div>
 
-            <div className="micro">
-              <img src={micro} alt="pic" />
-              <img src={redmicro} className="redmicro" alt="pic" />
+              <div className="micro">
+                <img src={micro} alt="pic" />
+                <img src={redmicro} className="redmicro" alt="pic" />
+              </div>
             </div>
-          </div>
+          </NavLink>
         </div>
       </div>
 
@@ -278,7 +279,7 @@ const WelcomePage = () => {
           </div>
 
           <div className="button-container">
-            <Button onclick={() => {}} children="Upgrade your plan"/>
+            <Button onclick={() => {}} children="Upgrade your plan" />
           </div>
         </div>
       </div>

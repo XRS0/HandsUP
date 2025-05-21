@@ -1,24 +1,29 @@
+@use "@/shared/ui/mixins" as mixin;
+
 .main-prompt-input {
   border-radius: 20px;
-  padding: 15px 15px 15px;
-  width: 55%;
-  max-width: 740px;
+  padding: 15px;
+  width: 80%;
+  max-width: 860px;
+  min-height: 120px;
+  max-height: 250px;
   background-color: var(--secondary-color);
-  border: 0.8px solid var(--main-border-color);
+  border: 1px solid var(--main-border-color);
 
   transform: translateY(150px);
   pointer-events: none;
   visibility: visible;
 
   position: absolute;
-  bottom: 24px;
-  animation: ComposerFadeIn 0.45s forwards;
+  bottom: 2rem;
+  animation: ComposerFadeIn 0.5s forwards;
 
   textarea {
     display: block;
     padding: 0;
     color: #AAA;
     min-height: 40px;
+    max-height: 170px;
     font-size: 16px;
     font-weight: 400;
 
@@ -30,25 +35,33 @@
 
   .input-tools {
     margin-top: 10px;
-    display: flex;
-    justify-content: space-between;
+    @include mixin.flex-between;
+
+    button {
+      padding: 7px 16px !important;
+    }
   
     .conspect-config {
       display: flex;
-      justify-content: space-between;
-      width: 46%;
 
       .config {
         border: 1px solid var(--main-border-color);
         font-weight: 400;
         color: #AAA;
         padding: 6px 16px;
+        margin-right: 14px;
         border-radius: 40px;
         white-space: nowrap;
+
+        &.actived {
+          border-color: var(--main-background-color) !important;
+          background-color: var(--main-background-color) !important;
+          color: var(--main-color);
+        }
     
         &:hover, &.active {
-          border-color: #2E1A27 !important;
-          background-color: rgba(197, 7, 61, 0.1) !important;
+          border-color: var(--main-background-color) !important;
+          background-color: var(--main-background-color) !important;
           color: var(--main-color);
         }
       }
@@ -57,21 +70,21 @@
     .actions {
       display: flex;
 
-      img {
-        cursor: pointer;
-
-        &:hover {
-          filter: brightness(0.8);
-        }
-      }
-
       .record-button {
-        gap: 0 5px;
-        padding: 7px 16px;
-        margin-left: 15px;
+        margin-left: 14px;
         border-radius: 40px;
       }
     }
+  }
+
+  .hint-text {
+    position: absolute;
+    font-family: "Jost";
+    font-weight: 400;
+    font-size: 12px;
+    bottom: -1.375rem;
+    right: 0.5rem;
+    color: var(--gray);
   }
 }
 

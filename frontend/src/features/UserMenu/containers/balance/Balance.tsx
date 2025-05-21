@@ -6,7 +6,7 @@ import "../../ui/Topic.scss";
 import MenuField from "../../ui/MenuField";
 import Button from "@/views/Button/ui/Button";
 
-import UpgradeIcon from "@/shared/assets/main-page/upgrade.svg?react";
+import UpgradeIcon from "@/shared/assets/main-page/icons/upgrade.svg?react";
 
 type OwnProps = {
   ref: React.Ref<HTMLDivElement> | undefined

@@ -3,11 +3,9 @@ import React from "react";
 import "../../ui/Topic.scss";
 
 import MenuField from "../../ui/MenuField";
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/Store/store";
 import Button from "@/views/Button/ui/Button";
 
-import trashIcon from "@/shared/assets/main-page/trash.svg?react";
+import trashIcon from "@/shared/assets/main-page/icons/trash.svg?react";
 
 type OwnProps = {
   ref: React.Ref<HTMLDivElement> | undefined

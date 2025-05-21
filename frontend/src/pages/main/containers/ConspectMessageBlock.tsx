@@ -1,39 +1,41 @@
 import { RootState } from "@/app/Store/store";
-import React, { useEffect, useReducer, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useReducer, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import EditMessageTextarea from "./EditMessageTextarea";
+import { useAppDispatch } from "@/hooks/redux";
+import { socketSliceActions } from "@/entities/websocket/slice";
 
-type OwnProps = {
-  socketName: string;
-}
+const ConspectMessageBlock = () => {
+  const { message, newMessage, isEditingNow } = useSelector((state: RootState) => state.socket);
+  const dispatch = useAppDispatch();
 
-const ConspectMessageBlock: React.FC<OwnProps> = ({ socketName }) => {
-  const { message } = useSelector((state: RootState) => state.socket);
-
-  const [, forceUpdate] = useReducer(x => x + 1, 0);    // for update
+  const [, forceUpdate] = useReducer(x => x + 1, 0);  // for updating
 
   const messageRef = useRef<HTMLDivElement>(null);
-  const lettersCountRef = useRef(0);
-  const messageHeightRef = useRef(0);
+  const messageHeightRef = useRef(0);                 // height of message conntainer
+  const lettersCountRef = useRef(0);                  // for counting we sould height will changed
 
-  const renderedMessage = useRef<string[]>([]);
+  const renderedMessage = useRef<string[]>([]);       // collecting already rendered words
+
   useEffect(() => {
-    if (!message) return;
+    // some defense from rerender
+    if (message.join(" ") === newMessage) return;
+    if (renderedMessage.current.join(" ") === message.join(" ")) return;
 
     const wordsToRender = renderedMessage.current.length 
     ? message.slice(message.length - renderedMessage.current.length)
     : message;
-    // console.log(wordsToRender);
 
     wordsToRender.map((word, i) => {
       if (messageRef.current) messageHeightRef.current = messageRef.current.offsetHeight;
       setTimeout(() => {
-        const wordLength = word.length + 1;
+        const wordLength = word.length + 1;           // +1 for add space
       
-        if ((wordLength + lettersCountRef.current) >= 100) {
+        if ((wordLength + lettersCountRef.current) >= 102) {
           if (messageRef.current) {
-            messageHeightRef.current = messageHeightRef.current + 20;
+            messageHeightRef.current += 23;           // add some px for increase height
           }
-          lettersCountRef.current = 0;
+          lettersCountRef.current = 0;                // reset letters count
         }
 
         lettersCountRef.current += wordLength;
@@ -43,18 +45,27 @@ const ConspectMessageBlock: React.FC<OwnProps> = ({ socketName }) => {
     });
   }, [message]);
 
+  useEffect(() => {
+    if (!isEditingNow && newMessage) {
+      renderedMessage.current = newMessage.split(" ");
+      dispatch(socketSliceActions.setMessage());
+    }
+  }, [isEditingNow]);
+
+  if (isEditingNow) return <EditMessageTextarea height={messageHeightRef.current} />
+
   return (
-    <div 
+    <div
       className="conspect-message-block" 
       ref={messageRef}
       style={{height: `${messageHeightRef.current}px`}}
-      >
-        {renderedMessage.current.map((word, i) => {
-          return <span
-            key={i}
-            style={{animation: `fade-word 0.8s forwards cubic-bezier(0.11, 0, 0.5, 0)`}}
-          >{word}</span>
-        })}
+    >
+      {renderedMessage.current.map((word, i) => {
+        return <span
+          key={i}
+          style={{animation: 'fade-word 0.8s forwards cubic-bezier(0.11, 0, 0.5, 0)'}}    //change how cool will work sppechToText
+        >{word}</span>
+      })}
     </div>
   );
 }

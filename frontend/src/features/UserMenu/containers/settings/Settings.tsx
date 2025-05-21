@@ -9,7 +9,7 @@ import { RootState } from "@/app/Store/store";
 import Dropdown from "@/views/Dropdown/Dropdown";
 import Button from "@/views/Button/ui/Button";
 
-import DropArrowIcon from "@/shared/assets/main-page/dropdown-arrow.svg?react";
+import DropArrowIcon from "@/shared/assets/main-page/icons/dropdown-arrow.svg?react";
 import { createPortal } from "react-dom";
 
 type OwnProps = {

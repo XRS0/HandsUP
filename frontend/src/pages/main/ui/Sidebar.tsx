@@ -1,14 +1,14 @@
 import React from "react";
 import Button from "../../../views/Button/ui/Button";
-import ConspectHistoryElement from "./ConspectHistoryElement";
+import ConspectHistoryElement from "../containers/ConspectHistoryElement";
 
 import "./Sidebar.scss";
 
 import logo from "@assets/welcome-page/logo.svg";
-import priceIcon from "@assets/main-page/price-plan.svg";
-import settingsIcon from "@assets/main-page/settings.svg";
+import priceIcon from "@assets/main-page/icons/price-plan.svg";
+import settingsIcon from "@assets/main-page/icons/settings.svg";
 import avatarIcon from "@assets/main-page/avatar.svg";
-import plusIcon from "@assets/main-page/plus.svg?react";
+import plusIcon from "@assets/main-page/icons/plus.svg?react";
 import useAnimation from "@/hooks/useAnimation";
 import UserMenu from "@/features/UserMenu";
 import ModalOverflow from "@/features/UserMenu/ui/ModalOverflow";

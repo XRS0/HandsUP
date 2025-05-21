@@ -11,7 +11,7 @@ const SignUp = () => {
   const confirmPassInput = useRef<HTMLInputElement>(null);
   
   const [value, setValue] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
   });
@@ -24,7 +24,7 @@ const SignUp = () => {
   }
   
   const handleButtonClick = () => {
-    if (!value.email || !value.name || !value.password || !confirmPassInput.current?.value) return console.log("rejected");
+    if (!value.email || !value.username || !value.password || !confirmPassInput.current?.value) return console.log("rejected");
     if (value.password !== confirmPassInput.current?.value) return console.log("not the same pass");
     dispatch(AuthSlice.fetchSignUpRequest(value));
   };
@@ -40,7 +40,7 @@ const SignUp = () => {
           <div className="label">Name</div>
           <input 
             type="text"
-            name="name"
+            name="username"
             onChange={handleInput}
             placeholder="Type here.."
             autoComplete="new-password"

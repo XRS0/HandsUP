@@ -1,19 +1,23 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import "./Button.scss";
 import "@views/Dropdown/Dropdown.scss";
 import { createClassName } from "../../../shared/utils/createClassName";
 
 type OwnProps = {
-  children: string;
+  ref?: React.RefObject<HTMLButtonElement | null>
+  name?: string;
+  children: any;
   cssClass?: string;
   isFilled?: boolean;
   isDisabled?: boolean;
-  onclick: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  onclick: (e: React.MouseEvent<any>) => void;
   IconLeft?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   IconRight?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 };
 
-const Button: React.FC<OwnProps> = ({ 
+const Button: React.FC<OwnProps> = ({
+  ref,
+  name,
   children,
   cssClass = "", 
   isFilled = true, 
@@ -23,7 +27,9 @@ const Button: React.FC<OwnProps> = ({
   IconRight 
 }) => {
   return (
-    <button 
+    <button
+      ref={ref}
+      name={name}
       onClick={onclick}
       className={createClassName(
         !isFilled && "transparent", 

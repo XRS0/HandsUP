@@ -1,18 +1,28 @@
 @use "@/shared/ui/mixins" as mixin;
 
 button {
+  height: 36px;
   font-family: "Jost";
   background-color: var(--main-color);
   border-radius: var(--border-radius);
   @include mixin.flex-center();
   color: #fff;
-  height: 36px;
   font-size: 15px;
   font-weight: 500;
+  user-select: none;
   transition: border var(--hover-transition), color var(--hover-transition), background-color var(--hover-transition);
 
+  & * {
+      transition: filter var(--hover-transition);
+    }
+
   &:hover {
-    background-color: rgba(var(--main-color-rgb), 0.9);
+    color: rgba(255, 255, 255, 0.75);
+    background-color: rgba(var(--main-color-rgb), 0.85);
+
+    // & * {
+    //   filter: brightness(0.9);
+    // }
   }
 
   &[style*="background-color: transparent"]:hover {
@@ -21,8 +31,10 @@ button {
 
   &.disabled {
     pointer-events: none;
-    background-color: #25272E;
-    color: #5C5C5C;
+    visibility: visible;
+    // background-color: #25272E;
+    // color: #5C5C5C;
+    opacity: 0.5;
   }
 }
 
