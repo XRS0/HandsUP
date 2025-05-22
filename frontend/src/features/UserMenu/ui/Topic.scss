@@ -22,7 +22,7 @@
       height: 100%;
       background-color: #2C2F3A;
       padding: 8px 14px;
-      border-radius: 10px;
+      border-radius: var(--border-blocks);
       @include mixin.flex-between();
       align-items: center;
       cursor: pointer;

@@ -1,12 +1,14 @@
-import { RootState } from "@/app/Store/store";
 import { useEffect, useReducer, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import EditMessageTextarea from "./EditMessageTextarea";
-import { useAppDispatch } from "@/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { socketSliceActions } from "@/entities/websocket/slice";
 
-const ConspectMessageBlock = () => {
-  const { message, newMessage, isEditingNow } = useSelector((state: RootState) => state.socket);
+import MessageBlock from "../ui/MessageBlock";
+import EditMessageTextarea from "./EditMessageTextarea";
+
+import "../ui/ChatMessage.scss";
+
+const ChatMessage = () => {
+  const { message, newMessage, isEditingNow } = useAppSelector(state => state.socket);
   const dispatch = useAppDispatch();
 
   const [, forceUpdate] = useReducer(x => x + 1, 0);  // for updating
@@ -31,7 +33,7 @@ const ConspectMessageBlock = () => {
       setTimeout(() => {
         const wordLength = word.length + 1;           // +1 for add space
       
-        if ((wordLength + lettersCountRef.current) >= 102) {
+        if ((wordLength + lettersCountRef.current) >= 115) {
           if (messageRef.current) {
             messageHeightRef.current += 23;           // add some px for increase height
           }
@@ -55,19 +57,12 @@ const ConspectMessageBlock = () => {
   if (isEditingNow) return <EditMessageTextarea height={messageHeightRef.current} />
 
   return (
-    <div
-      className="conspect-message-block" 
+    <MessageBlock 
       ref={messageRef}
-      style={{height: `${messageHeightRef.current}px`}}
-    >
-      {renderedMessage.current.map((word, i) => {
-        return <span
-          key={i}
-          style={{animation: 'fade-word 0.8s forwards cubic-bezier(0.11, 0, 0.5, 0)'}}    //change how cool will work sppechToText
-        >{word}</span>
-      })}
-    </div>
+      height={messageHeightRef.current}
+      message={renderedMessage.current}
+    />
   );
 }
 
-export default ConspectMessageBlock;
+export default ChatMessage;

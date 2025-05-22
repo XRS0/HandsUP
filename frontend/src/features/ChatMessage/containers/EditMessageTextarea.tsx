@@ -4,13 +4,14 @@ import { useEffect } from "react";
 
 import "../ui/EditMessageTextarea.scss";
 import useInput from "@/hooks/useInput";
+import Button from "@/views/Button/ui/Button";
 
 type OwnProps = {
   height: number;
 }
 
 const EditMessageTextarea: React.FC<OwnProps> = ({ height }) => {
-  const { message } = useAppSelector(state => state.socket);
+  const { message, isEditingNow } = useAppSelector(state => state.socket);
   const { value, onChange } = useInput(message.join(" "));
   const dispatch = useAppDispatch();
 
@@ -27,6 +28,19 @@ const EditMessageTextarea: React.FC<OwnProps> = ({ height }) => {
         value={value}
         onChange={onChange}
         />
+
+      <div className="edit-buttons">
+        <Button 
+          children={"Cancel"} 
+          cssClass={"copy-button"} 
+          onclick={() => dispatch(socketSliceActions.cancelMessage())} 
+        />
+        
+        <Button 
+        children={"Accept"} 
+        onclick={() => dispatch(socketSliceActions.allowEdit())} 
+        />
+      </div>
     </div>
   );
 }

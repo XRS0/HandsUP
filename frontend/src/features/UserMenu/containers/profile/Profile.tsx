@@ -6,19 +6,25 @@ import MenuField from "../../ui/MenuField";
 import Button from "@/views/Button/ui/Button";
 
 import trashIcon from "@/shared/assets/main-page/icons/trash.svg?react";
+import { useAppSelector } from "@/hooks/redux";
+import { maskEmail } from "@/shared/utils/mask";
 
 type OwnProps = {
   ref: React.Ref<HTMLDivElement> | undefined
 }
 
 const Profile: React.FC<OwnProps> = ({ ref }) => {
-  //const user = useSelector((state: RootState) => state);
+  const {user} = useAppSelector(state => state.user);
 
   return (
     <div className="topic" ref={ref}>
-      <MenuField name="Name" value={"Sergey Kivostanenko"}/>
-      <MenuField name="Email" value={"s.kri***o@mail.ru"}/>
-      <MenuField name="Password" value={"sosages2006"}/>
+      <MenuField name="Name" value={user.username}/>
+      <MenuField name="Email" value={maskEmail(user.email)}/>
+      <MenuField 
+        name="Password"
+        data-content={user.password} 
+        value={user.password.replace(/[a-z]/gi, "*")}
+      />
       <Button 
         cssClass="warning-button"
         children="Delete an account"

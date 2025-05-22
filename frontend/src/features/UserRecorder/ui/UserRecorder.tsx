@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import Button from "@/views/Button/ui/Button";
 
 import "./UserRecorder.scss";
@@ -20,8 +20,9 @@ type OwnProps = {
 
 const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) => {
   const [timer, setTimer] = useState(0);
+  const [isCopied, setIsCopied] = useState(false);
   const timerId= useRef<NodeJS.Timeout | null>(null);
-  const { isRecording } = useAppSelector(state => state.socket);
+  const { isRecording, isEditingNow, message } = useAppSelector(state => state.socket);
 
   const dispatch = useAppDispatch();
 
@@ -42,9 +43,16 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
     const hours = Math.floor(timer / 3600);
     const minutes = Math.floor(timer / 60) - hours * 60;
     const seconds = timer % 60;
-    return `
-      ${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}
-    `;
+
+    const time = [hours, minutes, seconds].map(e => e.toString().padStart(2, "0"));
+    return `${time.join(":")}`;
+    //${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}
+  }
+
+  const copyToCLipboard = () => {
+    navigator.clipboard.writeText(message.join(" "));
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 1500);
   }
 
   const handlePauseRecord = () => isRecording ? pauseRecording() : continueRecording();   // for testing
@@ -74,17 +82,17 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
             <Button 
               children={"Изменить"}  
               cssClass="interaction" 
-              isDisabled={isRecording}
+              isDisabled={isRecording || isEditingNow}
               IconLeft={editIcon} 
               onclick={() => dispatch(socketSliceActions.allowEdit())} 
             />
 
             <Button 
-              children={"Копировать"}
-              cssClass="copy-button interaction" 
-              isDisabled={isRecording}
+              children={isCopied ? "Скопировано" : "Копировать"}
+              cssClass="copy-button interaction"
+              isDisabled={isRecording || isEditingNow}
               IconLeft={linkIcon} 
-              onclick={() => {}}
+              onclick={copyToCLipboard}
             />
           </div>
         </div>

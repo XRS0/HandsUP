@@ -4,8 +4,8 @@ import googleIcon from "@assets/authorize/gmail-sign-in.svg";
 import mailIcon from "@assets/authorize/email-sign-in.svg";
 import Button from "../../../views/Button/ui/Button";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { AuthSlice } from "@/features/Auth/models/slice";
 import { Navigate } from "react-router-dom";
+import { AuthSliceActions } from "../models/slice";
 
 const SignIn = () => {
   const dispatch = useAppDispatch();
@@ -25,7 +25,7 @@ const SignIn = () => {
 
   const handleButtonClick = () => {
     if (!value.email || !value.password) return console.log("rejected");
-    dispatch(AuthSlice.fetchSignInRequest(value));
+    dispatch(AuthSliceActions.fetchSignInRequest(value));
   };
 
   if (isSignSuccess) {

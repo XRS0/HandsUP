@@ -5,7 +5,7 @@
   padding: 15px;
   height: 100px;
   width: 80%;
-  max-width: 860px;
+  max-width: 800px;
   background-color: var(--secondary-color);
   border: 0.8px solid var(--main-border-color);
   display: flex;
@@ -41,6 +41,8 @@
         font-size: 16px;
         font-weight: 400;
         color: var(--gray);
+        user-select: none;
+        transition: color var(--short-transition);
       }
       
       .conspect-interaction {
@@ -51,6 +53,7 @@
           border-radius: 40px;
           padding-inline: 16px;
           margin-right: 14px;
+          transition: opacity var(--short-transition);
           // white-space: nowrap;
 
           &:hover {
