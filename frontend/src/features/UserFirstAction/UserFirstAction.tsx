@@ -47,7 +47,7 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
         isFadeOut && "--exit"
       )}
     >
-      <div className="title">Welcome to the Hands <span>Up</span></div>
+      <div className="title">Welcome to the <span>Hands Up</span></div>
       <div className="action-container">
         <div className="message-block">
           Lorem ipsum odor amet, consectetuer adipiscing elit. Mollis potenti
@@ -81,7 +81,7 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
                 orientation="column"
               >
                 <Button 
-                  children="Paste from clipboard"
+                  children="Import you audio file"
                   cssClass="dropdown-button"
                   IconLeft={linkIcon}
                   onclick={handleOpen}

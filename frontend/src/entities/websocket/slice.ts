@@ -1,3 +1,4 @@
+import { topicPreview } from '@/features/Auth/types/types';
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type WebSocketState = {
@@ -45,6 +46,9 @@ const socketSlice = createSlice({
     addMessage(state, action: PayloadAction<string>) {
       state.message.push(action.payload);
     },
+    allowEdit(state) {
+      state.isEditingNow = !state.isEditingNow;
+    },
     editMessage(state, action: PayloadAction<string>) {
       state.newMessage = action.payload;
     },
@@ -52,14 +56,15 @@ const socketSlice = createSlice({
       state.message = state.newMessage.split(" ");
       state.newMessage = "";
     },
+    cancelMessage(state) {
+      state.newMessage = "";
+      state.isEditingNow = false;
+    },
     handleOpen(state) {
       state.isRecording = true;
     },
     handlePause(state) {
       state.isRecording = false;
-    },
-    allowEdit(state) {
-      state.isEditingNow = !state.isEditingNow;
     },
   }
 });

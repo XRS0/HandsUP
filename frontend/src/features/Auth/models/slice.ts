@@ -1,8 +1,8 @@
-import { IUser, JWT, SignInResponseData, SignUpResponseData } from '@/features/Auth/types/types';
+import { IUser, JWT, SignInResponseData, SignUpResponseData, topicPreview } from '@/features/Auth/types/types';
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserSlice {
-  user: IUser | null;
+  user: IUser;
   acess_token: string | null;    //для удобства
   loading: boolean;
   error: string | null;
@@ -10,14 +10,33 @@ interface UserSlice {
 }
 
 const initialState: UserSlice = {
-  user: null,
+  user: {
+    username: "YXUNGGG",
+    email: "s.krivostanenko@mail.com",
+    password: "Viperr",
+    balance: 31,
+    price_plan: "Free",
+    topics: [
+      {
+        name: "Rome Lecture",
+        time: Date.now() - 86400100
+      },
+      {
+        name: ("Sumarinian Asterix and Obelix"),
+        time: Date.now() - 86400100 * 3
+      }, {
+        name: "Britan English Lesson",
+        time: Date.now() - 86400100 * 3
+      }
+    ]
+  },
   acess_token: localStorage.getItem("access_token"),
   loading: false,
   error: null,
   isSignSuccess: false,
 };
 
-export const userSlice = createSlice({
+const userSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
@@ -43,14 +62,13 @@ export const userSlice = createSlice({
       state.isSignSuccess = false;
       state.loading = false;
     },
-    signOut: (state) => {
-      state.user = null;
-      state.acess_token = null;
+    addTopic(state, action: PayloadAction<topicPreview>) {
+      state.user.topics.push(action.payload);
     },
   }
 });
 
-export const AuthSlice = { 
+export const AuthSliceActions = { 
   ...userSlice.actions,
   getUser: createAction(`${userSlice.name}/getUser`),
   getRefreshToken: createAction(`${userSlice.name}/getRefreshToken`),

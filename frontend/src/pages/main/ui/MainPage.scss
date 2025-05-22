@@ -40,7 +40,7 @@ html, body, #root {
 
   .chat {
     width: 100%;
-    max-width: 740px;
+    max-width: 800px;
     height: 100%;
     @include mixin.flex-center;
   }
@@ -64,33 +64,6 @@ html, body, #root {
   padding: 20px;
   max-width: 540px;
   color: var(--light-gray);
-}
-
-.conspect-message-block {
-  min-height: 65px;
-  width: 100%;
-  background-color: var(--secondary-color);
-  border: 0.8px solid var(--main-border-color);
-  border-radius: 20px;
-  padding: 20px;
-  max-width: 740px;
-  position: absolute;
-  top: 30px;
-
-  transition: height 0.5s;
-
-  span {
-    font-family: "Jost";
-    font-size: 16px;
-    opacity: 0;
-    filter: blur(3px);    //change how cool will work sppechToText
-    color: var(--light-gray);
-
-    &::after { 
-      content: " "; 
-      display: inline;
-    }
-  }
 }
 
 @keyframes fade-word {

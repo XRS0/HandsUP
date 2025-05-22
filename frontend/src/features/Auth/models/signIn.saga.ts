@@ -1,9 +1,9 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import { IUser, JWT } from "@/features/Auth/types/types";
 import { loginApiInstance } from "@/app/api/authApi";
-import { AuthSlice } from "./slice";
+import { AuthSliceActions } from "./slice";
 
-export function* fetchSignInSaga({ payload }: ReturnType<typeof AuthSlice.fetchSignInRequest>) {
+export function* fetchSignInSaga({ payload }: ReturnType<typeof AuthSliceActions.fetchSignInRequest>) {
   try {
     const access_token: string = yield localStorage.getItem("access_token");
 
@@ -16,15 +16,15 @@ export function* fetchSignInSaga({ payload }: ReturnType<typeof AuthSlice.fetchS
 
     yield localStorage.setItem("access_token", response.access_token);
 
-    yield put(AuthSlice.fetchSuccess(response));
+    yield put(AuthSliceActions.fetchSuccess(response));
   } catch (error: any) {
     console.error(error);
-    yield put(AuthSlice.fetchAuthFailure(error.message));
+    yield put(AuthSliceActions.fetchAuthFailure(error.message));
   }
 }
 
 export default function* watchFetchLogin() {
-  yield takeEvery(AuthSlice.fetchSignInRequest, fetchSignInSaga);
+  yield takeEvery(AuthSliceActions.fetchSignInRequest, fetchSignInSaga);
 }
 
 //ReturnType<typeof fetchRegisterRequest>

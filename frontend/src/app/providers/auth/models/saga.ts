@@ -1,5 +1,5 @@
 import { getUserTokenApiInstance, updateUserTokenApiInstance } from "@/app/api/getUserApi";
-import { AuthSlice } from "@/features/Auth/models/slice";
+import { AuthSliceActions } from "@/features/Auth/models/slice";
 import { AxiosResponse } from "axios";
 import { call, put, takeEvery } from "redux-saga/effects";
 
@@ -11,26 +11,26 @@ export function* getUserSaga() {
     console.log(response);
 
     if (response.status !== 200) {
-      yield put(AuthSlice.getRefreshToken());
+      yield put(AuthSliceActions.getRefreshToken());
     } else if (response.status === 200) {
-      yield put(AuthSlice.getUserSucess(access_token));
+      yield put(AuthSliceActions.getUserSucess(access_token));
     }
   } catch (error: any) {
     console.error(error);
-    yield put(AuthSlice.fetchAuthFailure(error.message));
+    yield put(AuthSliceActions.fetchAuthFailure(error.message));
   }
 }
 
 export function* getRefreshToken() {
   try {
     const response: string = yield call(updateUserTokenApiInstance);
-    yield put(AuthSlice.getUserSucess(response));
+    yield put(AuthSliceActions.getUserSucess(response));
   } catch (error: any) {
     console.error(error);
-    yield put(AuthSlice.fetchAuthFailure(error.message));
+    yield put(AuthSliceActions.fetchAuthFailure(error.message));
   }
 }
 
 export default function* watchFetchLogin() {
-  yield takeEvery(AuthSlice.getUser, getUserSaga);
+  yield takeEvery(AuthSliceActions.getUser, getUserSaga);
 }

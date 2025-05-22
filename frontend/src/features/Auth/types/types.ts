@@ -30,5 +30,5 @@ export interface topicPreview {
 export interface IUser extends SignUpResponseData {
   balance: number;
   price_plan: string;
-  topics: topicPreview;
+  topics: topicPreview[];
 }
