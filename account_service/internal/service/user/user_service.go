@@ -35,15 +35,6 @@ func (s *UserService) GetUserByEmail(ctx context.Context, email string) (*models
 	return user, nil
 }
 
-func (s *UserService) GetUserByToken(ctx context.Context, token string) (*models.User, error) {
-	id := token // Placeholder for token parsing logic
-	user, err := s.userRepo.GetUserByID(id)
-	if err != nil {
-		return nil, err
-	}
-	return user, nil
-}
-
 func (s *UserService) LoginUser(ctx context.Context, email, password string) (string, error) {
 	// Placeholder implementation
 	// In a real-world scenario, you would verify the username and password
