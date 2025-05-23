@@ -3,7 +3,7 @@ import apiInstance from "./instance/axiosInstance";
 export const getUserApiInstance = async (token: string) => {
   const response = await apiInstance({
     method: "get",
-    url: `/get_user/${token}`,
+    url: `/get_user/:${token}`,
     headers: { Authorization: `Bearer ${token}` },
   });
 

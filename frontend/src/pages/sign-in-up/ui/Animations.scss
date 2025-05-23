@@ -1,3 +1,5 @@
+@use "@/shared/ui/media" as * ;
+
 .switch-block {
   color: #fff;
   font-size: 15px;
@@ -22,7 +24,6 @@
         * {
           fill: #383838 !important;
         }
-        
       }
     }
 
@@ -30,7 +31,22 @@
       * {
         fill: var(--main-color);
       }
+
+      @include mobile {
+        height: 18px;
+        width: 21px;
+      }
     }
+
+    @include mobile {
+      height: 30px;
+      width: 40px;
+    }
+  }
+
+  @include mobile {
+    margin-top: 20px;
+    width: 134px;
   }
 }
 

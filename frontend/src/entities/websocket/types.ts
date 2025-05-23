@@ -1,4 +1,5 @@
 //Types for websocket
+
 // export type callbackListener = (data: any) => void;
 export type ActionType = "socket/connect" | "socket/disconnect" | "socket/sendMessage";
 

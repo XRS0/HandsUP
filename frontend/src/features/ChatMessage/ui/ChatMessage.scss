@@ -26,10 +26,6 @@
     opacity: 0;
     filter: blur(3px);    //change how cool will work sppechToText
     color: var(--light-gray);
-    // &::after { 
-    //   content: " "; 
-    //   display: inline;
-    // }
     &::selection {
       background: #22252e!important;
       text-shadow: none;

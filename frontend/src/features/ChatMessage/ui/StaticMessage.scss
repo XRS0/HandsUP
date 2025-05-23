@@ -1,0 +1,39 @@
+[class$="message-container"] { 
+  width: 100%;
+  display: flex;
+  margin-block: 25px;
+}
+
+.chat-message-container {
+  justify-content: flex-start;
+
+  .static-message {
+    color: #D0D0D0;
+    font-family: "Jost";
+    font-size: 1rem;
+    min-height: 65px;
+    background-color: var(--secondary-color);
+    border: 1px solid var(--main-border-color);
+    border-radius: 20px;
+    border-top-left-radius: 4px !important;
+    padding: 20px;
+    max-width: 760px;
+  }
+}
+
+.user-message-container {
+  justify-content: flex-end;
+
+  .static-message {
+    color: #D0D0D0;
+    font-family: "Jost";
+    font-size: 1rem;
+    max-width: 760px;
+    min-height: 54px;
+    padding: 15px;
+    border-radius: 12px;
+    border-top-right-radius: 3px;
+    background-color: #22252E;
+}
+}
+
