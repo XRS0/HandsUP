@@ -1,63 +1,82 @@
 package postgres
 
 import (
-	"database/sql"
 	"time"
 
-	"auth/internal/domain/tokens"
+	"github.com/XRS0/HandsUp/auth/internal/domain/tokens"
 
-	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
-type TokenRepository struct {
-	db *sql.DB
+// Token представляет модель токена в базе данных
+type Token struct {
+	ID        string    `gorm:"primaryKey"`
+	Type      string    `gorm:"type:varchar(10)"`
+	ExpiresAt time.Time `gorm:"not null"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
-func NewTokenRepository(db *sql.DB) *TokenRepository {
+// TableName указывает имя таблицы для модели Token
+func (Token) TableName() string {
+	return "tokens"
+}
+
+type TokenRepository struct {
+	db *gorm.DB
+}
+
+func NewTokenRepository(db *gorm.DB) *TokenRepository {
 	return &TokenRepository{db: db}
 }
 
 func (r *TokenRepository) Save(token *tokens.Token) error {
-	query := `INSERT INTO tokens (user_id, email, token_type, expires_at) VALUES ($1, $2, $3, $4)`
-	userID, err := uuid.Parse(token.UserID())
-	if err != nil {
-		return err
+	dbToken := Token{
+		ID:        token.ID,
+		Type:      string(token.Type),
+		ExpiresAt: token.ExpiresAt,
 	}
-	_, err = r.db.Exec(query, userID, token.Email(), token.Type(), token.ExpiresAt())
-	return err
+	return r.db.Save(&dbToken).Error
 }
 
-func (r *TokenRepository) FindByID(id string) (*tokens.Token, error) {
-	query := `SELECT user_id, email, token_type, expires_at FROM tokens WHERE user_id = $1`
-	userID, err := uuid.Parse(id)
+func (r *TokenRepository) GetByID(id string) (*tokens.Token, error) {
+	var dbToken Token
+	err := r.db.First(&dbToken, id).Error
 	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, nil
+		}
 		return nil, err
 	}
-	var email string
-	var tokenType tokens.TokenType
-	var expiresAt time.Time
-	err = r.db.QueryRow(query, userID).Scan(&userID, &email, &tokenType, &expiresAt)
-	if err == sql.ErrNoRows {
-		return nil, nil
-	}
-	if err != nil {
-		return nil, err
-	}
-	return tokens.NewToken(userID.String(), email, tokenType, expiresAt), nil
+	return &tokens.Token{
+		ID:        dbToken.ID,
+		Type:      tokens.TokenType(dbToken.Type),
+		ExpiresAt: dbToken.ExpiresAt,
+	}, nil
 }
 
 func (r *TokenRepository) Delete(id string) error {
-	query := `DELETE FROM tokens WHERE user_id = $1`
-	userID, err := uuid.Parse(id)
-	if err != nil {
-		return err
-	}
-	_, err = r.db.Exec(query, userID)
-	return err
+	return r.db.Delete(&Token{}, id).Error
 }
 
 func (r *TokenRepository) DeleteExpired() error {
-	query := `DELETE FROM tokens WHERE expires_at < $1`
-	_, err := r.db.Exec(query, time.Now())
-	return err
+	return r.db.Where("expires_at < ?", time.Now()).Delete(&Token{}).Error
+}
+
+func (r *TokenRepository) GetByTypeAndExpiresAt(tokenType tokens.TokenType, expiresAt time.Time) ([]*tokens.Token, error) {
+	var dbTokens []Token
+	err := r.db.Where("type = ? AND expires_at < ?", string(tokenType), expiresAt).Find(&dbTokens).Error
+	if err != nil {
+		return nil, err
+	}
+
+	tokenList := make([]*tokens.Token, len(dbTokens))
+	for i, dbToken := range dbTokens {
+		tokenList[i] = &tokens.Token{
+			ID:        dbToken.ID,
+			Type:      tokens.TokenType(dbToken.Type),
+			ExpiresAt: dbToken.ExpiresAt,
+		}
+	}
+	return tokenList, nil
 }

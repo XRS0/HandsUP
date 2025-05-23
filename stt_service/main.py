@@ -13,14 +13,14 @@ import time
 app = Flask(__name__)
 sock = Sock(app)
 
-model = whisper.load_model('tiny')  # Using tiny model for better performance
+model = whisper.load_model('turbo')  # Using tiny model for better performance
 LANGUAGE = "ru"  # Default language for transcription
 
 # Audio buffer for accumulating data
 audio_buffer = queue.Queue()
-BUFFER_DURATION = 5.0  # Increased buffer duration to reduce processing frequency
+BUFFER_DURATION = 0.3  # Increased buffer duration to reduce processing frequency
 SAMPLE_RATE = 16000
-MIN_AUDIO_LENGTH = 0.5  # Minimum audio length in seconds to process
+MIN_AUDIO_LENGTH = 1  # Minimum audio length in seconds to process
 
 @app.route('/')
 def index():
