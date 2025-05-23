@@ -10,6 +10,9 @@ import computerIcon from "@assets/main-page/computer.svg?react";
 import importIcon from "@assets/main-page/import-icon.svg?react";
 import linkIcon from "@assets/main-page/link.svg?react";
 import { createClassName } from "@/shared/utils/createClassName";
+import { useAppDispatch } from "@/hooks/redux";
+import { startRecording } from "@/entities/recorder/recorder";
+import Socket from "@/entities/websocket/models/socket";
 
 type OwnProps = HTMLAttributes<HTMLDivElement> & {
   isFadeOut: boolean,
@@ -29,6 +32,19 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
     closeOnOutsideClick: true,
     initialVsibility: false
   });
+
+  const dispatch = useAppDispatch();
+
+  const handleButtonClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    dispatch({ type: 'socket/connect', url: process.env.WS_TRANSCRIBE_URL });
+    onVoice(e);
+  }
+
+  // useEffect(() => {
+  //   return () => {
+  //     dispatch({ type: 'socket/disconnect' })
+  //   }
+  // }, []);
 
   return (
     <div 
@@ -51,7 +67,7 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
             children="Voice"
             IconLeft={audioIcon}
             cssClass="button"
-            onclick={onVoice}
+            onclick={handleButtonClick}
           />
           <div
             ref={containerRef}

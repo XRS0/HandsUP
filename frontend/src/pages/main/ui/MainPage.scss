@@ -46,10 +46,10 @@ html, body, #root {
 
 .red-material-button {
   background-color: rgba(197, 7, 61, 0.1) !important;
-  color: var(--main-red-color) !important;
+  color: var(--main-color) !important;
 
   & * {
-    fill: var(--main-red-color) !important;
+    fill: var(--main-color) !important;
   }
 }
 

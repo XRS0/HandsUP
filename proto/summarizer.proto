@@ -5,10 +5,12 @@ package gen;
 option go_package = "./gen";
 
 service SummarizerService {
-  rpc GenerateFull (SummarizeRequest) returns (SummarizeResponse);
+  rpc Generate (stream SummarizeRequest) returns (stream SummarizeResponse);  
 }
 
 message SummarizeRequest {
+  repeated optional string opts = 1;
+  uint8 fullness = 2; 
   string input = 1;
 }
 

@@ -2,7 +2,7 @@
 
 button {
   font-family: "Jost";
-  background-color: var(--main-red-color);
+  background-color: var(--main-color);
   border-radius: var(--border-radius);
   @include mixin.flex-center();
   color: #fff;
@@ -12,11 +12,11 @@ button {
   transition: border var(--hover-transition), color var(--hover-transition), background-color var(--hover-transition);
 
   &:hover {
-    background-color: rgba(197, 7, 61, 0.75);
+    background-color: rgba(var(--main-color-rgb), 0.9);
   }
 
   &[style*="background-color: transparent"]:hover {
-    background-color: var(--main-red-color) !important;
+    background-color: var(--main-color) !important;
   }
 
   &.disabled {
@@ -28,9 +28,9 @@ button {
 
 button.transparent {
   background-color: transparent;
-  border: 2px solid var(--main-red-color);
+  border: 2px solid var(--main-color);
 
   &:hover {
-    background-color: var(--main-red-color) !important;
+    background-color: var(--main-color) !important;
   }
 }

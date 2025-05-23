@@ -4,8 +4,8 @@ package token
 import (
 	"time"
 
-	"auth/internal/domain/tokens"
-	"auth/internal/infrastructure/security/jwt"
+	"github.com/XRS0/HandsUp/auth/internal/domain/tokens"
+	"github.com/XRS0/HandsUp/auth/internal/infrastructure/security/jwt"
 )
 
 // TokenService предоставляет методы для работы с токенами
@@ -32,21 +32,24 @@ func NewTokenService(
 }
 
 // GenerateTokens создает новую пару токенов для пользователя
-func (s *TokenService) GenerateTokens(userID, email string) (string, string, error) {
+func (s *TokenService) GenerateTokens(userID string) (string, string, error) {
+	// Удаляем старые токены пользователя
+	if err := s.tokenRepo.Delete(userID); err != nil {
+		return "", "", err
+	}
+
 	// Создаем доменные объекты токенов
 	accessToken := tokens.NewToken(
-		userID,
-		email,
 		tokens.AccessToken,
 		time.Now().Add(s.accessDuration),
 	)
+	accessToken.ID = userID
 
 	refreshToken := tokens.NewToken(
-		userID,
-		email,
 		tokens.RefreshToken,
 		time.Now().Add(s.refreshDuration),
 	)
+	refreshToken.ID = userID
 
 	// Сохраняем токены в репозитории
 	if err := s.tokenRepo.Save(accessToken); err != nil {
@@ -57,12 +60,12 @@ func (s *TokenService) GenerateTokens(userID, email string) (string, string, err
 	}
 
 	// Генерируем JWT токены
-	accessJWT, err := s.jwtService.GenerateAccessToken(userID, email)
+	accessJWT, err := s.jwtService.GenerateAccessToken(userID)
 	if err != nil {
 		return "", "", err
 	}
 
-	refreshJWT, err := s.jwtService.GenerateRefreshToken(userID, email)
+	refreshJWT, err := s.jwtService.GenerateRefreshToken(userID)
 	if err != nil {
 		return "", "", err
 	}
@@ -79,7 +82,7 @@ func (s *TokenService) ValidateToken(token string) (*tokens.Token, error) {
 	}
 
 	// Получаем токен из репозитория
-	domainToken, err := s.tokenRepo.FindByID(claims.UserID)
+	domainToken, err := s.tokenRepo.GetByID(claims.UserID)
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +95,7 @@ func (s *TokenService) ValidateToken(token string) (*tokens.Token, error) {
 	return domainToken, nil
 }
 
-// RefreshTokens обновляет пару токенов
+// RefreshTokens обновляет пару токенов с продлением срока жизни refresh token
 func (s *TokenService) RefreshTokens(refreshToken string) (string, string, error) {
 	// Проверяем refresh токен
 	token, err := s.ValidateToken(refreshToken)
@@ -101,12 +104,32 @@ func (s *TokenService) RefreshTokens(refreshToken string) (string, string, error
 	}
 
 	// Проверяем тип токена
-	if token.Type() != tokens.RefreshToken {
+	if token.Type != tokens.RefreshToken {
 		return "", "", tokens.ErrInvalidTokenType
 	}
 
+	// Проверяем, не истек ли срок действия refresh token
+	if token.IsExpired() {
+		return "", "", tokens.ErrTokenExpired
+	}
+
+	// Проверяем, не осталось ли менее 25% времени до истечения refresh token
+	timeLeft := token.ExpiresAt.Sub(time.Now())
+	if timeLeft < s.refreshDuration/4 {
+		// Если осталось менее 25% времени, продлеваем refresh token
+		newToken := tokens.NewToken(
+			tokens.RefreshToken,
+			time.Now().Add(s.refreshDuration),
+		)
+		newToken.ID = token.ID
+		if err := s.tokenRepo.Save(newToken); err != nil {
+			return "", "", err
+		}
+		token = newToken
+	}
+
 	// Генерируем новую пару токенов
-	return s.GenerateTokens(token.UserID(), token.Email())
+	return s.GenerateTokens(token.ID)
 }
 
 // RevokeToken отзывает токен
@@ -117,4 +140,9 @@ func (s *TokenService) RevokeToken(token string) error {
 	}
 
 	return s.tokenRepo.Delete(claims.UserID)
+}
+
+// GetClaims получает claims из JWT токена
+func (s *TokenService) GetClaims(token string) (*jwt.TokenClaims, error) {
+	return s.jwtService.ValidateToken(token)
 }

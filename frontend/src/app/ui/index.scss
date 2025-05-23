@@ -1,7 +1,8 @@
 :root {
   --bg-color: #13161D;
   --secondary-color: #191C24;
-  --main-red-color: #C5073D;  // заменить название на просто акцентный цвет
+  --main-color-rgb: 22, 119, 199;
+  --main-color: rgb(var(--main-color-rgb));
   --main-border-color: #25272E;
   --border-radius: 8px;
   --border-blocks: 10px;
@@ -80,7 +81,7 @@ h3 {
 }
 
 h4 {
-  color: var(--main-red-color);
+  color: var(--main-color);
   margin: 0;
   font-family: "Jost";
   font-size: 22px;
@@ -100,7 +101,7 @@ span {
 }
 
 .text-red {
-  color: var(--main-red-color);
+  color: var(--main-color);
 }
 
 .disabled {

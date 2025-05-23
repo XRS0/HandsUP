@@ -1,4 +1,4 @@
-@use "../../shared/ui/mixins" as mixin;
+@use "@/shared/ui/mixins" as mixin;
 
 body {
   background-color: #13161D;
@@ -24,7 +24,7 @@ button {
   border-radius: 50%;
   color: var(--bg-color);
   border: 5px solid var(--bg-color);
-  background-color: var(--main-red-color);
+  background-color: var(--main-color);
   position: absolute;
   text-align: center;
   bottom: -15px;
@@ -237,7 +237,7 @@ nav {
         align-items: center;
 
         .dot {
-          background-color: var(--main-red-color);
+          background-color: var(--main-color);
           width: 10px;
           aspect-ratio: 1/1;
           border-radius: 50%;
