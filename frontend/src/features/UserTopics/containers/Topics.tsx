@@ -10,6 +10,8 @@ const Topics = () => {
   const { isTopicCreating } = useAppSelector(state => state.topics);
   const dispatch = useAppDispatch();
   
+  if (!user) return;
+
   const topics = [...user!.topics];   // sort not working without absolute copy
   const groupedTopics: { [topic: string]: string[] } = {}
 

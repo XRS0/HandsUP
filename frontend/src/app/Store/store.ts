@@ -11,7 +11,12 @@ const sagaMiddleware = createSagaMiddleware();
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware()
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['auth/getUser'],
+        ignoredActionPaths: ['meta.navigate'],
+      },
+    })
     .concat([
       socketMiddleware(new Socket()),
       sagaMiddleware

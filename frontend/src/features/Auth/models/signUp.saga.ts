@@ -5,21 +5,14 @@ import { AuthSliceActions } from "./slice";
 
 export function* fetchRegisterSaga({ payload }: ReturnType<typeof AuthSliceActions.fetchSignUpRequest>) {
   try {
-    const response: IUser & JWT = yield call(registerApiInstance, payload);
+    const response: JWT = yield call(registerApiInstance, payload);
     console.log(response);
-    if (!response) throw new Error("response is null");
 
     yield localStorage.setItem("access_token", response.access_token);
-
-    yield put(AuthSliceActions.fetchSuccess(response));
+    yield put(AuthSliceActions.fetchSuccess(response.access_token));
   } catch (error: any) {
     console.error(error);
-    yield put(AuthSliceActions.fetchAuthFailure(error.message));
+    yield put(AuthSliceActions.fetchFailure(error.message));
   }
 }
-
-export function* watchFetchRegister() {
-  yield takeEvery(AuthSliceActions.fetchSignUpRequest, fetchRegisterSaga);
-}
-
 //ReturnType<typeof AuthSlice.fetchSignUpRequest>
