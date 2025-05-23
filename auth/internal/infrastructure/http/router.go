@@ -73,7 +73,6 @@ func (router *Router) InitRoutes(tokenService *jwt.TokenService) {
 			}
 
 			c.SetCookie("refresh", refresh_token, 604800, "/", "localhost", false, true)
-			c.Set("token", refresh_token)
 			c.JSON(200, gin.H{
 				"message": "User registered",
 			})
@@ -122,7 +121,6 @@ func (router *Router) InitRoutes(tokenService *jwt.TokenService) {
 			}
 
 			c.SetCookie("refresh", refresh_token, 604800, "/", "localhost", false, true)
-			c.Set("token", refresh_token)
 			c.JSON(200, gin.H{
 				"token": refresh_token,
 			})

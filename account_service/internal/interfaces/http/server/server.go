@@ -2,6 +2,7 @@ package server
 
 import (
 	"github.com/XRS0/HandsUp/account_service/internal/domain/ports/service"
+	"github.com/XRS0/HandsUp/account_service/internal/interfaces/http/handlers"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,14 +17,8 @@ func NewHTTPServer(router *gin.Engine) *HTTP_Server {
 }
 
 func (s *HTTP_Server) RegisterRoutes(userService service.UserService) {
-	s.Router.GET("/get_user/:token", func(c *gin.Context) {
-		token := c.Param("token")
-		user, err := userService.GetUserByToken(c, token)
-		if err != nil {
-			c.JSON(404, gin.H{"error": "User not found"})
-			return
-		}
-		c.JSON(200, user)
+	s.Router.GET("/get_user/:token", func(ctx *gin.Context) {
+		handlers.GetUserHandler(ctx, userService)
 	})
 }
 

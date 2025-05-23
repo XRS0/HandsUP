@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"log"
 
 	pb "github.com/XRS0/HandsUp/account_service/internal/infrastructure/clients/auth/gen"
 	"google.golang.org/grpc"
@@ -13,15 +14,26 @@ type AuthClient struct {
 }
 
 // NewAuthClient creates a new AuthClient.
-func NewAuthClient(conn *grpc.ClientConn) *AuthClient {
+func NewAuthClient() *AuthClient {
+	// Create a connection to the gRPC server
+	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	defer conn.Close()
+	// Create a new AuthServiceClient
+	client := pb.NewAuthServiceClient(conn)
+	if client == nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	return &AuthClient{
-		client: pb.NewAuthServiceClient(conn),
+		client: client,
 	}
 }
 
-func (c *AuthClient) ValidateToken(token string) (*pb.ValidateTokenResponse, error) {
+func (c *AuthClient) ValidateToken(req *pb.ValidateTokenRequest) (*pb.ValidateTokenResponse, error) {
 	// Call the ValidateToken method
-	resp, err := c.client.ValidateToken(context.Background(), &pb.ValidateTokenRequest{Token: token})
+	resp, err := c.client.ValidateToken(context.Background(), &pb.ValidateTokenRequest{Token: req.Token})
 	if err != nil {
 		return nil, err
 	}
