@@ -9,6 +9,7 @@ import barkArrow from "@assets/authorize/back-arrow.svg";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import SignIn from "@/features/Auth/ui/SignIn";
 import SignUp from "@/features/Auth/ui/SignUp";
+import { createClassName } from "@/shared/utils/createClassName";
 
 const Authorize = () => {
   const [mode] = useState<"out-in" | "in-out" | undefined>("out-in");
@@ -54,17 +55,15 @@ const Authorize = () => {
 
         <div className="switch-block">
           <div 
-          className="svg-container"
-          style={{justifyContent: "start"}}
-          onClick={() => setSwitchButton(switchButton => !switchButton)}
+            className={createClassName("svg-container", switchButton && "disabled" )}
+            style={{justifyContent: "start"}}
+            onClick={() => setSwitchButton(switchButton => !switchButton)}
           >
             <svg
-              className={switchButton ? "disabled" : ""} 
-               width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M6 -1.78814e-07L7.4 1.45L3.85 5L16 5V7L3.85 7L7.4 10.55L6 12L-2.38419e-07 6L6 -1.78814e-07Z" fill="#383838"/>
             </svg>
           </div>
-
           <SwitchTransition mode={mode}>
           <CSSTransition
             key={switchButton ? "Sign-in" : "Sign-up"}
@@ -72,18 +71,17 @@ const Authorize = () => {
             nodeRef={switchTextRef}
             classNames={switchButton ? "fadein" : "fadeout"}
           >
-            <div ref={switchTextRef}>{switchButton ? "Sign in" : "Sign Up"}</div>
+            <div ref={switchTextRef} style={{userSelect: "none"}}>{switchButton ? "Sign in" : "Sign Up"}</div>
           </CSSTransition>
         </SwitchTransition>
 
-          <div 
-            className="svg-container"
+          <div
+            className={createClassName("svg-container", !switchButton && "disabled" )}
             style={{justifyContent: "end"}}
             onClick={() => setSwitchButton(switchButton => !switchButton)}
           >
             <svg 
-                className={!switchButton ? "disabled" : ""}
-                width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M10 12L8.6 10.55L12.15 7H0L0 5H12.15L8.6 1.45L10 0L16 6L10 12Z" fill="#C5073D"/>
             </svg>
           </div>

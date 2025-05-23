@@ -21,5 +21,3 @@ type socketActionType = {
 export type socketAction = {
   [T in ActionType]: {type: T} & socketActionType[T];
 }[ActionType];
-
-// export type messageType = { socketName: string, message: any }

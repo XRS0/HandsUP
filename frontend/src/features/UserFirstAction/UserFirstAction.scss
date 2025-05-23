@@ -16,9 +16,10 @@
     font-size: 26px;
     font-variant: small-caps;
     color: #FFFFFF;
-    margin: 10px 0;
+    margin-bottom: 2px;
 
     span {
+      font-family: 'Brygada 1918';
       color: var(--main-color);
     }
   }
@@ -46,6 +47,7 @@
       .button {
         font-size: 17px;
         max-height: 45px;
+        padding: 0;
         width: 120px;
         height: 100%;
         border-radius: 40px;
@@ -56,7 +58,7 @@
         
         &:hover {
           .secondary-button {
-            background-color: rgba(197, 7, 61, 0.1);
+            background-color: var(--main-background-color);
             color: var(--main-color);
             transition-delay: 0s;
 

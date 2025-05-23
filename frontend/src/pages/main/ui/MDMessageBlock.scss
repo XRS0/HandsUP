@@ -1,0 +1,43 @@
+.conspect-message-block {
+  h2, h3, p, span,
+  ul, pre, a {
+    font-family: "Jost";
+    color: var(--light-gray);
+    // margin: 0;
+  }
+
+  h2 {
+    color: #e0e0e0;
+    font-size: 1.625rem;
+    text-align: start;
+    font-weight: 600;
+    margin: 0;
+    // margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  a {
+    color: var(--main-color);
+  }
+
+  hr {
+    border-radius: 2px;
+    border-color: var(--gray);
+  }
+
+  pre {
+    margin: 10px 0;
+  }
+
+  code {
+    width: max-content;
+    padding: 6px;
+    border-radius: 0.5rem;
+    color: #bbbbbb;
+    background-color: #656c7633;
+  }
+}

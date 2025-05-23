@@ -1,0 +1,69 @@
+.conspect-message-block {
+  min-height: 65px;
+  width: 100%;
+  background-color: var(--secondary-color);
+  border: 0.8px solid var(--main-border-color);
+  border-radius: 20px;
+  padding: 20px;
+  max-width: 800px;
+  transition: height 0.5s;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  &.--enter {
+    animation: fadeInMessage 0.4s forwards;
+  }
+
+  &.--exit {
+    animation: fadeOutMessage var(--long-transition) forwards;
+    cursor: default !important;
+  }
+
+  span {
+    font-family: "Jost";
+    font-size: 16px;
+    opacity: 0;
+    filter: blur(3px);    //change how cool will work sppechToText
+    color: var(--light-gray);
+    // &::after { 
+    //   content: " "; 
+    //   display: inline;
+    // }
+    &::selection {
+      background: #22252e!important;
+      text-shadow: none;
+    }
+
+    &::-moz-selection {
+      background: #22252e !important;
+      text-shadow: none;
+    }
+  }
+}
+
+@keyframes fadeInMessage {
+  from {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+@keyframes fadeOutMessage {
+  from {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}

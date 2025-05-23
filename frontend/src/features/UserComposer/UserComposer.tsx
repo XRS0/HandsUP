@@ -1,12 +1,19 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "@/views/Button/ui/Button";
 
 import "./UserComposer.scss";
 
-import audioIcon from "@assets/main-page/audio-visualize.svg?react";
+import linkIcon from "@/shared/assets/main-page/icons/link.svg?react";
+import stormIcon from "@/shared/assets/main-page/icons/storm_iocn.svg?react";
+import { createClassName } from "@/shared/utils/createClassName";
 
 const UserComposer = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [isClicked, setIsClicked] = useState({
+    short: false,
+    without_changes: false,
+    expanded: false,
+  });
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -25,21 +32,69 @@ const UserComposer = () => {
     }
   }, []);
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const name = e.currentTarget.name as "short" | "without_changes" | "expanded";
+
+    setIsClicked(prev => ({
+      short: false,
+      without_changes: false,
+      expanded: false,
+      [name]: !prev[name]
+    }));
+  }
+
   return (
     <div className="main-prompt-input">
-      <textarea ref={textareaRef} placeholder="Type something for config a conspect..."></textarea>
+      <textarea  
+        ref={textareaRef}
+        placeholder="Type something for config a conspect..."
+      />
+
+      <div className="hint-text">
+        ← Don’t forget to choose the type of conspect
+      </div>
 
       <div className="input-tools">
         <div className="conspect-config">
-          <Button onclick={() => {}} cssClass="config" children={"Short"} isFilled={false} />
-          <Button onclick={() => {}} cssClass="config" children={"Without changes"} isFilled={false} />
-          <Button onclick={() => {}} cssClass="config" children={"Expanded"} isFilled={false} />
+          <Button 
+            name="short"
+            onclick={handleClick} 
+            cssClass={createClassName("config", isClicked["short"] && "actived")} 
+            children={"Short"} 
+            isFilled={false}
+          />
+
+          <Button 
+            name="without_changes"
+            onclick={handleClick} 
+            cssClass={createClassName("config", isClicked["without_changes"] && "actived")} 
+            children={"Without changes"} 
+            isFilled={false}
+          />
+
+          <Button 
+            name="expanded"
+            onclick={handleClick} 
+            cssClass={createClassName("config", isClicked["expanded"] && "actived")}
+            children={"Expanded"} 
+            isFilled={false} 
+          />
         </div>
 
         <div className="actions">
           <Button 
-            IconLeft={audioIcon}
-            children="Voice"
+              children={"Copy"}
+              cssClass="copy-button" 
+              IconLeft={linkIcon} 
+              onclick={() => {}}
+            />
+
+          <Button
+            IconLeft={stormIcon}
+            children="Generate"
             cssClass="record-button"
             onclick={() => {}}
           />

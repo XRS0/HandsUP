@@ -6,17 +6,16 @@ import useAnimation from "@/hooks/useAnimation";
 import "./UserFirstAction.scss";
 
 import audioIcon from "@assets/main-page/audio-visualize.svg?react";
-import computerIcon from "@assets/main-page/computer.svg?react";
-import importIcon from "@assets/main-page/import-icon.svg?react";
-import linkIcon from "@assets/main-page/link.svg?react";
+import computerIcon from "@assets/main-page/icons/computer.svg?react";
+import importIcon from "@assets/main-page/icons/import-icon.svg?react";
+import linkIcon from "@assets/main-page/icons/link.svg?react";
 import { createClassName } from "@/shared/utils/createClassName";
 import { useAppDispatch } from "@/hooks/redux";
 import { startRecording } from "@/entities/recorder/recorder";
-import Socket from "@/entities/websocket/models/socket";
 
 type OwnProps = HTMLAttributes<HTMLDivElement> & {
-  isFadeOut: boolean,
-  onVoice: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void
+  isFadeOut: boolean;
+  onVoice: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd}) => {
@@ -29,22 +28,16 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
     handleAnimationEnd
   } = useAnimation<HTMLDivElement>({
     trigger: "hover",
-    closeOnOutsideClick: true,
     initialVsibility: false
   });
 
   const dispatch = useAppDispatch();
 
-  const handleButtonClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const handleButtonClick = async (e: React.MouseEvent<HTMLElement>) => {
+    await startRecording();     // only for testing
     dispatch({ type: 'socket/connect', url: process.env.WS_TRANSCRIBE_URL });
     onVoice(e);
   }
-
-  // useEffect(() => {
-  //   return () => {
-  //     dispatch({ type: 'socket/disconnect' })
-  //   }
-  // }, []);
 
   return (
     <div 
@@ -54,7 +47,7 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
         isFadeOut && "--exit"
       )}
     >
-      <div className="title">Welcome to the che<span>rr</span>y</div>
+      <div className="title">Welcome to the <span>Hands Up</span></div>
       <div className="action-container">
         <div className="message-block">
           Lorem ipsum odor amet, consectetuer adipiscing elit. Mollis potenti
@@ -83,20 +76,21 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
             />
             {isVisible && 
               <Dropdown
+              isOpen={isVisible}
                 doesAnimate={!isDropdownFadeOut}
                 orientation="column"
               >
                 <Button 
-                  children="Paste from clipboard"
+                  children="Import you audio file"
                   cssClass="dropdown-button"
                   IconLeft={linkIcon}
-                  onclick={() => handleOpen}
+                  onclick={handleOpen}
                 />
                 <Button
                   children="Text file on computer"
                   cssClass="dropdown-button"
                   IconLeft={computerIcon}
-                  onclick={() => handleOpen}
+                  onclick={handleOpen}
                 />
               </Dropdown>
             }
