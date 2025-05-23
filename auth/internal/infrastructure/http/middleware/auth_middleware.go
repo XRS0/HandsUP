@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"auth/internal/infrastructure/security/jwt"
+	"github.com/XRS0/HandsUp/auth/internal/infrastructure/security/jwt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -51,7 +51,6 @@ func (m *AuthMiddleware) Authenticate() gin.HandlerFunc {
 
 		// Добавляем информацию о пользователе в контекст запроса
 		c.Set("user_id", claims.UserID)
-		c.Set("email", claims.Email)
 
 		c.Next()
 	}

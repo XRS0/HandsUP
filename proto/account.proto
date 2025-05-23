@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package gen;
+
+option go_package = "./gen";
+
+service AccountService {
+	rpc GetUserById (GetUserByIdRequest) returns (GetUserResponse);
+	rpc GetUserByEmail (GetUserByEmailRequest) returns (GetUserResponse);
+	rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse);
+	rpc LoginUser (LoginUserRequest) returns (LoginUserResponse);
+}
+
+message LoginUserRequest {
+	string email = 1;
+	string password = 2;
+}
+
+message LoginUserResponse {
+	bool success = 1;
+}
+
+message RegisterUserRequest {
+	string username = 1;
+	string email = 2;
+	string password = 3;
+}
+
+message RegisterUserResponse {
+	string user_id = 1;
+	bool success = 2;
+}
+
+message GetUserByIdRequest {
+	string user_id = 1;
+}
+
+message GetUserByEmailRequest {
+	string email = 1;
+}
+
+message GetUserResponse {
+	string user_id = 1;
+	string email = 2;
+	string name = 3;
+}
+
+
+

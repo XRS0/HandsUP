@@ -5,7 +5,7 @@ import (
 	"errors"
 	"time"
 
-	"auth/internal/domain/tokens"
+	"github.com/XRS0/HandsUp/auth/internal/domain/tokens"
 
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -13,7 +13,6 @@ import (
 // TokenClaims представляет claims для JWT токена
 type TokenClaims struct {
 	UserID    string           `json:"user_id"`
-	Email     string           `json:"email"`
 	TokenType tokens.TokenType `json:"token_type"`
 	jwt.RegisteredClaims
 }
@@ -41,16 +40,16 @@ func NewTokenService(secretKey string, accessDuration, refreshDuration time.Dura
 // userID - идентификатор пользователя
 // email - email пользователя
 // Возвращает токен и ошибку, если не удалось создать токен
-func (s *TokenService) GenerateAccessToken(userID, email string) (string, error) {
-	return s.generateToken(userID, email, tokens.AccessToken, s.accessDuration)
+func (s *TokenService) GenerateAccessToken(userID string) (string, error) {
+	return s.generateToken(userID, tokens.AccessToken, s.accessDuration)
 }
 
 // GenerateRefreshToken создает refresh токен для пользователя
 // userID - идентификатор пользователя
 // email - email пользователя
 // Возвращает токен и ошибку, если не удалось создать токен
-func (s *TokenService) GenerateRefreshToken(userID, email string) (string, error) {
-	return s.generateToken(userID, email, tokens.RefreshToken, s.refreshDuration)
+func (s *TokenService) GenerateRefreshToken(userID string) (string, error) {
+	return s.generateToken(userID, tokens.RefreshToken, s.refreshDuration)
 }
 
 // ValidateToken проверяет валидность токена
@@ -90,12 +89,12 @@ func (s *TokenService) RefreshTokens(refreshToken string) (string, string, error
 	}
 
 	// Создаем новую пару токенов
-	accessToken, err := s.GenerateAccessToken(claims.UserID, claims.Email)
+	accessToken, err := s.GenerateAccessToken(claims.UserID)
 	if err != nil {
 		return "", "", err
 	}
 
-	newRefreshToken, err := s.GenerateRefreshToken(claims.UserID, claims.Email)
+	newRefreshToken, err := s.GenerateRefreshToken(claims.UserID)
 	if err != nil {
 		return "", "", err
 	}
@@ -104,11 +103,10 @@ func (s *TokenService) RefreshTokens(refreshToken string) (string, string, error
 }
 
 // generateToken создает JWT токен с указанными параметрами
-func (s *TokenService) generateToken(userID, email string, tokenType tokens.TokenType, duration time.Duration) (string, error) {
+func (s *TokenService) generateToken(userID string, tokenType tokens.TokenType, duration time.Duration) (string, error) {
 	now := time.Now()
 	claims := &TokenClaims{
 		UserID:    userID,
-		Email:     email,
 		TokenType: tokenType,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(now.Add(duration)),

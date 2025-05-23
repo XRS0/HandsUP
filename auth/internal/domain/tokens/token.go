@@ -17,43 +17,22 @@ const (
 
 // Token представляет токен аутентификации
 type Token struct {
-	userID    string
-	email     string
-	tokenType TokenType
-	expiresAt time.Time
+	ID        string    `gorm:"primaryKey"`
+	Type      TokenType `gorm:"type:varchar(10)"`
+	ExpiresAt time.Time
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 // NewToken создает новый экземпляр Token
-func NewToken(userID, email string, tokenType TokenType, expiresAt time.Time) *Token {
+func NewToken(tokenType TokenType, expiresAt time.Time) *Token {
 	return &Token{
-		userID:    userID,
-		email:     email,
-		tokenType: tokenType,
-		expiresAt: expiresAt,
+		Type:      tokenType,
+		ExpiresAt: expiresAt,
 	}
-}
-
-// UserID возвращает идентификатор пользователя
-func (t *Token) UserID() string {
-	return t.userID
-}
-
-// Email возвращает email пользователя
-func (t *Token) Email() string {
-	return t.email
-}
-
-// Type возвращает тип токена
-func (t *Token) Type() TokenType {
-	return t.tokenType
-}
-
-// ExpiresAt возвращает время истечения токена
-func (t *Token) ExpiresAt() time.Time {
-	return t.expiresAt
 }
 
 // IsExpired проверяет, истек ли срок действия токена
 func (t *Token) IsExpired() bool {
-	return time.Now().After(t.expiresAt)
+	return time.Now().After(t.ExpiresAt)
 }
