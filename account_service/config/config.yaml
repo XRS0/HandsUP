@@ -1,0 +1,10 @@
+HTTP_PORT: 8080
+HTTP_HOST: localhost
+GRPC_PORT: 50051
+GRPC_HOST: localhost
+
+DB_NAME: handsup
+DB_USER: hs
+DB_PASSWORD: password
+DB_HOST: localhost
+DB_PORT: 5432
