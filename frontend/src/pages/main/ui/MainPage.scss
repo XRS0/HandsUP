@@ -34,9 +34,10 @@ html, body, #root {
   background-image: url('@/shared/assets/main-page/main-page-bg.svg');
   background-size: cover;
 
+  overflow: hidden;
+  overflow-y: auto;
   position: relative;
   z-index: 1;
-  overflow: hidden;
 
   .chat {
     width: 100%;

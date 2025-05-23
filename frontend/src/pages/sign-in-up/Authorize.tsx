@@ -48,7 +48,7 @@ const Authorize = () => {
             nodeRef={contentRef}
             classNames={switchButton ? "fadein" : "fadeout"}
           >
-            <div ref={contentRef} style={{width: "100%"}}>
+            <div ref={contentRef} style={{width: "100%"}} className="option-block">
               {switchButton ? <SignIn /> : <SignUp />}
             </div>
           </CSSTransition>

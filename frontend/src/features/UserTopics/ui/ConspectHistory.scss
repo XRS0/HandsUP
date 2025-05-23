@@ -34,6 +34,10 @@
       &:hover, &.active {
         background-color: #22252E;
       }
+
+      &.selected {
+        background-color: #34353f;
+      }
     }
   }
 }

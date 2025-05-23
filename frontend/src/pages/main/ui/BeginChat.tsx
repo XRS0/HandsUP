@@ -1,6 +1,6 @@
 import ChatMessage from "@/features/ChatMessage/containers/ChatMessage"
 import UserComposer from "@/features/UserComposer/UserComposer"
-import UserFirstAction from "@/features/UserFirstAction/UserFirstAction"
+import { UserFirstAction } from "@/features/UserFirstAction";
 import UserRecorder from "@/features/UserRecorder/ui/UserRecorder";
 import useAnimation from "@/hooks/useAnimation";
 

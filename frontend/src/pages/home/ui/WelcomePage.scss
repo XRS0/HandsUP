@@ -160,12 +160,13 @@ h2 {
 
     @include mobile {
       img {
-        width: 42px;
+        width: 44px;
       }
     }
   }
 
-  &:hover {
+  &:hover,
+  &:active {
     border: 3.5px solid rgba(197, 7, 61, 0);
     background-color: var(--main-background-color);
 
@@ -207,7 +208,7 @@ h2 {
     padding-inline: 20px 15px;
     max-width: 360px;
     min-width: 320px;
-    height: 60px;
+    height: 65px;
     width: 94vw;
   }
 }
@@ -417,7 +418,8 @@ nav {
     }
 
     @include mobile {
-      gap: 15px;
+      gap: 1rem;
+      padding-block: 0.5rem;
     }
   }
 }

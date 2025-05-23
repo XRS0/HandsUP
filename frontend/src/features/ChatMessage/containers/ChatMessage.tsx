@@ -7,7 +7,7 @@ import EditMessageTextarea from "./EditMessageTextarea";
 
 import "../ui/ChatMessage.scss";
 
-const ChatMessage = () => {
+const AnimateMessage = () => {
   const { message, newMessage, isEditingNow } = useAppSelector(state => state.socket);
   const dispatch = useAppDispatch();
 
@@ -57,7 +57,7 @@ const ChatMessage = () => {
   if (isEditingNow) return <EditMessageTextarea height={messageHeightRef.current} />
 
   return (
-    <MessageBlock 
+    <MessageBlock
       ref={messageRef}
       height={messageHeightRef.current}
       message={renderedMessage.current}
@@ -65,4 +65,4 @@ const ChatMessage = () => {
   );
 }
 
-export default ChatMessage;
+export default AnimateMessage;

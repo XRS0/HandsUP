@@ -4,15 +4,18 @@ import { getDateAgo } from "@/shared/utils/date";
 import ConspectHistoryElement from "./ConspectHistoryElement";
 import { topicSliceActions } from "../models/slice";
 import NewTopic from "@/features/CreateTopic/containers/NewTopic";
+import { useState } from "react";
 
 const Topics = () => {
   const { user } = useAppSelector(state => state.user);
-  const { isTopicCreating } = useAppSelector(state => state.topics);
+  const { isTopicCreating, cashedTopics } = useAppSelector(state => state.topics);
   const dispatch = useAppDispatch();
   
+    const [selected, setSelected] = useState("");
+
   if (!user) return;
 
-  const topics = [...user!.topics];   // sort not working without absolute copy
+  const topics = [...user.topics];   // sort not working without absolute copy
   const groupedTopics: { [topic: string]: string[] } = {}
 
   topics
@@ -27,16 +30,28 @@ const Topics = () => {
   });
 
   const handleTopicClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    dispatch(topicSliceActions.openTopic(e.currentTarget.textContent!))
+    e.stopPropagation();
+
+    const topicName = e.currentTarget.innerText;
+    const switchedTopic = cashedTopics.find(t => Object.keys(t)[0] === topicName);   //get only keys (names) of topics
+    
+    setSelected(topicName);
+
+    if (switchedTopic) {
+      dispatch(topicSliceActions.switchTopic(switchedTopic));
+    } else {  
+      dispatch(topicSliceActions.openTopic(topicName)) //action tries to get from server
+    }
   }
 
   return (
     <div className="history">
       {isTopicCreating && <NewTopic />}
       {Object.keys(groupedTopics).map((time, i) => 
-        <ConspectHistoryElement 
+        <ConspectHistoryElement
           key={i}
-          date={time} 
+          date={time}
+          selected={selected}
           topics={groupedTopics[time]}
           onClick={handleTopicClick}
         />

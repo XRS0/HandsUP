@@ -9,16 +9,16 @@ import { AuthSliceActions } from "@/features/Auth/models/slice";
 import { useNavigate } from "react-router-dom";
 
 const MainPage = () => {
-  // const { user } = useAppSelector(state => state.user);
+  const { currentTopic } = useAppSelector(state => state.topics);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    dispatch({
-      type: AuthSliceActions.getUser.type,
-      meta: { navigate }
-    });
-  }, []);
+  // useEffect(() => {      uncomment this!!
+  //   dispatch({
+  //     type: AuthSliceActions.getUser.type,
+  //     meta: { navigate }
+  //   });
+  // }, []);
 
   return (
     <div className="wrapper">
@@ -26,9 +26,9 @@ const MainPage = () => {
 
       <div className="chat-wrapper">
         <div className="chat-background">
-          { true 
-          ? <BeginChat />   // dummy component for initialization new chat
-          : <LoadedChat />  // chat will be loaded form server
+          { currentTopic
+          ? <LoadedChat currentTopic={currentTopic} />  // chat will be loaded form server
+          : <BeginChat />   // dummy component for initialization new chat
           }
         </div>
       </div>

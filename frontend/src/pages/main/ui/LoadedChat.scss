@@ -1,0 +1,23 @@
+.loaded-chat {
+  width: 100%;
+  max-width: 800px;
+  min-height: 100%;
+  height: auto !important;
+  flex-direction: column;
+
+  .main-prompt-input {
+    position: fixed;
+    bottom: 2.5rem;
+    width: 100%;
+    z-index: 2;
+  }
+
+  .cover-block {
+    position: fixed;
+    bottom: 0.5rem;
+    height: 100px;
+    width: 800px;
+    background-color: var(--bg-color);
+    z-index: 1;
+  }
+}

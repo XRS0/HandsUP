@@ -33,9 +33,10 @@ const Sidebar = () => {
     <>
       <div className="sidebar">
         <img src={logo} alt="Logo" />
+
         <CreateTopicBtn />
 
-        <div className="line"></div>
+        <div className="line" />
 
         <div className="content">
           <Topics />
