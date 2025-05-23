@@ -16,8 +16,10 @@ type GRPC_AccountServer struct {
 	service service.UserService
 }
 
-func NewAccountServer() *GRPC_AccountServer {
-	return &GRPC_AccountServer{}
+func NewAccountServer(service service.UserService) *GRPC_AccountServer {
+	return &GRPC_AccountServer{
+		service: service,
+	}
 }
 
 func (s *GRPC_AccountServer) Start(port string) error {
