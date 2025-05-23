@@ -10,8 +10,13 @@ export const registerApiInstance = async (payload: SignUpResponseData) => {
   return response.data;
 }
 
-export const loginApiInstance = async (payload: SignInResponseData) => {
-  const response = await apiInstance.post('/login', payload);
+export const loginApiInstance = async (payload: SignInResponseData, token: string | null) => {
+  const response = await apiInstance({
+    method: 'post',
+    url: '/login', 
+    data: payload,
+    headers: { Authorization: `Bearer ${token ? token : ''}` },
+  });
   if (!response.data) {
     throw new Error('Failed to fetch login');
   }

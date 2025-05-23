@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 import googleIcon from "@assets/authorize/gmail-sign-in.svg";
 import mailIcon from "@assets/authorize/email-sign-in.svg";
