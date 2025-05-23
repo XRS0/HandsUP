@@ -19,7 +19,7 @@
     margin: 10px 0;
 
     span {
-      color: var(--main-red-color);
+      color: var(--main-color);
     }
   }
 
@@ -57,11 +57,11 @@
         &:hover {
           .secondary-button {
             background-color: rgba(197, 7, 61, 0.1);
-            color: var(--main-red-color);
+            color: var(--main-color);
             transition-delay: 0s;
 
             & * {
-              fill: var(--main-red-color);
+              fill: var(--main-color);
               transition: fill var(--hover-transition);
             }
           }
