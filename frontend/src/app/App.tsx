@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import MainPage from "../pages/main";
+import MainPage from "../pages/main/containers/MainPage";
 
 import "./ui/index.scss";
 import WelcomePage from "@/pages/home/WelcomePage";

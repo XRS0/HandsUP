@@ -18,17 +18,9 @@ button {
     color: rgba(255, 255, 255, 0.75);
     background-color: rgba(var(--main-color-rgb), 0.85);
   }
-  // &[style*="background-color: transparent"]:hover {
-  //   background-color: var(--main-color) !important;
-  // }
-  // .transparent {
-  //   background-color: transparent;
-  //   border: 2px solid var(--main-color);
-
-  //   &:hover {
-  //     background-color: var(--main-color) !important;
-  //   }
-  // }
+  &[style*="background-color: transparent"]:hover {
+    background-color: var(--main-color) !important;
+  }
   &.disabled {
     pointer-events: none;
     visibility: visible;
@@ -38,10 +30,20 @@ button {
   @include mobile {
     font-size: 15px;
     height: auto;
-    padding: 6px 15px;
+    width: auto;
+    padding: 6px 20px;
   }
 
   & * {
     transition: filter var(--hover-transition);
+  }
+}
+
+button.transparent {
+  background-color: transparent;
+  border: 2px solid var(--main-color);
+
+  &:hover {
+    background-color: var(--main-color) !important;
   }
 }
