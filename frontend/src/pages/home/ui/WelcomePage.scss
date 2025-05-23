@@ -5,10 +5,6 @@ body {
   background-color: #13161D;
 }
 
-button {
-  padding-inline: 30px;
-}
-
 h2 {
   @include desktop {
     font-size: 5vw;
@@ -16,6 +12,10 @@ h2 {
 
   @media (max-width: 850px) {
     margin-block: 40px 15px;
+  }
+
+  @include mobile {
+    font-size: 2rem;
   }
 }
 
@@ -115,6 +115,17 @@ h2 {
         min-height: 30px;
       }
     }
+
+    @include mobile {
+      height: 30px;
+      max-width: 258px;
+      width: 100%;
+      overflow: hidden;
+      img {
+        height: 30px;
+        object-fit: cover;
+      }
+    }
   }
 
   .micro {
@@ -142,6 +153,12 @@ h2 {
         min-width: 42px;
       }
     }
+
+    @include mobile {
+      img {
+        width: 42px;
+      }
+    }
   }
 
   &:hover {
@@ -162,20 +179,32 @@ h2 {
   }
 
   @include tablet {
-    animation: waveformMobile 3s infinite;
+    animation: waveformMobile 4s infinite;
     min-width: 350px;
     max-width: 600px;
-    height: 90px;
+    height: 80px;
     width: 100%;
     padding-inline: 25px 15px;
 
     .bg-wave {
-      animation: bg-wave-mobile 3s infinite;
+      animation: bg-wave-mobile 4s infinite;
     }
 
     .hovered-micro {
-      animation: micro-mobile 3s infinite;
+      animation: micro-mobile 4s infinite;
     }
+  }
+
+  @include mobile {
+    border: 1px solid var(--secondary-color) !important;
+    justify-content: center;
+    gap: 0 10px;
+    border-radius: 1rem;
+    padding-inline: 20px 15px;
+    max-width: 360px;
+    min-width: 320px;
+    height: 60px;
+    width: 94vw;
   }
 }
 
@@ -222,6 +251,10 @@ nav {
 
   @include mobile {
     padding-inline: 0;
+    padding-top: 20px;
+    img {
+      height: 35px;
+    }
   }
 }
 
@@ -244,8 +277,11 @@ nav {
       }
 
       @include mobile {
+        width: 100%;
         text-align: center;
+        margin-bottom: 10px;
         font-size: 2rem;
+        margin-top: 0;
       }
     }
 
@@ -259,6 +295,10 @@ nav {
       p {
         margin-block: 10px !important;
       }
+    }
+
+    @include mobile {
+      width: max-content;
     }
   }
 
@@ -284,9 +324,18 @@ nav {
     max-width: 410px;
     background-color: var(--secondary-color);
     padding: 20px 25px;
+
+    @include mobile {
+      width: 100%;
+      padding: 15px;
+    }
   }
 
   button { float: right; }
+
+  @include mobile {
+    flex-wrap: wrap;
+  }
 }
 
 .steps-block {
@@ -313,6 +362,10 @@ nav {
         max-width: none;
         flex: 1;
         padding: 15px;
+      }
+
+      @include mobile {
+        min-width: 140px;
       }
     }
 
@@ -357,6 +410,10 @@ nav {
       margin: 0;
       padding: 10px 0;
       flex-wrap: wrap;
+    }
+
+    @include mobile {
+      gap: 15px;
     }
   }
 }
@@ -435,6 +492,10 @@ nav {
       button {
         padding-block: 19px;
         width: 90%;
+
+        @include mobile {
+          padding-block: 5px;
+        }
       }
     } 
   }
@@ -478,6 +539,15 @@ nav {
   @include tablet {
     padding-inline: 20px;
   }
+
+  @include mobile {
+    .info {
+      font-size: 14px;
+    }
+    img {
+      height: 35px;
+    }
+  }
 }
 
 .absolute-decor {
@@ -501,23 +571,23 @@ nav {
 
 @keyframes waveformMobile {
   0% {
-    border: 3.5px solid var(--secondary-color);
+    border-color: var(--secondary-color);
     background-color: transparent;
   }
   8% {
-    border: 3.5px solid var(--secondary-color);
+    border-color: var(--secondary-color);
     background-color: transparent;
   }
   50% {
-    border: 3.5px solid rgba(197, 7, 61, 0);
+    border-color: rgba(197, 7, 61, 0);
     background-color: var(--main-background-color);
   }
   92% {
-    border: 3.5px solid var(--secondary-color);
+    border-color: var(--secondary-color);
     background-color: transparent;
   }
   100% {
-    border: 3.5px solid var(--secondary-color);
+    border-color: var(--secondary-color);
     background-color: transparent;
   }
 }

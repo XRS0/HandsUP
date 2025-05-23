@@ -15,6 +15,7 @@ type OwnProps = {
 
 const Balance: React.FC<OwnProps> = ({ ref }) => {
   const {user} = useAppSelector(state => state.user);
+  if (!user) return;
 
   return (
     <div className="topic" ref={ref}>

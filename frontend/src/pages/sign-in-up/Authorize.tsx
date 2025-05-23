@@ -7,9 +7,10 @@ import bg from "@assets/authorize/bg.svg";
 import logo from "@assets/welcome-page/logo.svg";
 import barkArrow from "@assets/authorize/back-arrow.svg";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import SignIn from "@/features/Auth/ui/SignIn";
-import SignUp from "@/features/Auth/ui/SignUp";
+import SignIn from "@/features/Auth/containers/SignIn";
+import SignUp from "@/features/Auth/containers/SignUp";
 import { createClassName } from "@/shared/utils/createClassName";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Authorize = () => {
   const [mode] = useState<"out-in" | "in-out" | undefined>("out-in");
@@ -23,9 +24,9 @@ const Authorize = () => {
     <div className="form-container" style={{backgroundImage: `url(${bg}`}}>
       <img src={logo} alt="logo" className="auth-logo" />
       <div className="Auth-window">
-        
-        <img src={barkArrow} alt="arrow" className="back-arrow" />
-
+        <NavLink to={"/"}>
+          <img src={barkArrow} alt="arrow" className="back-arrow"/>
+        </NavLink>
         <h3 className="title">
           Sign
           <SwitchTransition mode={mode}>

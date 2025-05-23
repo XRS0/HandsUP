@@ -1,12 +1,3 @@
-// export interface JwtPayload {
-//   sub: string; // Идентификатор пользователя (обычно строка) 
-//   iat?: number; // Время создания токена (опционально) 
-//   exp?: number; // Время истечения токена (опционально) 
-
-//   email: string;
-//   name: string;
-// }
-
 export interface JWT {
   access_token: string;
 }

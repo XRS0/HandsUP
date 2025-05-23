@@ -1,8 +1,9 @@
-import { IUser, JWT, SignInResponseData, SignUpResponseData, topicPreview } from '@/features/Auth/types/types';
+import { IUser, SignInResponseData, SignUpResponseData, topicPreview } from '@/features/Auth/types/types';
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { NavigateFunction } from 'react-router-dom';
 
 interface UserSlice {
-  user: IUser;
+  user: IUser | null;
   acess_token: string | null;    //для удобства
   loading: boolean;
   error: string | null;
@@ -10,26 +11,7 @@ interface UserSlice {
 }
 
 const initialState: UserSlice = {
-  user: {
-    username: "YXUNGGG",
-    email: "s.krivostanenko@mail.com",
-    password: "Viperr",
-    balance: 31,
-    price_plan: "Free",
-    topics: [
-      {
-        name: "Rome Lecture",
-        time: Date.now() - 86400100
-      },
-      {
-        name: ("Sumarinian Asterix and Obelix"),
-        time: Date.now() - 86400100 * 3
-      }, {
-        name: "Britan English Lesson",
-        time: Date.now() - 86400100 * 3
-      }
-    ]
-  },
+  user: null,
   acess_token: localStorage.getItem("access_token"),
   loading: false,
   error: null,
@@ -46,24 +28,24 @@ const userSlice = createSlice({
     fetchSignUpRequest: (state, action: PayloadAction<SignUpResponseData>) => {
       state.loading = true;
     },
-    getUserSucess: (state, action: PayloadAction<string>) => {
-      state.acess_token = action.payload;
+    getUserSucess: (state, action: PayloadAction<IUser>) => {
+      state.user = action.payload;
+      state.loading = false;
+      state.error = null;
     },
-    fetchSuccess: (state, action: PayloadAction<IUser & JWT>) => {
-      const {access_token, ...user} = action.payload
-
-      state.user = user;
-      state.acess_token = access_token;
+    fetchSuccess: (state, action: PayloadAction<string>) => {
+      state.acess_token = action.payload;
       state.loading = false;
       state.isSignSuccess = true;
+      state.error = null;
     },
-    fetchAuthFailure: (state, action: PayloadAction<string>) => {
+    fetchFailure: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
       state.isSignSuccess = false;
       state.loading = false;
     },
     addTopic(state, action: PayloadAction<topicPreview>) {
-      state.user.topics.push(action.payload);
+      state.user!.topics.push(action.payload);
     },
   }
 });
