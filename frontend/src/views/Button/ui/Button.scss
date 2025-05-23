@@ -1,4 +1,5 @@
 @use "@/shared/ui/mixins" as mixin;
+@use "@/shared/ui/media" as *;
 
 button {
   height: 36px;
@@ -7,42 +8,40 @@ button {
   border-radius: var(--border-radius);
   @include mixin.flex-center();
   color: #fff;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 500;
   user-select: none;
+  white-space: nowrap;
   transition: border var(--hover-transition), color var(--hover-transition), background-color var(--hover-transition);
-
-  & * {
-      transition: filter var(--hover-transition);
-    }
 
   &:hover {
     color: rgba(255, 255, 255, 0.75);
     background-color: rgba(var(--main-color-rgb), 0.85);
-
-    // & * {
-    //   filter: brightness(0.9);
-    // }
   }
+  // &[style*="background-color: transparent"]:hover {
+  //   background-color: var(--main-color) !important;
+  // }
+  // .transparent {
+  //   background-color: transparent;
+  //   border: 2px solid var(--main-color);
 
-  &[style*="background-color: transparent"]:hover {
-    background-color: var(--main-color) !important;
-  }
-
+  //   &:hover {
+  //     background-color: var(--main-color) !important;
+  //   }
+  // }
   &.disabled {
     pointer-events: none;
     visibility: visible;
-    // background-color: #25272E;
-    // color: #5C5C5C;
     opacity: 0.5;
   }
-}
 
-button.transparent {
-  background-color: transparent;
-  border: 2px solid var(--main-color);
+  @include mobile {
+    font-size: 15px;
+    height: auto;
+    padding: 6px 15px;
+  }
 
-  &:hover {
-    background-color: var(--main-color) !important;
+  & * {
+    transition: filter var(--hover-transition);
   }
 }
