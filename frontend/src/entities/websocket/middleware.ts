@@ -18,16 +18,18 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
       socket.on('open', () => {
         console.log("[WS]: Connection opened");
         try {
-          startRecording();
+          // startRecording();
         } catch (err: any) {
           alert("Error inside ws opening: " + err.message);
         }
       });
       
-      socket.on('message', (event) => {
+      socket.on('message', (event: MessageEvent) => {
         try {
-          const message = JSON.parse(event.data);
-          if (typeof message === "string") store.dispatch(socketSliceActions.handleMessage(message));
+          console.log(event.data);
+          // const message = JSON.parse(event.data);
+          // if (typeof message === "string") 
+          store.dispatch(socketSliceActions.handleMessage(event.data));
           
         } catch (err) {
           console.error("[WS]: Parsing json error:", err);

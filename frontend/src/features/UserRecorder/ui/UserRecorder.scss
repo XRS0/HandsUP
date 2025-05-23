@@ -1,0 +1,182 @@
+@use "@/shared/ui/mixins" as mixin;
+
+.user-recorder {
+  border-radius: 20px;
+  padding: 15px;
+  height: 100px;
+  width: 80%;
+  max-width: 800px;
+  background-color: var(--secondary-color);
+  border: 0.8px solid var(--main-border-color);
+  display: flex;
+  align-items: center;
+  
+  position: absolute;
+  bottom: 2rem;
+  animation: RecorderFadeIn 0.4s forwards;
+
+  &.--enter {
+    animation: RecorderFadeIn 0.4s forwards;
+  }
+
+  &.--exit {
+    animation: fadeOutRecorder 0.4s forwards;
+  }
+
+  transform: translateY(150px);
+  pointer-events: none;
+  visibility: visible;
+
+  .recorder-container {
+    width: 100%;
+    height: 100%;
+    @include mixin.flex-between;
+
+    .tools-block {
+      @include mixin.flex-between;
+      flex-direction: column;
+
+      .record-time {
+        font-family: "Jost";
+        font-size: 16px;
+        font-weight: 400;
+        color: var(--gray);
+        user-select: none;
+        transition: color var(--short-transition);
+      }
+      
+      .conspect-interaction {
+        display: flex;
+
+        .interaction {
+          font-weight: 400;
+          border-radius: 40px;
+          padding-inline: 16px;
+          margin-right: 14px;
+          transition: opacity var(--short-transition);
+          // white-space: nowrap;
+
+          &:hover {
+            & * {
+              filter: brightness(0.9);
+            }
+          }
+        }
+      }
+    }
+  
+    .actions {
+      display: flex;
+      align-items: center;
+      margin-left: 20px;
+
+      img {
+        cursor: pointer;
+
+        &:hover {
+          filter: brightness(0.9);
+        }
+      }
+
+      .action-button {
+        position: relative;
+        @include mixin.flex-center;
+        padding: 0 !important;
+        width: 50px;
+        height: 50px;
+        aspect-ratio: 1/1;
+        margin-left: 20px;
+        border-radius: 40px;
+
+        &:hover {
+          & * {
+            filter: brightness(0.9);
+          }
+        }
+
+        &.paused {
+          #play-icon {
+            transform: rotate(0deg) !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+
+          #pause-icon {
+            visibility: hidden !important;
+            opacity: 0 !important;
+            transform: rotate(60deg) !important;
+          }
+        }
+
+        #play-icon {
+          position: absolute;
+          top: 25%;
+          bottom: 25%;
+          visibility: hidden;
+          opacity: 0;
+          transform: rotate(-60deg);
+        }
+
+        #pause-icon, #play-icon {
+          pointer-events: none;
+          transition: opacity var(--short-transition),
+            visibility var(--short-transition),
+            transform var(--short-transition);
+        }
+
+        &.stop-button {
+          background-color: #22252E;
+
+          &:hover {
+            background-color: var(--main-background-color);
+          }
+
+          .square-icon {
+            background-color: var(--main-color);
+            border-radius: 2px;
+            aspect-ratio: 1/1;
+            height: 16px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.copy-button {
+  background-color: #22252E !important;
+  border-radius: 40px;
+  color: #5E657A;
+  & * {
+    fill: #5E657A;
+    transition: filter var(--hover-transition);
+  }
+
+  &:hover {
+    background-color: #22252ee1 !important;
+    color: #5e657ad8;
+  }
+}
+
+@keyframes RecorderFadeIn {
+  from {
+    transform: translateY(150px);
+  }
+
+  to {
+    transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+@keyframes fadeOutRecorder {
+  from {
+    transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+  }
+  to {
+    transform: translateY(150px);
+  }
+}

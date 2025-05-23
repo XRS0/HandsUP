@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import MainPage from "../pages/main";
 
 import "./ui/index.scss";
@@ -10,9 +10,10 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" Component={MainPage} />
-        <Route path="/welcome" Component={WelcomePage} />
+        <Route path="/" Component={WelcomePage} />
+        <Route path="/chat" Component={MainPage} />
         <Route path="/auth" Component={Authorize} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );

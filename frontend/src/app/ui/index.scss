@@ -3,6 +3,7 @@
   --secondary-color: #191C24;
   --main-color-rgb: 22, 119, 199;
   --main-color: rgb(var(--main-color-rgb));
+  --main-background-color: rgba(var(--main-color-rgb), 0.2);
   --main-border-color: #25272E;
   --border-radius: 8px;
   --border-blocks: 10px;

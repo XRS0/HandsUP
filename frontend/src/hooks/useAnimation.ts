@@ -30,7 +30,8 @@ const useAnimation = <T extends HTMLElement = HTMLElement>(
   }
 
   const handleAnimationEnd = (e: React.AnimationEvent<T>) => {
-    if (e.animationName.includes("fadeOut") && isFadeOut) {
+    //the animation name of blovk must be `fadeOut${blockName}`
+    if (e.animationName.includes("fadeOut") && isFadeOut) {   
         setIsVisible(false);
         setIsFadeOut(false);
     }

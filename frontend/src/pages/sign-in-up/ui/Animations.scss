@@ -13,16 +13,22 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+
+    &.disabled {
+      opacity: 1;
+      visibility: visible;
+      
+      svg {
+        * {
+          fill: #383838 !important;
+        }
+        
+      }
+    }
+
     svg {
       * {
         fill: var(--main-color);
-      }
-  
-      &.disabled {
-        * {
-          pointer-events: none;
-          fill: #383838;
-        }
       }
     }
   }
