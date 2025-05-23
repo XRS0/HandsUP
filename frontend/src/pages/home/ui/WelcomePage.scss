@@ -1,4 +1,5 @@
 @use "@/shared/ui/mixins" as mixin;
+@use "@/shared/ui/media" as *;
 
 body {
   background-color: #13161D;
@@ -8,12 +9,44 @@ button {
   padding-inline: 30px;
 }
 
+h2 {
+  @include desktop {
+    font-size: 5vw;
+  }
+
+  @media (max-width: 850px) {
+    margin-block: 40px 15px;
+  }
+}
+
 .container {
   font-family: "Jost";
   max-width: 920px;
   width: 100%;
   margin-inline: auto;
   color: white;
+
+  @include desktop {
+    padding-inline: 30px;
+  }
+
+  @include tablet {
+    padding-inline: 20px;
+  }
+    
+  @include tablet {
+    padding-inline: 15px;
+  }
+
+  .main-decor {
+    @include desktop {
+      width: 23%;
+    }
+
+    @media (max-width: 900px) {
+      display: none;
+    }
+  }
 }
 
 .rank-circle {
@@ -29,6 +62,10 @@ button {
   text-align: center;
   bottom: -15px;
   left: -15px;
+
+  @media (max-width: 650px) {
+    display: none;
+  }
 }
 
 .line {
@@ -59,11 +96,24 @@ button {
       transition: filter 0.2s;
     }
 
-    .redwave {
+    .hovered-wave {
       position: absolute;
       top: 0;
       left: 0;
       animation: waveform-filling 7s infinite;
+    }
+
+    @include tablet {
+      img {
+        height: 46px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      img {
+        height: 6.5vw;
+        min-height: 30px;
+      }
     }
   }
 
@@ -72,12 +122,25 @@ button {
     display: flex;
     align-items: center;
 
-    .redmicro {
+    .hovered-micro {
       position: absolute;
       top: 0;
       left: 0;
       opacity: 0;
       transition: opacity 0.2s;
+    }
+
+    @include tablet {
+      img {
+        width: 65px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      img {
+        width: 90%;
+        min-width: 42px;
+      }
     }
   }
 
@@ -89,12 +152,32 @@ button {
       filter: brightness(0.7);
     }
 
-    .redmicro {
+    .hovered-micro {
       opacity: 1;
     }
   }
-}
 
+  @include desktop {
+    height: 100px
+  }
+
+  @include tablet {
+    animation: waveformMobile 3s infinite;
+    min-width: 350px;
+    max-width: 600px;
+    height: 90px;
+    width: 100%;
+    padding-inline: 25px 15px;
+
+    .bg-wave {
+      animation: bg-wave-mobile 3s infinite;
+    }
+
+    .hovered-micro {
+      animation: micro-mobile 3s infinite;
+    }
+  }
+}
 
 nav {
   @include mixin.flex-between;
@@ -117,7 +200,28 @@ nav {
       &:hover {
         color: #C0C0C0;
       }
+
+      @media (max-width: 650px) {
+        display: none;
+      }
     }
+
+    a {
+      text-decoration: none;
+    }
+
+    
+    @media (max-width: 650px) {
+      justify-content: flex-end;
+    }
+  }
+
+  @media (max-width: 900px) {
+    padding-inline: 30px;
+  }
+
+  @include mobile {
+    padding-inline: 0;
   }
 }
 
@@ -130,9 +234,39 @@ nav {
   .title {
     margin-left: 40px;
     max-width: min-content;
+
     h1 {
       white-space: nowrap;
       max-width: fit-content;
+
+      @include desktop {
+        font-size: 5.5vw;
+      }
+
+      @include mobile {
+        text-align: center;
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 900px) {
+      margin-left: 0;
+    }
+
+    @include tablet {
+      max-width: none;
+      width: 90%;
+      p {
+        margin-block: 10px !important;
+      }
+    }
+  }
+
+  @include mobile {
+    margin-top: 40px;
+    width: 100%; 
+    p {
+      display: none
     }
   }
 }
@@ -170,6 +304,16 @@ nav {
       padding: 15px 25px;
       border-radius: var(--border-blocks);
       background-color: var(--secondary-color);
+
+      @include tablet {
+        height: auto !important;
+      }
+
+      @media (max-width: 650px) {
+        max-width: none;
+        flex: 1;
+        padding: 15px;
+      }
     }
 
     .final-step-wrapper {
@@ -178,6 +322,10 @@ nav {
       img {
         position: absolute;
         z-index: -1;
+
+        @media (max-width: 850px) {
+          display: none;
+        }
       }
 
       .content {
@@ -190,6 +338,25 @@ nav {
       }
 
       button { margin-block: 10px 4px; }
+    }
+    
+    @media (max-width: 850px) {
+      padding: 15px 25px;
+      .content {
+        background-color: var(--secondary-color);
+        border-radius: var(--border-blocks);
+      }
+    }
+
+    @include tablet {
+      margin-top: 10px;
+    }
+
+    @media (max-width: 650px) {
+      gap: 20px;
+      margin: 0;
+      padding: 10px 0;
+      flex-wrap: wrap;
     }
   }
 }
@@ -264,7 +431,18 @@ nav {
       display: flex;
       justify-content: center;
       margin-top: 30px;
+      
+      button {
+        padding-block: 19px;
+        width: 90%;
+      }
     } 
+  }
+
+  @media (max-width: 850px) {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
   }
 }
 
@@ -280,6 +458,25 @@ nav {
     color: #b0b0b0;
     font-weight: 400;
     font-size: 15px;
+
+    @media (max-width: 850px) {
+      padding-block: 20px;
+    }
+
+    @media (max-width: 650px) {
+      .info {
+        width: 60%;
+        text-align: end;
+      }
+    }
+  }
+
+  @media (max-width: 850px) {
+    margin-top: 50px;
+  }
+
+  @include tablet {
+    padding-inline: 20px;
   }
 }
 
@@ -302,29 +499,45 @@ nav {
   }
 }
 
+@keyframes waveformMobile {
+  0% {
+    border: 3.5px solid var(--secondary-color);
+    background-color: transparent;
+  }
+  8% {
+    border: 3.5px solid var(--secondary-color);
+    background-color: transparent;
+  }
+  50% {
+    border: 3.5px solid rgba(197, 7, 61, 0);
+    background-color: var(--main-background-color);
+  }
+  92% {
+    border: 3.5px solid var(--secondary-color);
+    background-color: transparent;
+  }
+  100% {
+    border: 3.5px solid var(--secondary-color);
+    background-color: transparent;
+  }
+}
+
+@keyframes bg-wave-mobile {
+  0% { filter: brightness(1); }
+  8% { filter: brightness(1); }
+  50% { filter: brightness(0.7); }
+  92% { filter: brightness(1); }
+  100% { filter: brightness(1); }
+}
+
+@keyframes micro-mobile {
+  0% { opacity: 0; }
+  8% { opacity: 0; }
+  50% { opacity: 1; }
+  92% { opacity: 0; }
+  100% { opacity: 0; }
+}
 
 @media (max-width: 1500px) {
   .absolute-decor { display: none; }
-}
-
-@media (max-width: 980px) {
-  .container {
-    padding-inline: 20px;
-  }
-
-  .main-decor {
-    width: 23%;
-  }
-
-  .title img {
-    width: 102%;
-  }
-
-  h1 {
-    font-size: 5.6vw;
-  }
-
-  h2 {
-    font-size: 5vw;
-  }
 }

@@ -2,9 +2,9 @@ import "./ui/WelcomePage.scss";
 
 import logo from "@/shared/assets/welcome-page/logo.svg";
 import wave from "@/shared/assets/welcome-page/waveform/wave.svg";
-import redwave from "@/shared/assets/welcome-page/waveform/hovered_wave.svg";
+import hoveredWave from "@/shared/assets/welcome-page/waveform/hovered_wave.svg";
 import micro from "@/shared/assets/welcome-page/waveform/micro.svg";
-import redmicro from "@/shared/assets/welcome-page/waveform/hovered_micro.svg";
+import hoveredMicro from "@/shared/assets/welcome-page/waveform/hovered_micro.svg";
 import rectangleBlock from "@/shared/assets/welcome-page/rectangle.png";
 
 import mainDecor from "@/shared/assets/welcome-page/main-decoration.svg";
@@ -12,7 +12,7 @@ import firstDecor from "@/shared/assets/welcome-page/first_decoration.svg"
 import secondDecor from "@/shared/assets/welcome-page/second-decoration.svg";
 import thirdDecor from "@/shared/assets/welcome-page/third-decoration.svg";
 import Button from "@/views/Button/ui/Button";
-import { Navigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const WelcomePage = () => {
   return (
@@ -41,7 +41,9 @@ const WelcomePage = () => {
           <div className="nav-bar">
             <div>About me</div>
             <div>Pricing plans</div>
-            <Button children="Sign in" onclick={() => {}}/>
+            <NavLink to={"/auth"}>
+              <Button children="Sign in" onclick={() => {}}/>
+            </NavLink>
           </div>
       </nav>
 
@@ -56,16 +58,16 @@ const WelcomePage = () => {
             customisable conspect message in a minute
           </p>
 
-          <NavLink to="/">
+          <NavLink to="/chat">
             <div className="waveform">
               <div className="wave">
                 <img src={wave} className="bg-wave" alt="pic" />
-                <img src={redwave} className="redwave" alt="pic" />
+                <img src={hoveredWave} className="hovered-wave" alt="pic" />
               </div>
 
               <div className="micro">
                 <img src={micro} alt="pic" />
-                <img src={redmicro} className="redmicro" alt="pic" />
+                <img src={hoveredMicro} className="hovered-micro" alt="pic" />
               </div>
             </div>
           </NavLink>
