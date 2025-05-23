@@ -49,6 +49,8 @@ func (s *TokenService) GenerateTokens(userID string) (string, string, error) {
 		tokens.RefreshToken,
 		time.Now().Add(s.refreshDuration),
 	)
+
+	// Устанавливаем ID токенов, которое совпадает с ID пользователя
 	refreshToken.ID = userID
 
 	// Сохраняем токены в репозитории
