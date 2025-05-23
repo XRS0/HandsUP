@@ -5,6 +5,10 @@ body {
   background-color: #13161D;
 }
 
+button {
+  padding-inline: 20px;
+}
+
 h2 {
   @include desktop {
     font-size: 5vw;

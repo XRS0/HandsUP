@@ -1,10 +1,11 @@
 import apiInstance from "./instance/axiosInstance";
 
 export const getUserApiInstance = async (token: string) => {
-  const response = await apiInstance.get(
-    `/get_user/${token}`,
-    { withCredentials: true }
-  );
+  const response = await apiInstance({
+    method: "get",
+    url: `/get_user/${token}`,
+    headers: { Authorization: `Bearer ${token}` },
+  });
 
   if (!response.data) {
     throw new Error('Failed to get user');
