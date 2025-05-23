@@ -1,49 +1,132 @@
-// Package http предоставляет HTTP сервер и маршрутизацию
 package http
 
 import (
-	"net/http"
-
-	"github.com/gorilla/mux"
-
-	"auth/internal/infrastructure/http/handlers"
-	"auth/internal/infrastructure/http/middleware"
+	"github.com/XRS0/HandsUp/auth/internal/infrastructure/clients/account"
+	"github.com/XRS0/HandsUp/auth/internal/infrastructure/http/middleware"
+	"github.com/XRS0/HandsUp/auth/internal/infrastructure/security/jwt"
+	"github.com/XRS0/HandsUp/auth/internal/interfaces/grpc/dto"
+	"github.com/gin-gonic/gin"
 )
 
-// Router предоставляет маршрутизацию HTTP запросов
 type Router struct {
-	router         *mux.Router
-	userHandler    *handlers.UserHandler
-	authMiddleware *middleware.AuthMiddleware
+	r              *gin.Engine
+	account_client *account.GRPC_Client
 }
 
-// NewRouter создает новый экземпляр Router
-// userHandler - обработчик запросов пользователей
-// authMiddleware - middleware для аутентификации
-func NewRouter(userHandler *handlers.UserHandler, authMiddleware *middleware.AuthMiddleware) *Router {
-	router := mux.NewRouter()
+func NewRouter() *Router {
+	r := gin.Default()
+	account_client, err := account.NewGRPC_Client("127.0.0.1:50051")
+	if err != nil {
+		panic(err)
+	}
 	return &Router{
-		router:         router,
-		userHandler:    userHandler,
-		authMiddleware: authMiddleware,
+		r:              r,
+		account_client: account_client,
 	}
 }
 
-// SetupRoutes настраивает маршруты приложения
-// Регистрирует публичные и защищенные маршруты
-func (r *Router) SetupRoutes() {
-	// Публичные маршруты
-	r.router.HandleFunc("/api/register", r.userHandler.Register).Methods(http.MethodPost)
-	r.router.HandleFunc("/api/login", r.userHandler.Login).Methods(http.MethodPost)
+func (router *Router) InitRoutes(tokenService *jwt.TokenService) {
+	apiGroup := router.r.Group("/api") // API group
+	{
+		// Check if the user is already authorized
+		router.r.POST("/register", func(c *gin.Context) {
+			check := c.Request.Header.Get("Authorization")
+			if check != "" {
+				if _, err := tokenService.ValidateToken(check); err != nil {
+					c.JSON(401, gin.H{
+						"error": "Unauthorized",
+					})
+					return
+				} else {
+					c.JSON(200, gin.H{
+						"message": "Already authorized",
+					})
+					return
+				}
+			}
 
-	// Защищенные маршруты
-	protected := r.router.PathPrefix("/api").Subrouter()
-	protected.Use(r.authMiddleware.Authenticate)
+			user := &dto.User{}
+			err := c.ShouldBindJSON(&user)
+			if err != nil {
+				c.JSON(400, gin.H{
+					"error": "Invalid request",
+				})
+				return
+			}
 
-	// TODO: Добавить защищенные маршруты
-}
+			// Call the account service to register the user
+			resp, err := router.account_client.Register(user)
+			if err != nil {
+				c.JSON(500, gin.H{
+					"error": "Failed to register user",
+				})
+				return
+			}
 
-// GetRouter возвращает настроенный маршрутизатор
-func (r *Router) GetRouter() *mux.Router {
-	return r.router
+			// Generate JWT token
+			refresh_token, err := tokenService.GenerateRefreshToken(resp.GetUserId())
+			if err != nil {
+				c.JSON(500, gin.H{
+					"error": "Failed to generate token",
+				})
+				return
+			}
+
+			c.SetCookie("refresh", refresh_token, 604800, "/", "localhost", false, true)
+			c.Set("token", refresh_token)
+			c.JSON(200, gin.H{
+				"message": "User registered",
+			})
+		})
+
+		router.r.POST("/login", func(c *gin.Context) {
+			// Check if the user is already authorized
+			check := c.Request.Header.Get("Authorization")
+			if check != "" {
+				if _, err := tokenService.ValidateToken(check); err != nil {
+					c.JSON(401, gin.H{
+						"error": "Unauthorized",
+					})
+					return
+				} else {
+					c.JSON(200, gin.H{
+						"message": "Already authorized",
+					})
+					return
+				}
+			}
+
+			user := &dto.User{}
+			err := c.ShouldBindJSON(&user)
+			if err != nil {
+				c.JSON(400, gin.H{
+					"error": "Invalid request",
+				})
+				return
+			}
+			// Call the account service to login the user
+			resp, err := router.account_client.GetUserByEmail(user.Email)
+			if err != nil {
+				c.JSON(401, gin.H{
+					"error": "Invalid credentials",
+				})
+				return
+			}
+			// Generate JWT token
+			refresh_token, err := tokenService.GenerateRefreshToken(resp.GetUserId())
+			if err != nil {
+				c.JSON(500, gin.H{
+					"error": "Failed to generate token",
+				})
+				return
+			}
+
+			c.SetCookie("refresh", refresh_token, 604800, "/", "localhost", false, true)
+			c.Set("token", refresh_token)
+			c.JSON(200, gin.H{
+				"token": refresh_token,
+			})
+		})
+	}
+	apiGroup.Use(middleware.NewAuthMiddleware(tokenService).Authenticate())
 }

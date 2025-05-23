@@ -35,17 +35,27 @@ func (s *AuthServer) Start(port string) error {
 	return grpcServer.Serve(lis)
 }
 
-func (s *AuthServer) Validate(ctx context.Context, req *gen.ValidateRequest) (*gen.ValidateResponse, error) {
-	// Validate the token
-	claims, err := s.jwtService.ValidateToken(req.AccessToken)
+func (s *AuthServer) ValidateToken(ctx context.Context, req *gen.ValidateTokenRequest) (*gen.ValidateTokenResponse, error) {
+	claims, err := s.jwtService.ValidateToken(req.Token)
+	resp := &gen.ValidateTokenResponse{}
 	if err != nil {
-		return nil, fmt.Errorf("invalid token: %v", err)
+		return &gen.ValidateTokenResponse{}, fmt.Errorf("invalid token: %v", err)
 	}
 
-	// Create and return the response
-	resp := &gen.ValidateResponse{
-		UserId: claims.ID,
-	}
+	resp.UserId = claims.UserID
+	return resp, nil
+}
 
+func (s *AuthServer) RefreshTokens(ctx context.Context, req *gen.RefreshTokenRequest) (*gen.RefreshTokenResponse, error) {
+	access_token, refresh_token, err := s.jwtService.RefreshTokens(req.RefreshToken)
+	if err != nil {
+		return &gen.RefreshTokenResponse{}, fmt.Errorf("failed to generate token: %v", err)
+	}
+	resp := &gen.RefreshTokenResponse{
+		TokenPair: &gen.TokenPair{
+			AccessToken:  access_token,
+			RefreshToken: refresh_token,
+		},
+	}
 	return resp, nil
 }

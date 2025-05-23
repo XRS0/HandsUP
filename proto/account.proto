@@ -18,6 +18,7 @@ message LoginUserRequest {
 
 message LoginUserResponse {
 	bool success = 1;
+	string user_id = 2;
 }
 
 message RegisterUserRequest {
