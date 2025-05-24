@@ -6,9 +6,15 @@ import "./UserComposer.scss";
 import linkIcon from "@/shared/assets/main-page/icons/link.svg?react";
 import stormIcon from "@/shared/assets/main-page/icons/storm_iocn.svg?react";
 import { createClassName } from "@/shared/utils/createClassName";
+import useInput from "@/hooks/useInput";
+import { useAppDispatch } from "@/hooks/redux";
+import { topicSliceActions } from "../UserTopics/models/slice";
 
 const UserComposer = () => {
+  const dispatch = useAppDispatch()
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const {value, onChange, clear} = useInput();
   const [isClicked, setIsClicked] = useState({
     short: false,
     without_changes: false,
@@ -32,7 +38,7 @@ const UserComposer = () => {
     }
   }, []);
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleOptionClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     e.preventDefault();
 
@@ -46,10 +52,17 @@ const UserComposer = () => {
     }));
   }
 
+  const handleSendMessage = () => {
+    dispatch(topicSliceActions.generateMessage(value));
+    clear();
+  }
+
   return (
     <div className="main-prompt-input">
       <textarea  
         ref={textareaRef}
+        value={value}
+        onChange={onChange}
         placeholder="Type something for config a conspect..."
       />
 
@@ -61,7 +74,7 @@ const UserComposer = () => {
         <div className="conspect-config">
           <Button 
             name="short"
-            onclick={handleClick} 
+            onclick={handleOptionClick} 
             cssClass={createClassName("config", isClicked["short"] && "actived")} 
             children={"Short"} 
             isFilled={false}
@@ -69,7 +82,7 @@ const UserComposer = () => {
 
           <Button 
             name="without_changes"
-            onclick={handleClick} 
+            onclick={handleOptionClick} 
             cssClass={createClassName("config", isClicked["without_changes"] && "actived")} 
             children={"Without changes"} 
             isFilled={false}
@@ -77,7 +90,7 @@ const UserComposer = () => {
 
           <Button 
             name="expanded"
-            onclick={handleClick} 
+            onclick={handleOptionClick} 
             cssClass={createClassName("config", isClicked["expanded"] && "actived")}
             children={"Expanded"} 
             isFilled={false} 
@@ -86,17 +99,17 @@ const UserComposer = () => {
 
         <div className="actions">
           <Button 
-              children={"Copy"}
-              cssClass="copy-button" 
-              IconLeft={linkIcon} 
-              onclick={() => {}}
-            />
+            children={"Copy"}
+            cssClass="copy-button" 
+            IconLeft={linkIcon} 
+            onclick={() => {}}
+          />
 
           <Button
             IconLeft={stormIcon}
             children="Generate"
             cssClass="record-button"
-            onclick={() => {}}
+            onclick={handleSendMessage}
           />
         </div>
       </div>

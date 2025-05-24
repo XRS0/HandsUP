@@ -26,9 +26,9 @@ const MainPage = () => {
 
       <div className="chat-wrapper">
         <div className="chat-background">
-          { currentTopic
-          ? <LoadedChat currentTopic={currentTopic} />  // chat will be loaded form server
-          : <BeginChat />   // dummy component for initialization new chat
+          { currentTopic && Object.values(currentTopic)[0].length !== 0 // check is topic messages exist
+          ? <LoadedChat currentTopic={currentTopic} />                  // chat will be loaded form server
+          : <BeginChat />                                               // dummy component for initialization new chat
           }
         </div>
       </div>

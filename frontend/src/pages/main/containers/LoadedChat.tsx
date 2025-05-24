@@ -1,6 +1,6 @@
 import UserMessage from "@/features/ChatMessage/ui/StaticMessge";
 import UserComposer from "@/features/UserComposer/UserComposer";
-import { TopicMessage } from "@/features/UserTopics/types/types";
+import { TopicMessage } from "@/features/UserTopics/types/topic";
 
 import "../ui/LoadedChat.scss";
 

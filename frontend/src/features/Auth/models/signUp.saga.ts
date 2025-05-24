@@ -1,5 +1,5 @@
-import { call, put, takeEvery } from "redux-saga/effects";
-import { IUser, JWT } from "@/features/Auth/types/types";
+import { call, put } from "redux-saga/effects";
+import { JWT } from "@/features/Auth/types/auth";
 import { registerApiInstance } from "@/app/api/authApi";
 import { AuthSliceActions } from "./slice";
 
