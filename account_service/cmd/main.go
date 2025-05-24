@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"sync"
 
 	"github.com/XRS0/HandsUp/account_service/internal/domain/models"
 	userRepo "github.com/XRS0/HandsUp/account_service/internal/infrastructure/persistence/postgres"
@@ -30,6 +31,9 @@ func main() {
 	// Initialize services
 	userService := userService.NewUserService(userRepo)
 
+	wg := &sync.WaitGroup{}
+	wg.Add(2) // We will start two goroutines
+
 	go func() {
 		// Initialize and start the gRPC server
 		accountServer := grpc_server.NewAccountServer(userService)
@@ -38,6 +42,7 @@ func main() {
 		if err := accountServer.Start(port); err != nil {
 			log.Fatal(err)
 		}
+		wg.Done() // Signal that the gRPC server has started
 	}()
 
 	go func() {
@@ -48,5 +53,6 @@ func main() {
 		if err := httpServer.Start(port); err != nil {
 			log.Fatal(err)
 		}
+		wg.Done() // Signal that the HTTP server has started
 	}()
 }
