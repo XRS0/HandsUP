@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"log"
 
-	"summarize_service/usecase"
-
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/ollama"
 )
@@ -16,7 +14,7 @@ type OpenChatApi struct {
 	ctx context.Context
 }
 
-func NewOpenChatApi() (usecase.LLMService, error) {
+func NewOpenChatApi() (*OpenChatApi, error) {
 	llm, err := ollama.New(ollama.WithModel("openchat"))
 	if err != nil {
 		return nil, err
@@ -37,6 +35,10 @@ func (oc *OpenChatApi) GenerateNormalResponse(req string) error {
 
 func (oc *OpenChatApi) GenerateFullResponse(req string) error {
 	return oc.generate("You must write full summary", req)
+}
+
+func (oc *OpenChatApi) GenerateFullResponseWithOpts(req string, opts ...string) error {
+	return oc.generate(fmt.Sprintf("You must write full summary with this parameters(%s)", opts), req)
 }
 
 func (oc *OpenChatApi) generate(prompt string, req string) error {
