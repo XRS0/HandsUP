@@ -1,6 +1,8 @@
 package http
 
 import (
+	"fmt"
+
 	"github.com/XRS0/HandsUp/auth/internal/infrastructure/clients/account"
 	"github.com/XRS0/HandsUp/auth/internal/infrastructure/http/middleware"
 	"github.com/XRS0/HandsUp/auth/internal/infrastructure/security/jwt"
@@ -15,7 +17,7 @@ type Router struct {
 
 func NewRouter() *Router {
 	r := gin.Default()
-	account_client, err := account.NewGRPC_Client("127.0.0.1:50051")
+	account_client, err := account.NewGRPC_Client("localhost:50052")
 	if err != nil {
 		panic(err)
 	}
@@ -25,11 +27,30 @@ func NewRouter() *Router {
 	}
 }
 
+func (r *Router) Use(middlewares ...gin.HandlerFunc) {
+	for _, middleware := range middlewares {
+		r.r.Use(middleware)
+	}
+}
+
+func CORS() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+		c.Next()
+	}
+}
+
 func (router *Router) InitRoutes(tokenService *jwt.TokenService) {
 	apiGroup := router.r.Group("/api") // API group
 	{
 		// Check if the user is already authorized
-		router.r.POST("/register", func(c *gin.Context) {
+		apiGroup.POST("/register", func(c *gin.Context) {
 			check := c.Request.Header.Get("Authorization")
 			if check != "" {
 				if _, err := tokenService.ValidateToken(check); err != nil {
@@ -60,6 +81,7 @@ func (router *Router) InitRoutes(tokenService *jwt.TokenService) {
 				c.JSON(500, gin.H{
 					"error": "Failed to register user",
 				})
+				fmt.Println(resp)
 				return
 			}
 
@@ -78,7 +100,7 @@ func (router *Router) InitRoutes(tokenService *jwt.TokenService) {
 			})
 		})
 
-		router.r.POST("/login", func(c *gin.Context) {
+		apiGroup.POST("/login", func(c *gin.Context) {
 			// Check if the user is already authorized
 			check := c.Request.Header.Get("Authorization")
 			if check != "" {
@@ -127,4 +149,8 @@ func (router *Router) InitRoutes(tokenService *jwt.TokenService) {
 		})
 	}
 	apiGroup.Use(middleware.NewAuthMiddleware(tokenService).Authenticate())
+}
+
+func (router *Router) Start(port string) error {
+	return router.r.Run(port)
 }

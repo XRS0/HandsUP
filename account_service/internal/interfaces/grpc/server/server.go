@@ -2,6 +2,8 @@ package server
 
 import (
 	"context"
+	"fmt"
+	"log"
 	"net"
 
 	"github.com/XRS0/HandsUp/account_service/internal/domain/models"
@@ -9,6 +11,7 @@ import (
 	"github.com/XRS0/HandsUp/account_service/internal/interfaces/grpc/gen"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/peer"
 )
 
 type GRPC_AccountServer struct {
@@ -22,9 +25,23 @@ func NewAccountServer(service service.UserService) *GRPC_AccountServer {
 	}
 }
 
+func loggingInterceptor(
+	ctx context.Context,
+	req interface{},
+	info *grpc.UnaryServerInfo,
+	handler grpc.UnaryHandler,
+) (interface{}, error) {
+	if p, ok := peer.FromContext(ctx); ok {
+		log.Printf("New connection from: %s, method: %s", p.Addr.String(), info.FullMethod)
+	}
+	return handler(ctx, req)
+}
+
 func (s *GRPC_AccountServer) Start(port string) error {
 	// Initialize the gRPC server
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(loggingInterceptor),
+	)
 
 	// Register the server with the gRPC server
 	gen.RegisterAccountServiceServer(grpcServer, s)
@@ -81,6 +98,7 @@ func (s *GRPC_AccountServer) RegisterUser(ctx context.Context, req *gen.Register
 
 	id, err := s.service.RegisterUser(ctx, user)
 	if err != nil {
+		fmt.Printf("Register error: %v\n", err) // Добавьте это для вывода причины ошибки
 		return nil, err
 	}
 

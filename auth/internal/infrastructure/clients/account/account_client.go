@@ -7,6 +7,7 @@ import (
 	"github.com/XRS0/HandsUp/auth/internal/infrastructure/clients/account/gen"
 	"github.com/XRS0/HandsUp/auth/internal/interfaces/grpc/dto"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 type GRPC_Client struct {
@@ -14,11 +15,10 @@ type GRPC_Client struct {
 }
 
 func NewGRPC_Client(address string) (*GRPC_Client, error) {
-	conn, err := grpc.Dial(address, grpc.WithInsecure())
+	conn, err := grpc.NewClient(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
-	defer conn.Close()
 
 	client := gen.NewAccountServiceClient(conn)
 	if client == nil {
@@ -53,6 +53,7 @@ func (c *GRPC_Client) Register(user *dto.User) (*gen.RegisterUserResponse, error
 		Email:    user.Email,
 	})
 	if err != nil {
+		log.Printf("RegisterUser gRPC error: %v", err)
 		return nil, err
 	}
 	return resp, nil

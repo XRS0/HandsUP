@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"fmt"
-	"log"
 	"net"
 
 	"github.com/XRS0/HandsUp/auth/internal/infrastructure/security/jwt"
@@ -31,7 +30,6 @@ func (s *AuthServer) Start(port string) error {
 	grpcServer := grpc.NewServer()
 	gen.RegisterAuthServiceServer(grpcServer, s)
 
-	log.Printf("Starting gRPC server on %s", port)
 	return grpcServer.Serve(lis)
 }
 
