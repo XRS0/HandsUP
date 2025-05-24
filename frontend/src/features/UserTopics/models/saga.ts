@@ -8,7 +8,6 @@ import { sendMessageApiInstance } from "@/app/api/sendMessageApi";
 export function* getTopicSaga({payload}: {payload: string}) {
   try {
     const token: string = yield localStorage.getItem("access_token");
-    if (!token) throw new Error("Can't get token from localStorage");
 
     const response: Topic = yield call(getTopicApiInstance, payload, token);  // give them type when i will
     console.log(response);
@@ -25,7 +24,6 @@ export function* generateMessageSaga({payload}: ReturnType<typeof topicSliceActi
     const token: string = yield localStorage.getItem("access_token"); 
     const rawConspect: string = yield select(selectMessage);
 
-    if (!token) throw new Error("Can't get token from localStorage");
     if (!rawConspect) throw new Error("Conspect is not defined");
 
     const message: MessageForGeneration = {

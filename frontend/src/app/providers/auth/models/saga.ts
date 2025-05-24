@@ -9,6 +9,8 @@ export function* getUserSaga(action: any) {
 
   try {
     const access_token: string = yield localStorage.getItem("access_token");
+
+    //i dont sure this is needed or not because sever refreshs tokens automaticly
     if (!access_token) throw new Error("access token does not exist");
 
     const response: AxiosResponse<IUser> = yield call(getUserApiInstance, access_token);
