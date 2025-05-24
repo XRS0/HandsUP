@@ -1,6 +1,8 @@
-import { IUser, SignInResponseData, SignUpResponseData, topicPreview } from '@/features/Auth/types/types';
+import { TopicPreview } from '@/features/UserTopics/types/topic';
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NavigateFunction } from 'react-router-dom';
+import { IUser } from '../types/user';
+import { SignInResponseData, SignUpResponseData } from '../types/auth';
+import { RootState } from '@/app/Store/store';
 
 interface UserSlice {
   user: IUser | null;
@@ -63,7 +65,7 @@ const userSlice = createSlice({
       state.isSignSuccess = false;
       state.loading = false;
     },
-    addTopic(state, action: PayloadAction<topicPreview>) {
+    addTopic(state, action: PayloadAction<TopicPreview>) {
       state.user!.topics.push(action.payload);
     },
   }
@@ -74,4 +76,5 @@ export const AuthSliceActions = {
   getUser: createAction(`${userSlice.name}/getUser`),
   getRefreshToken: createAction(`${userSlice.name}/getRefreshToken`),
 }
+
 export default userSlice.reducer;

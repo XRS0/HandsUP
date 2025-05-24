@@ -1,5 +1,5 @@
 import apiInstance from "@/app/api/instance/axiosInstance";
-import { SignInResponseData, SignUpResponseData } from "@/features/Auth/types/types";
+import { SignInResponseData, SignUpResponseData } from "@/features/Auth/types/auth";
 
 export const registerApiInstance = async (payload: SignUpResponseData) => { 
   const response = await apiInstance.post("/register", payload);

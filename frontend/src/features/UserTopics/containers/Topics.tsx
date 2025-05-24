@@ -11,7 +11,7 @@ const Topics = () => {
   const { isTopicCreating, cashedTopics } = useAppSelector(state => state.topics);
   const dispatch = useAppDispatch();
   
-    const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState("");
 
   if (!user) return;
 

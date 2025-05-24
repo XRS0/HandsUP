@@ -1,9 +1,10 @@
+import { TopicPreview } from "@/features/UserTopics/types/topic";
 import apiInstance from "./instance/axiosInstance";
 
-export const getTopicApiInstance = async (payload: string, token: string) => {
+export const registerTopicApiInstance = async (payload: TopicPreview, token: string) => {
   const response = await apiInstance({
     method: 'post',
-    url: '/get_topic',
+    url: '/create_topic',
     data: payload,
     headers: { Authorization: `Bearer ${token}` },
   });

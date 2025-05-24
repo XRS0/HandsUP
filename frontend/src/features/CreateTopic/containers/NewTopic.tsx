@@ -12,12 +12,10 @@ const NewTopic = () => {
   const dispatch = useAppDispatch();
 
   const handleTopicCreate = () => {
-    dispatch(AuthSliceActions.addTopic({
-      name: value,
-      time: Date.now()
-    }));
+    const topicData = { name: value, time: Date.now() }
+    dispatch(AuthSliceActions.addTopic(topicData));
     dispatch(topicSliceActions.switchCreatingTopic());
-    dispatch(topicSliceActions.openTopic(value));
+    dispatch(topicSliceActions.registerTopic(topicData));
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

@@ -1,6 +1,6 @@
 import { getUserApiInstance } from "@/app/api/getUserApi";
 import { AuthSliceActions } from "@/features/Auth/models/slice";
-import { IUser } from "@/features/Auth/types/types";
+import { IUser } from "@/features/Auth/types/user";
 import { AxiosResponse } from "axios";
 import { call, put, takeEvery } from "redux-saga/effects";
 

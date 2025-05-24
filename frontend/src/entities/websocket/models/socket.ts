@@ -1,8 +1,10 @@
 class Socket {
   public socket: WebSocket | null;
+  public readyState: number | null;
 
   constructor() {
     this.socket = null;
+    this.readyState = null;
   }
 
   on(eventName: string, callback: (e: any) => void) {
@@ -14,12 +16,14 @@ class Socket {
   connect(url: string) {
     if (!this.socket) {
       this.socket = new WebSocket(url);
+      this.readyState = this.socket.readyState;
     }
   }
 
   disconnect() {
     if (this.socket) {
       this.socket.close()
+      this.readyState = this.socket.readyState;
       this.socket = null;
     }
   }

@@ -1,9 +1,10 @@
+import { MessageForGeneration } from "@/features/UserTopics/types/topic";
 import apiInstance from "./instance/axiosInstance";
 
-export const getTopicApiInstance = async (payload: string, token: string) => {
+export const sendMessageApiInstance = async (payload: MessageForGeneration, token: string) => {
   const response = await apiInstance({
     method: 'post',
-    url: '/get_topic',
+    url: '/generate',
     data: payload,
     headers: { Authorization: `Bearer ${token}` },
   });

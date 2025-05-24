@@ -1,5 +1,5 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Topic } from '../types/types';
+import { Topic, TopicMessage, TopicPreview } from '../types/topic';
 
 type TopicsState = {
   cashedTopics: Topic[];
@@ -58,6 +58,9 @@ const topicSlice = createSlice({
     },
     switchCreatingTopic(state) {
       state.isTopicCreating = !state.isTopicCreating;
+    },
+    addMessage(state, action: PayloadAction<TopicMessage>) {
+      Object.values(state.currentTopic!)[0].push(action.payload);
     }
   }
 });
@@ -65,6 +68,8 @@ const topicSlice = createSlice({
 export const topicSliceActions = {
   ...topicSlice.actions,
   openTopic: createAction<string>(`${topicSlice.name}/openTopic`),
+  registerTopic: createAction<TopicPreview>(`${topicSlice.name}/registerTopic`),
+  generateMessage: createAction<string | undefined>(`${topicSlice.name}/generateMessage`),
 };
 
 export default topicSlice.reducer;

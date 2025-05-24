@@ -1,4 +1,4 @@
-import { topicPreview } from '@/features/Auth/types/types';
+import { RootState } from '@/app/Store/store';
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type WebSocketState = {
@@ -72,7 +72,9 @@ const socketSlice = createSlice({
 export const socketSliceActions = {
   ...socketSlice.actions,
   handleMessage: createAction<string>(`${socketSlice.name}/handleMessage`),
-  handleAvaliableData: createAction<string>(`${socketSlice.name}/handleAvaliableData`)
+  // handleAvaliableData: createAction<string>(`${socketSlice.name}/handleAvaliableData`)
 };
 
 export default socketSlice.reducer;
+
+export const selectMessage = (state: RootState) => state.socket.message;
