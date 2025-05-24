@@ -74,7 +74,6 @@ const userSlice = createSlice({
 export const AuthSliceActions = { 
   ...userSlice.actions,
   getUser: createAction(`${userSlice.name}/getUser`),
-  getRefreshToken: createAction(`${userSlice.name}/getRefreshToken`),
 }
 
 export default userSlice.reducer;

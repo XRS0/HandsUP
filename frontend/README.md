@@ -25,7 +25,7 @@ interface SignUpResponseData {
 
 - `/login` endpoint
 - `post` request
-- `headers: { Authorization: `Bearer ${token ? token : ''}` }` header
+- `headers: { Authorization: `Bearer ${access_token}`}` header
 
 ```ts
 interface SignInResponseData {
@@ -35,22 +35,22 @@ interface SignInResponseData {
 ```
 
 **Get User**
-- `/get_user/:${token}` endpoint
+- `/get_user/:${access_token}` endpoint
 - `get` request
 - `without data`
+- headers: { Authorization: `Bearer ${access_token}`} header
 
-*token refreshes automaticly*
 
 **Get Topic**
 - `/get_topic` endpoint
 - `post` request
-- `headers: { Authorization: `Bearer ${token ? token : ''}` }` header
+- `headers: { Authorization: `Bearer ${access_token}`}` header
 - `string //topic name` data
 
 **Register topic**
 - `/create_topic` endpoint
 - `post` request
-- `headers: { Authorization: `Bearer ${token ? token : ''}` }` header
+- `headers: { Authorization: `Bearer ${access_token}`}` header
 
 ```ts
 interface TopicPreview {
@@ -62,7 +62,7 @@ interface TopicPreview {
 **Generate Summ Conspect**
 - `/generate` endpoint
 - `post` request
-- `headers: { Authorization: `Bearer ${token ? token : ''}` }` header
+- `headers: { Authorization: `Bearer ${access_token}`}` header
 
 ```ts
 type MessageForGeneration = {
@@ -71,19 +71,17 @@ type MessageForGeneration = {
 }
 ```
 
+*access_token refreshes automaticly*
+
 # Some important types
 
-**WS** 
-- `PCM 16 bit` from client
+**WS**
+- `PCM 16 bit` from client while s2t works
+- `MessageForGeneration` from client when start to summ.
 - `string //word or letter` from server
 
 **User**
 ```ts
-export interface TopicPreview {
-  name: string;
-  time: number;   //timestamp
-}
-
 export interface IUser extends SignUpResponseData {
   username: string;
   email: string;
@@ -97,11 +95,11 @@ export interface IUser extends SignUpResponseData {
 **Topics**
 ```ts
 export type TopicMessage = {
-  from: "user" | "chat";    // can be diff, but only 2 types
+  from: "user" | "chat";               // can be diff, but only 2 types
   message: string;
 };
 
 export type Topic = {
-  [topicName: string]: TopicMessage[];    // key is a topic name (string)
+  [topicName: string]: TopicMessage[]; // key is a topic name (string)
 }
 ```
