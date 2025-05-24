@@ -16,6 +16,7 @@ class Socket {
   connect(url: string) {
     if (!this.socket) {
       this.socket = new WebSocket(url);
+      this.socket.binaryType = 'arraybuffer';
       this.readyState = this.socket.readyState;
     }
   }
