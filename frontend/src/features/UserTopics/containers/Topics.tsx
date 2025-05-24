@@ -1,5 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import "../ui/ConspectHistory.scss";
+
+import "../ui/Topic.scss";
+
 import { getDateAgo } from "@/shared/utils/date";
 import ConspectHistoryElement from "./ConspectHistoryElement";
 import { topicSliceActions } from "../models/slice";
@@ -45,7 +47,7 @@ const Topics = () => {
   }
 
   return (
-    <div className="history">
+    <div className="history custom-scroll">
       {isTopicCreating && <NewTopic />}
       {Object.keys(groupedTopics).map((time, i) => 
         <ConspectHistoryElement

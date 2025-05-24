@@ -1,4 +1,4 @@
-import React, { use, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "@/views/Button/ui/Button";
 
 import "./UserRecorder.scss";
@@ -8,7 +8,7 @@ import pauseIcon from "@/shared/assets/main-page/icons/pause_icon.svg";
 import editIcon from "@/shared/assets/main-page/icons/edit_icon.svg?react";
 import linkIcon from "@/shared/assets/main-page/icons/link.svg?react";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { continueRecording, pauseRecording, stopRecording } from "@/entities/recorder/deprecated/recorder_old";
+import { continueRecording, pauseRecording, stopRecording } from "@/entities/recorder/recorder";
 import { createClassName } from "@/shared/utils/createClassName";
 import { socketSliceActions } from "@/entities/websocket/slice";
 

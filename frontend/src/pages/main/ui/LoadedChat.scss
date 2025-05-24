@@ -2,22 +2,49 @@
   width: 100%;
   max-width: 800px;
   min-height: 100%;
-  height: auto !important;
+  height: 100vh !important;
+  display: flex;
   flex-direction: column;
+  overflow: hidden;
 
-  .main-prompt-input {
-    position: fixed;
-    bottom: 2.5rem;
-    width: 100%;
-    z-index: 2;
+  .messages-wrapper {
+    padding-top: 1vh;
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+
+    .gradient-top, .gradient-bottom {
+      position: absolute;
+      left: 0;
+      right: 0.5rem;
+      height: 30px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .gradient-top {
+      top: 0;
+      background: linear-gradient(to bottom, var(--bg-color) 0%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    .gradient-bottom {
+      bottom: 0;
+      background: linear-gradient(to top, var(--bg-color) 0%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    .loaded-messages {
+      padding-inline: 10px;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      flex-direction: column-reverse;
+    }
   }
 
-  .cover-block {
-    position: fixed;
-    bottom: 0.5rem;
-    height: 100px;
-    width: 800px;
-    background-color: var(--bg-color);
-    z-index: 1;
+  .main-prompt-input {
+    position: static;
+    width: 100%;
+    margin-bottom: 2rem;
   }
 }

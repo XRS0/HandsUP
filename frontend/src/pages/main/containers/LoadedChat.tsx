@@ -11,13 +11,25 @@ type OwnProps = {
 }
 
 const LoadedChat: React.FC<OwnProps> = ({currentTopic}) => {
+  // cause i cat change readonly obj
+  const messages = [...Object.values(currentTopic)[0]].reverse();
+
   return (
     <div className="loaded-chat">
-      {Object.values(currentTopic)[0].map(message => 
-        <UserMessage message={message.message} from={message.from} />
-      )}
+      <div className="messages-wrapper">
+        <div className="gradient-top"></div>
+
+        <div className="loaded-messages custom-scroll">
+          {messages.map(message => 
+            <UserMessage message={message.message} from={message.from} />
+          )}
+        </div>
+
+        <div className="gradient-bottom"></div>
+      </div>
+    
       <UserComposer />
-      <div className="cover-block" />
+      {/* <div className="cover-block" /> */}
     </div>
   );
 }
