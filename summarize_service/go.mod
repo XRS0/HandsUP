@@ -1,4 +1,4 @@
-module summarize_service
+module github.com/XRS0/HandsUp/summarize_service
 
 go 1.22.0
 
