@@ -5,7 +5,8 @@ import (
 
 	"github.com/XRS0/HandsUp/account_service/internal/domain/models"
 	userRepo "github.com/XRS0/HandsUp/account_service/internal/infrastructure/persistence/postgres"
-	"github.com/XRS0/HandsUp/account_service/internal/interfaces/grpc/server"
+	grpc_server "github.com/XRS0/HandsUp/account_service/internal/interfaces/grpc/server"
+	http_server "github.com/XRS0/HandsUp/account_service/internal/interfaces/http/server"
 	userService "github.com/XRS0/HandsUp/account_service/internal/service/user"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -29,11 +30,23 @@ func main() {
 	// Initialize services
 	userService := userService.NewUserService(userRepo)
 
-	// Initialize and start the gRPC server
-	accountServer := server.NewAccountServer(userService)
-	port := ":50052" // Different port from auth service
-	log.Printf("Starting Account service on port %s", port)
-	if err := accountServer.Start(port); err != nil {
-		log.Fatal(err)
-	}
+	go func() {
+		// Initialize and start the gRPC server
+		accountServer := grpc_server.NewAccountServer(userService)
+		port := ":50052"
+		log.Printf("Starting Account service on port %s", port)
+		if err := accountServer.Start(port); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	go func() {
+		httpServer := http_server.NewHTTPServer(nil)
+		httpServer.RegisterRoutes(userService)
+		port := ":8080"
+		log.Printf("Starting HTTP server on port %s", port)
+		if err := httpServer.Start(port); err != nil {
+			log.Fatal(err)
+		}
+	}()
 }

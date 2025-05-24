@@ -11,6 +11,9 @@ type HTTP_Server struct {
 }
 
 func NewHTTPServer(router *gin.Engine) *HTTP_Server {
+	if router == nil {
+		router = gin.Default()
+	}
 	return &HTTP_Server{
 		Router: router,
 	}
