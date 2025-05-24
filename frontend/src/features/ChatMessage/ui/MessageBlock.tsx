@@ -1,4 +1,3 @@
-
 type OwnProps = {
   ref: React.Ref<HTMLDivElement>;
   height: number;

@@ -13,12 +13,12 @@ const MainPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  // useEffect(() => {      uncomment this!!
-  //   dispatch({
-  //     type: AuthSliceActions.getUser.type,
-  //     meta: { navigate }
-  //   });
-  // }, []);
+  useEffect(() => {
+    dispatch({
+      type: AuthSliceActions.getUser.type,
+      meta: { navigate }
+    });
+  }, []);
 
   return (
     <div className="wrapper">
