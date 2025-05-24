@@ -17,6 +17,8 @@ type Router struct {
 
 func NewRouter() *Router {
 	r := gin.Default()
+
+	r.Use(CORS()) // Enable CORS for all routes
 	account_client, err := account.NewGRPC_Client("localhost:50052")
 	if err != nil {
 		panic(err)
@@ -87,6 +89,7 @@ func (router *Router) InitRoutes(tokenService *jwt.TokenService) {
 
 			// Generate JWT token
 			refresh_token, err := tokenService.GenerateRefreshToken(resp.GetUserId())
+			access_token, err := tokenService.GenerateAccessToken(resp.GetUserId())
 			if err != nil {
 				c.JSON(500, gin.H{
 					"error": "Failed to generate token",
@@ -97,6 +100,7 @@ func (router *Router) InitRoutes(tokenService *jwt.TokenService) {
 			c.SetCookie("refresh", refresh_token, 604800, "/", "localhost", false, true)
 			c.JSON(200, gin.H{
 				"message": "User registered",
+				"token":   access_token,
 			})
 		})
 
@@ -148,7 +152,6 @@ func (router *Router) InitRoutes(tokenService *jwt.TokenService) {
 			})
 		})
 	}
-	apiGroup.Use(CORS())
 	apiGroup.Use(middleware.NewAuthMiddleware(tokenService).Authenticate())
 }
 
