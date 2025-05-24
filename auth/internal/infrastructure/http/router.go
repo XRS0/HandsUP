@@ -35,11 +35,11 @@ func (r *Router) Use(middlewares ...gin.HandlerFunc) {
 
 func CORS() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		c.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
 		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(204)
+			c.AbortWithStatus(200)
 			return
 		}
 		c.Next()
@@ -148,6 +148,7 @@ func (router *Router) InitRoutes(tokenService *jwt.TokenService) {
 			})
 		})
 	}
+	apiGroup.Use(CORS())
 	apiGroup.Use(middleware.NewAuthMiddleware(tokenService).Authenticate())
 }
 
