@@ -30,7 +30,7 @@ const SignUp = () => {
   };
 
   if (isSignSuccess) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/chat" replace />;
   }
 
   return (

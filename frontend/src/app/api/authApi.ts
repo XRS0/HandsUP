@@ -3,6 +3,10 @@ import { SignInResponseData, SignUpResponseData } from "@/features/Auth/types/au
 
 export const registerApiInstance = async (payload: SignUpResponseData) => { 
   const response = await apiInstance.post("/register", payload);
+  if (!response.data) {
+    throw new Error('Failed to fetch');
+  }
+  
   return response.data;
 }
 
@@ -13,6 +17,9 @@ export const loginApiInstance = async (payload: SignInResponseData, token: strin
     data: payload,
     headers: { Authorization: `Bearer ${token ? token : ''}` },
   });
+  if (!response.data) {
+    throw new Error('Failed to fetch');
+  }
 
   return response.data;
 }
