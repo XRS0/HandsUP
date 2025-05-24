@@ -5,9 +5,9 @@ import { AuthSliceActions } from "./slice";
 
 export function* fetchSignInSaga({ payload }: ReturnType<typeof AuthSliceActions.fetchSignInRequest>) {
   try {
-    const data: {message: string, acess_token: string} = yield localStorage.getItem("access_token");
+    const data: {message: string, token: string} = yield localStorage.getItem("access_token");
 
-    const response: JWT = yield call(loginApiInstance, payload, data.acess_token);
+    const response: JWT = yield call(loginApiInstance, payload, data.token);
     console.log(response);
 
     yield localStorage.setItem("access_token", response.access_token);
