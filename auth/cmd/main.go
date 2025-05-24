@@ -27,7 +27,6 @@ func main() {
 	go func() {
 		r := http.NewRouter()
 		r.InitRoutes(jwtService)
-		r.Use(http.CORS())
 		if err := r.Start(http_port); err != nil {
 			log.Fatal(err)
 		}
