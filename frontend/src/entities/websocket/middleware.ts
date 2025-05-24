@@ -3,11 +3,11 @@ import Socket from "./models/socket";
 import { socketAction } from "./types";
 import { socketSliceActions } from "./slice";
 import { Middleware } from "@reduxjs/toolkit";
+import { startRecording } from "../recorder/recorder";
 
 export let globalSocket: Socket; // for sending raw binary unserialized data
 
 export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (params) => (next) => (action) => {
-  // const { dispatch, getState } = params;
   const wsAction = action as socketAction;
 
   globalSocket = socket;
@@ -21,7 +21,7 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
       socket.on('open', () => {
         console.log("[WS]: Connection opened");
         try {
-          // startRecording();  //recordrtc!
+          startRecording();
         } catch (err: any) {
           alert("Error inside ws opening: " + err.message);
         }

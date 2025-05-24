@@ -12,7 +12,7 @@ const StartRecordingButton: React.FC<OwnProps> = ({startAnimation}) => {
   const dispatch = useAppDispatch();
 
   const handleButtonClick = async (e: React.MouseEvent<HTMLElement>) => {
-    await startRecording();     // only for testing
+    // await startRecording();     // only for testing
     dispatch({ type: 'socket/connect', url: process.env.WS_TRANSCRIBE_URL });
     startAnimation(e);
   }
