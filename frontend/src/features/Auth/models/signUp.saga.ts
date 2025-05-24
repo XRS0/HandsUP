@@ -5,7 +5,7 @@ import { AuthSliceActions } from "./slice";
 
 export function* fetchRegisterSaga({ payload }: ReturnType<typeof AuthSliceActions.fetchSignUpRequest>) {
   try {
-    const response: JWT = yield call(registerApiInstance, payload);
+    const response: {message: string} & JWT = yield call(registerApiInstance, payload);
     console.log(response);
 
     yield localStorage.setItem("access_token", response.access_token);
