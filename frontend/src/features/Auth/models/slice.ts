@@ -13,26 +13,7 @@ interface UserSlice {
 }
 
 const initialState: UserSlice = {
-  user: {
-    username: "YXUNGGG",
-    email: "s.krivostanenko@mail.com",
-    password: "Viperr",
-    balance: 31,
-    price_plan: "Free",
-    topics: [
-      {
-        name: "Rome Lecture",
-        time: Date.now() - 86400100
-      },
-      {
-        name: ("Sumarinian Asterix and Obelix"),
-        time: Date.now() - 86400100 * 3
-      }, {
-        name: "Britan English Lesson",
-        time: Date.now() - 86400100 * 3
-      }
-    ],
-  },
+  user: null,
   acess_token: localStorage.getItem("access_token"),
   loading: false,
   error: null,
