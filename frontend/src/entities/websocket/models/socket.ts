@@ -1,10 +1,9 @@
 class Socket {
   public socket: WebSocket | null;
-  public readyState: number | null;
+  public readyState = 0;
 
   constructor() {
     this.socket = null;
-    this.readyState = null;
   }
 
   on(eventName: string, callback: (e: any) => void) {
@@ -17,21 +16,20 @@ class Socket {
     if (!this.socket) {
       this.socket = new WebSocket(url);
       this.socket.binaryType = 'arraybuffer';
-      this.readyState = this.socket.readyState;
     }
   }
 
   disconnect() {
     if (this.socket) {
       this.socket.close()
-      this.readyState = this.socket.readyState;
+      console.log("connection is closed");
       this.socket = null;
     }
   }
 
-  send(message: any) {
+  send(message: ArrayBuffer) {
     if (this.socket) {
-      this.socket.send(JSON.stringify(message));
+      this.socket.send(message);
     }
   }
 }

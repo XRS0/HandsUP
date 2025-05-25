@@ -8,7 +8,7 @@ export function* getUserSaga(action: any) {
   const {navigate} = action.meta;
 
   try {
-    const access_token: string = yield localStorage.getItem("access_token");
+    const access_token: string = yield localStorage.getItem("token");
 
     //i dont sure this is needed or not because sever refreshs tokens automaticly
     if (!access_token) throw new Error("access token does not exist");

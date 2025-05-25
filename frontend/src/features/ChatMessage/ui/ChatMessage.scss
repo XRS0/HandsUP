@@ -1,10 +1,12 @@
+@use "@/shared/ui/media" as *;
+
 .conspect-message-block {
   min-height: 65px;
   width: 100%;
   background-color: var(--secondary-color);
   border: 0.8px solid var(--main-border-color);
   border-radius: 20px;
-  padding: 10px;
+  padding: 20px;
   max-width: 800px;
   transition: height 0.5s;
   opacity: 0;
@@ -34,6 +36,15 @@
     &::-moz-selection {
       background: #22252e !important;
       text-shadow: none;
+    }
+  }
+
+  @include mobile {
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    span {
+      font-size: 15px;
     }
   }
 }

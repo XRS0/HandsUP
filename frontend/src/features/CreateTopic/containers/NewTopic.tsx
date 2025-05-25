@@ -1,4 +1,4 @@
-import { useAppDispatch } from "@/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import useInput from "@/hooks/useInput";
 import { AuthSliceActions } from "@/features/Auth/models/slice";
 import { topicSliceActions } from "@/features/UserTopics/models/slice";
@@ -13,8 +13,13 @@ const NewTopic = () => {
 
   const handleTopicCreate = () => {
     const topicData = { name: value, time: Date.now() }
+
     dispatch(AuthSliceActions.addTopic(topicData));
     dispatch(topicSliceActions.switchCreatingTopic());
+
+    dispatch(topicSliceActions.cashTopic({ [topicData.name]: [] }));
+    dispatch(topicSliceActions.switchTopic({ [topicData.name]: [] }));
+
     dispatch(topicSliceActions.registerTopic(topicData));
   }
 

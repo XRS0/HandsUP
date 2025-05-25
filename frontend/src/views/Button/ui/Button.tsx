@@ -38,9 +38,13 @@ const Button: React.FC<OwnProps> = ({
       )}
       disabled={isDisabled}
     >
-      {IconLeft && <IconLeft style={{marginRight: "6px"}}/>}
+      {IconLeft && <IconLeft style={
+        {marginRight: `${document.body.offsetWidth > 480 ? "6px" : "8px"}`}
+        }/>}
       {children}
-      {IconRight && <IconRight style={{marginRight: "6px"}}/>}
+      {IconRight && <IconRight style={
+        {marginRight: `${document.body.offsetWidth > 480 ? "6px" : "8px"}`}
+        }/>}
     </button>
   );
 };
