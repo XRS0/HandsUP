@@ -8,9 +8,8 @@
   ul, pre, a {
     font-family: "Jost";
     color: var(--light-gray);
-    opacity: 0.2;
-    // filter: blur(1px);
-    // margin: 0;
+    // opacity: 0.2;
+    filter: blur(0px);
   }
 
   h2 {
@@ -63,8 +62,11 @@
 }
 
 @keyframes fade-word {
+  0% {
+    filter: blur(2px);
+  }
   100% {
-    opacity: 1 !important;
-    // filter: blur(0) !important;
+    opacity: 1;
+    filter: blur(0);
   }
 }
