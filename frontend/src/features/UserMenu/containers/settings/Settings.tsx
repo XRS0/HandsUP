@@ -8,6 +8,7 @@ import Dropdown from "@/views/Dropdown/Dropdown";
 import Button from "@/views/Button/ui/Button";
 
 import DropArrowIcon from "@/shared/assets/main-page/icons/dropdown-arrow.svg?react";
+// import dropArrow from "@/shared/assets/main-page/icons/dropdown-arrow.svg";
 import { createPortal } from "react-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { appLanguage, appTheme, settingsSliceActions } from "../../models/slice";
@@ -66,10 +67,22 @@ const Settings: React.FC<OwnProps> = ({ ref }) => {
     }
   }
 
+  const nativeDropdown = (options: string[]) => (
+    <div style={{position: "relative"}}>
+      <select>
+        {options.map((option, i) => <option key={i}>{option}
+        </option>)}
+      </select>
+      <DropArrowIcon style={{marginLeft: "6px"}} className="dropdown-arrow" />
+    </div>
+  );
+
   return (
     <div className="topic" ref={ref}>
-      <MenuField name="Language" value={
-        <div className="dropdown-container">
+      <MenuField name="Language" value={ document.body.offsetWidth <= 480
+        ? nativeDropdown(["Русский", "English"])
+
+        : <div className="dropdown-container">
           <div className="dropdown-activator" onClick={(e) => handleDropdownOpen(dropdownLangRef, openContainerLangRef, e)} ref={openContainerLangRef}>
             <span>{language}</span>
              <DropArrowIcon style={{marginLeft: "6px"}} />
@@ -93,12 +106,13 @@ const Settings: React.FC<OwnProps> = ({ ref }) => {
             </Dropdown>,
             document.body
           )}
-          
         </div>
       }/>
       
-      <MenuField name="Theme" line value={
-        <div className="dropdown-container">
+      <MenuField name="Theme" line value={ document.body.offsetWidth <= 480
+        ? nativeDropdown(["Dark", "Light", "System"])
+        
+        : <div className="dropdown-container">
           <div className="dropdown-activator" onClick={(e) => handleDropdownOpen(dropdownThemeRef, openContainerThemeRef, e)} ref={openContainerThemeRef}>
             <span>{theme}</span>
             <DropArrowIcon style={{marginLeft: "6px"}} />

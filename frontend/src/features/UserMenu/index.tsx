@@ -1,5 +1,4 @@
-import React, { useRef, useState } from "react";
-import ModalOverflow from "./ui/ModalOverflow";
+import React, { useEffect, useRef, useState } from "react";
 
 import "./ui/UserMenu.scss";
 import { createClassName } from "@/shared/utils/createClassName";
@@ -21,7 +20,16 @@ const UserMenu: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd }) => {
   const balanceRef = useRef<HTMLDivElement>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
 
-  const translations = ["0px", "-498px", "-996px"];  // c вычетом border
+  //const translations = ["0px", "-498px", "-996px"];  // c вычетом border
+  const translations = useRef<string[]>([]);
+
+  useEffect(() => {
+    translations.current = [                       //any of topics, cause same width
+      "0px",
+      (profileRef.current!.offsetWidth + parseInt(getComputedStyle(menuBlock.current!).paddingInline) * 2) * -1 + "px",
+      (profileRef.current!.offsetWidth * 2 + parseInt(getComputedStyle(menuBlock.current!).paddingInline) * 4) * -1 + "px"
+    ];
+  }, [document.body.offsetWidth]);
 
   const [topics, setTopics] = useState<
     {[key: string]: boolean}
@@ -45,15 +53,20 @@ const UserMenu: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd }) => {
 
     const topicsArr = Array.from(Object.keys(topics));
     const topicsStatusesArr = Array.from(Object.values(topics));
-
+    
     // обнуляем значения
     transitionBlock.current!.style.animation = 'none';
     menuBlock.current.style.height = window.getComputedStyle(menuBlock.current).height;
     
     // меняем переменные на те, куда хотим переход
-    document.documentElement.style.setProperty('--slide-from', translations[topicsStatusesArr.indexOf(true)]);
-    document.documentElement.style.setProperty('--slide-to', translations[topicsArr.indexOf(topic.innerText)]);
-
+    // if (document.body.offsetWidth > 480) {
+    document.documentElement.style.setProperty('--slide-from', translations.current[topicsStatusesArr.indexOf(true)]);
+    document.documentElement.style.setProperty('--slide-to', translations.current[topicsArr.indexOf(topic.innerText)]);
+    // } else {
+    //   console.log(translationsMobile);
+    //   document.documentElement.style.setProperty('--slide-from', translationsMobile.current[topicsStatusesArr.indexOf(true)]);
+    //   document.documentElement.style.setProperty('--slide-to', translationsMobile.current[topicsArr.indexOf(topic.innerText)]);
+    // }
     transitionBlock.current!.style.animation = "slideUserMenu var(--long-transition) forwards";
 
     setTopics(() => ({
@@ -68,10 +81,10 @@ const UserMenu: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd }) => {
     if (currentTopicElement) { 
       menuBlock.current.style.height = 
       currentTopicElement.offsetHeight
-      + parseInt(window.getComputedStyle(parent).marginBottom)
-      + parseInt(window.getComputedStyle(menuBlock.current).paddingBlock) * 2
+      + parseInt(getComputedStyle(transitionBlock.current!).marginTop)
+      + parseInt(getComputedStyle(menuBlock.current).paddingBlock) * 2
       + parent.offsetHeight
-      + 2     //не хватало 2пкс.
+      + 2
       + "px";
     }
   }

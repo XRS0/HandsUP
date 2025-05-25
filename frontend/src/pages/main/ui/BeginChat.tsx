@@ -1,9 +1,12 @@
-import ChatMessage from "@/features/ChatMessage/containers/ChatMessage"
+import ChatMessage from "@/features/ChatMessage/containers/ChatMessage";
+import UserRecorder from "@/features/UserRecorder/ui/UserRecorder";
 import UserComposer from "@/features/UserComposer/UserComposer"
 import { UserFirstAction } from "@/features/UserFirstAction";
-import UserRecorder from "@/features/UserRecorder/ui/UserRecorder";
 import { useAppSelector } from "@/hooks/redux";
 import useAnimation from "@/hooks/useAnimation";
+
+import logo from "@assets/welcome-page/logo.svg";
+
 
 const BeginChat = () => {
   const {currentTopic} = useAppSelector(state => state.topics);
@@ -24,9 +27,10 @@ const BeginChat = () => {
   return (
     !currentTopic 
     ? <div className="without-topic">
+        <img src={logo} alt="Logo" className="side-logo" />
         <div>
-          <span>Please</span>, start with creating a <span>topic </span>
-          or choosing an <span>existing</span>
+          Создайте новую <span>тему </span>
+          или выберите <span>существующую</span>
         </div>
       </div>
     : <div className="chat">
@@ -46,7 +50,6 @@ const BeginChat = () => {
         onAnimationEnd={handleRecorderUnmount}
         onStop={handleComposerOpen}
       />}
-      {(isRecorderFadeOut || !isRecorderVisible) && <UserComposer />}
     </div>
   );
 }

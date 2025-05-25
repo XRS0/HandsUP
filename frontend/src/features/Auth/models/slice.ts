@@ -12,26 +12,7 @@ interface UserSlice {
 }
 
 const initialState: UserSlice = {
-  user: {
-  username: "YXUNGGG",
-    email: "s.krivostanenko@mail.com",
-    password: "Viperr",
-    balance: 31,
-    price_plan: "Free",
-    topics: [
-      {
-        name: "Rome Lecture",
-        time: Date.now() - 86400100
-      },
-      {
-        name: ("Sumarinian Asterix and Obelix"),
-        time: Date.now() - 86400100 * 3
-      }, {
-        name: "Britan English Lesson",
-        time: Date.now() - 86400100 * 3
-      }
-    ],
-  },
+  user: null,
   acess_token: localStorage.getItem("token"),
   loading: false,
   error: null,
@@ -48,8 +29,9 @@ const userSlice = createSlice({
     fetchSignUpRequest: (state, action: PayloadAction<SignUpResponseData>) => {
       state.loading = true;
     },
-    getUserSucess: (state, action: PayloadAction<IUser>) => {
-      state.user = action.payload;
+    getUserSucess: (state, action: PayloadAction<{user: IUser, topics: TopicPreview[]}>) => {
+      state.user = action.payload.user;
+      state.user.topics = action.payload.topics;
       state.loading = false;
       state.error = null;
     },

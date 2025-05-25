@@ -1,5 +1,6 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Topic, TopicMessage, TopicPreview } from '../types/topic';
+import { RootState } from '@/app/Store/store';
 
 type TopicsState = {
   cashedTopics: Topic[];
@@ -73,3 +74,5 @@ export const topicSliceActions = {
 };
 
 export default topicSlice.reducer;
+
+export const selectCurrentTopic = ((state: RootState) => state.topics.currentTopic);

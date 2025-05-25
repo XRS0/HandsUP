@@ -6,30 +6,33 @@ import { getDateAgo } from "@/shared/utils/date";
 import ConspectHistoryElement from "./ConspectHistoryElement";
 import { topicSliceActions } from "../models/slice";
 import NewTopic from "@/features/CreateTopic/containers/NewTopic";
-import { useState } from "react";
 
 const Topics = () => {
   const { user } = useAppSelector(state => state.user);
   const { isTopicCreating, cashedTopics, currentTopic } = useAppSelector(state => state.topics);
   const dispatch = useAppDispatch();
   
-  // const [selected, setSelected] = useState("");
-
   if (!user) return;
 
   const topics = [...user.topics];   // sort not working without absolute copy
   const groupedTopics: { [topic: string]: string[] } = {}
 
-  topics
-  .sort(({time: timeA}, {time: timeB}) => timeB - timeA)
-  .map(({name, time}, i) => {
-    if (groupedTopics[getDateAgo(time)!]) {
-      groupedTopics[getDateAgo(time)!].push(name);
-    } else {
-      groupedTopics[getDateAgo(time)!] = [];
-      groupedTopics[getDateAgo(time)!].push(name);
-    }
-  });
+  try {
+    topics
+    .sort(({time: timeA}, {time: timeB}) => new Date(timeB!).getMinutes() - new Date(timeA!).getMinutes())
+    .map(({name, time}, i) => {
+      if (!time) return;
+      
+      if (groupedTopics[getDateAgo(new Date(time))!]) {
+        groupedTopics[getDateAgo(new Date(time))!].push(name);
+      } else {
+        groupedTopics[getDateAgo(new Date(time))!] = [];
+        groupedTopics[getDateAgo(new Date(time))!].push(name);
+      }
+    });
+  } catch (err: any) {
+    console.error("Error while parsing a topic date", err.message);
+  }
 
   const handleTopicClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();

@@ -58,14 +58,13 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
 
   const handlePauseRecord = () => isRecording ? pauseRecording() : continueRecording();   // for testing
   const handleStopRecording = (e: React.MouseEvent<HTMLElement>) => {
+    onStop(e);
     stopRecording();
 
-    dispatch(topicSliceActions.addMessage({
-      from: "chat",
-      message: message.join(" ")
-    }))
-
-    onStop(e);
+    // dispatch(topicSliceActions.addMessage({
+    //   from: "chat",
+    //   message: message.join(" ")
+    // }));
   }
 
   const actionButtons = <div className="conspect-interaction">
@@ -147,10 +146,10 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
             {recordTime()}
           </div>
 
-          {recorderButtons}
+          {actionButtons}
         </div>
 
-        {actionButtons}
+        {recorderButtons}
       </div>
     </div>
   );

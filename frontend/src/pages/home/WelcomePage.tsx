@@ -13,8 +13,13 @@ import secondDecor from "@/shared/assets/welcome-page/second-decoration.svg";
 import thirdDecor from "@/shared/assets/welcome-page/third-decoration.svg";
 import Button from "@/views/Button/ui/Button";
 import { NavLink } from "react-router-dom";
+import { useEffect } from "react";
 
 const WelcomePage = () => {
+  useEffect(() => {
+    document.body.style.overflowY = "auto";
+  }, []);
+  
   return (
   <>
     <img 

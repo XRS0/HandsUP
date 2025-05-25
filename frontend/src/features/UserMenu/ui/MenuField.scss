@@ -1,4 +1,5 @@
 @use "@/shared/ui/mixins" as mixin;
+@use "@/shared/ui/media" as *;
 
 .menu-field {
   width: 100%;
@@ -14,6 +15,10 @@
 
     &:has(.dropdown-container) {
       margin-block: 12px;
+
+      @include mobile {
+        margin-block: 10px;
+      }
     }
 
     .fieldname {
@@ -35,5 +40,30 @@
     height: 1px;
     border-radius: 4px;
     background-color: #2C2F3A;
+  }
+
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: "Jost";
+    font-size: 15px;
+    height: 100%;
+    background-color: #2C2F3A;
+    padding: 9px 15px;
+    padding-right: 35px;
+    border-radius: var(--border-blocks);
+    @include mixin.flex-between();
+    align-items: center;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    color: #ebebeb;
+  }
+
+  .dropdown-arrow {
+    position: absolute;
+    z-index: 2;
+    top: 25%;
+    right: 8px;
   }
 }
