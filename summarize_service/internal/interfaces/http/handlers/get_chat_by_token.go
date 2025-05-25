@@ -19,10 +19,10 @@ type HTTP_Error struct {
 func (h *ChatHandler) GetChatByTopic(c *gin.Context) {
 	//TODO сделать отдельный запрос для выдачи одного чата
 	topic := c.Param("topic")
-	chats, err := getAllChatsByToken(c, h)
+	chats, httpErr := getAllChatsByToken(c, h)
 	var currentChat models.Chat
-	if err.Err != nil {
-		c.JSON(err.Code, gin.H{"error": err.Err})
+	if httpErr != nil {
+		c.JSON(httpErr.Code, gin.H{"error": httpErr.Err})
 	}
 
 	for _, chat := range chats {
@@ -33,14 +33,21 @@ func (h *ChatHandler) GetChatByTopic(c *gin.Context) {
 	}
 
 	chatToReturn := dto.Chat{
-		currentChat.Topic: []dto.Message{},
+		currentChat.Topic: []dto.ChatMessage{},
 	}
 
 	for _, message := range currentChat.Messages {
-		chatToReturn[currentChat.Topic] = append(chatToReturn[currentChat.Topic], dto.Message{
-			Text:   message.Text,
-			Prompt: message.Prompt,
-		})
+		if message.Prompt != "" {
+			chatToReturn[currentChat.Topic] = append(chatToReturn[currentChat.Topic], dto.ChatMessage{
+				Text: message.Text,
+				From: true,
+			})
+		} else {
+			chatToReturn[currentChat.Topic] = append(chatToReturn[currentChat.Topic], dto.ChatMessage{
+				Text: message.Text,
+				From: false,
+			})
+		}
 	}
 
 	c.JSON(200, chatToReturn)
