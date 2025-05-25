@@ -26,8 +26,10 @@ func (s *Server) Start(port string) error {
 }
 
 func (s *Server) RegisterRoutes() {
-	s.Router.POST("/chats", s.handler.AddMessageToChat)
+	s.Router.POST("/message/:topic", s.handler.AddMessageToChat)
 	s.Router.GET("/chats", s.handler.GetAllChatsByToken)
 	s.Router.GET("/chats/:topic", s.handler.GetChatByTopic)
-	s.Router.POST("/chats/:topic", s.handler.AddMessageToChat)
+	s.Router.POST("/chats/:topic", func(ctx *gin.Context) {
+		s.handler.CreateChat(ctx, ctx.Param("topic"))
+	})
 }
