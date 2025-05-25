@@ -107,7 +107,7 @@ func (router *Router) InitRoutes(tokenService *jwt.TokenService) {
 		apiGroup.POST("/login", func(c *gin.Context) {
 			// Check if the user is already authorized
 			check := c.Request.Header.Get("Authorization")
-			if check != "" {
+			if check != "Bearer" {
 				// Validate the token
 				check = check[len("Bearer "):] // Remove "Bearer " prefix
 				if _, err := tokenService.ValidateToken(check); err != nil {
