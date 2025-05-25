@@ -4,9 +4,7 @@
 export type ActionType = "socket/connect" | "socket/disconnect" | "socket/sendMessage";
 
 type sendData = {
-  payload: {
-    data: Blob;
-  }
+  payload: ArrayBuffer;
 }
 
 type connectData = {

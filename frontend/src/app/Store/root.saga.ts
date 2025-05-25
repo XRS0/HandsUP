@@ -7,10 +7,10 @@ import watchRegisterTopic from '@/features/CreateTopic/models/saga';
 
 export default function* rootSaga() {
   yield all([
-    watchWsStatus(),
     watchAuth(),
+    watchWsStatus(),
+    watchGetTopic(),
     watchFetchLogin(),
     watchRegisterTopic(),
-    watchGetTopic()
   ]);
 }

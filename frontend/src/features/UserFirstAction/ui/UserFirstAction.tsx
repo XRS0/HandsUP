@@ -5,6 +5,9 @@ import "./UserFirstAction.scss";
 import { createClassName } from "@/shared/utils/createClassName";
 import StartRecordingButton from "../containers/StartRecordingButton";
 import ImportButton from "../containers/ImportButton";
+import Button from "@/views/Button/ui/Button";
+
+import importIcon from "@assets/main-page/icons/import-icon.svg?react";
 
 type OwnProps = HTMLAttributes<HTMLDivElement> & {
   isFadeOut: boolean;
@@ -42,18 +45,27 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
         </div>
         <div className="actions">
           <StartRecordingButton startAnimation={onVoice} />
-          <div
-            ref={containerRef}
-            className="button-dropdown-container"
-            onAnimationEnd={handleAnimationEnd}
-            {...eventHandlers}
-          >
-            <ImportButton
-              handleOpen={handleOpen}
-              isVisible={isVisible}
-              isDropdownFadeOut={isDropdownFadeOut}
-            />
-          </div>
+          
+          {document.body.offsetWidth <= 480 
+            ? <Button
+                onclick={() => {}}
+                children="Import"
+                IconLeft={importIcon}
+                cssClass={`secondary-button button`}
+              />
+            : <div
+              ref={containerRef}
+              className="button-dropdown-container"
+              onAnimationEnd={handleAnimationEnd}
+              {...eventHandlers}
+            >
+              <ImportButton
+                handleOpen={handleOpen}
+                isVisible={isVisible}
+                isDropdownFadeOut={isDropdownFadeOut}
+              />
+            </div>
+          }
         </div>
       </div>
     </div>

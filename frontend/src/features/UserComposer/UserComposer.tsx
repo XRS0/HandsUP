@@ -13,7 +13,7 @@ import { topicSliceActions } from "../UserTopics/models/slice";
 const UserComposer = () => {
   const dispatch = useAppDispatch()
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
   const {value, onChange, clear} = useInput();
   const [isClicked, setIsClicked] = useState({
     short: false,
@@ -57,10 +57,59 @@ const UserComposer = () => {
     clear();
   }
 
+  const conspectConfigButtons = <div className="conspect-config">
+    <Button 
+      name="short"
+      onclick={handleOptionClick} 
+      cssClass={createClassName("config", isClicked["short"] && "actived")} 
+      children={"Short"} 
+      isFilled={false}
+    />
+
+    <Button 
+      name="without_changes"
+      onclick={handleOptionClick} 
+      cssClass={createClassName("config", isClicked["without_changes"] && "actived")} 
+      children={"Without changes"} 
+      isFilled={false}
+    />
+
+    <Button 
+      name="expanded"
+      onclick={handleOptionClick} 
+      cssClass={createClassName("config", isClicked["expanded"] && "actived")}
+      children={"Expanded"} 
+      isFilled={false} 
+    />
+  </div>
+
+  if (document.body.offsetWidth <= 480) return (
+    <div className="main-prompt-input">
+      <div className="input-tools">
+        <input 
+          type="text" 
+          ref={textareaRef as React.Ref<HTMLInputElement>}
+          value={value}
+          onChange={onChange}
+          placeholder="Type something.."
+        />
+
+        <Button
+          IconLeft={stormIcon}
+          children="Generate"
+          cssClass="record-button"
+          onclick={handleSendMessage}
+        />
+      </div>
+
+      {conspectConfigButtons}
+    </div>
+  );
+
   return (
     <div className="main-prompt-input">
       <textarea  
-        ref={textareaRef}
+        ref={textareaRef as React.Ref<HTMLTextAreaElement>}
         value={value}
         onChange={onChange}
         placeholder="Type something for config a conspect..."
@@ -71,31 +120,7 @@ const UserComposer = () => {
       </div>
 
       <div className="input-tools">
-        <div className="conspect-config">
-          <Button 
-            name="short"
-            onclick={handleOptionClick} 
-            cssClass={createClassName("config", isClicked["short"] && "actived")} 
-            children={"Short"} 
-            isFilled={false}
-          />
-
-          <Button 
-            name="without_changes"
-            onclick={handleOptionClick} 
-            cssClass={createClassName("config", isClicked["without_changes"] && "actived")} 
-            children={"Without changes"} 
-            isFilled={false}
-          />
-
-          <Button 
-            name="expanded"
-            onclick={handleOptionClick} 
-            cssClass={createClassName("config", isClicked["expanded"] && "actived")}
-            children={"Expanded"} 
-            isFilled={false} 
-          />
-        </div>
+        {conspectConfigButtons}
 
         <div className="actions">
           <Button 

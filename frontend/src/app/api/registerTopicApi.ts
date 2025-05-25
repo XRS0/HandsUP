@@ -10,7 +10,7 @@ export const registerTopicApiInstance = async (payload: TopicPreview, token: str
   });
 
   if (!response.data) {
-    throw new Error('Failed to get user');
+    throw new Error('Failed to to create topics');
   }
 
   return response;

@@ -10,10 +10,10 @@ import { useState } from "react";
 
 const Topics = () => {
   const { user } = useAppSelector(state => state.user);
-  const { isTopicCreating, cashedTopics } = useAppSelector(state => state.topics);
+  const { isTopicCreating, cashedTopics, currentTopic } = useAppSelector(state => state.topics);
   const dispatch = useAppDispatch();
   
-  const [selected, setSelected] = useState("");
+  // const [selected, setSelected] = useState("");
 
   if (!user) return;
 
@@ -37,7 +37,7 @@ const Topics = () => {
     const topicName = e.currentTarget.innerText;
     const switchedTopic = cashedTopics.find(t => Object.keys(t)[0] === topicName);   //get only keys (names) of topics
     
-    setSelected(topicName);
+    // setSelected(topicName);
 
     if (switchedTopic) {
       dispatch(topicSliceActions.switchTopic(switchedTopic));
@@ -46,6 +46,8 @@ const Topics = () => {
     }
   }
 
+  const selected = currentTopic && Object.keys(currentTopic)[0];
+
   return (
     <div className="history custom-scroll">
       {isTopicCreating && <NewTopic />}
@@ -53,7 +55,7 @@ const Topics = () => {
         <ConspectHistoryElement
           key={i}
           date={time}
-          selected={selected}
+          selected={selected || ""}
           topics={groupedTopics[time]}
           onClick={handleTopicClick}
         />

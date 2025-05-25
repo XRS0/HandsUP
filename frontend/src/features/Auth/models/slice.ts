@@ -2,7 +2,6 @@ import { TopicPreview } from '@/features/UserTopics/types/topic';
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IUser } from '../types/user';
 import { SignInResponseData, SignUpResponseData } from '../types/auth';
-import { RootState } from '@/app/Store/store';
 
 interface UserSlice {
   user: IUser | null;
@@ -13,8 +12,27 @@ interface UserSlice {
 }
 
 const initialState: UserSlice = {
-  user: null,
-  acess_token: localStorage.getItem("access_token"),
+  user: {
+  username: "YXUNGGG",
+    email: "s.krivostanenko@mail.com",
+    password: "Viperr",
+    balance: 31,
+    price_plan: "Free",
+    topics: [
+      {
+        name: "Rome Lecture",
+        time: Date.now() - 86400100
+      },
+      {
+        name: ("Sumarinian Asterix and Obelix"),
+        time: Date.now() - 86400100 * 3
+      }, {
+        name: "Britan English Lesson",
+        time: Date.now() - 86400100 * 3
+      }
+    ],
+  },
+  acess_token: localStorage.getItem("token"),
   loading: false,
   error: null,
   isSignSuccess: false,

@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { continueRecording, pauseRecording, stopRecording } from "@/entities/recorder/recorder";
 import { createClassName } from "@/shared/utils/createClassName";
 import { socketSliceActions } from "@/entities/websocket/slice";
+import { topicSliceActions } from "@/features/UserTopics/models/slice";
 
 type OwnProps = {
   onStop: (e: React.MouseEvent<HTMLElement>) => void;
@@ -19,12 +20,12 @@ type OwnProps = {
 }
 
 const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) => {
-  const [timer, setTimer] = useState(0);
-  const [isCopied, setIsCopied] = useState(false);
-  const timerId= useRef<NodeJS.Timeout | null>(null);
   const { isRecording, isEditingNow, message } = useAppSelector(state => state.socket);
-
   const dispatch = useAppDispatch();
+
+  const [isCopied, setIsCopied] = useState(false);
+  const [timer, setTimer] = useState(0);
+  const timerId= useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (isRecording) {
@@ -58,8 +59,76 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
   const handlePauseRecord = () => isRecording ? pauseRecording() : continueRecording();   // for testing
   const handleStopRecording = (e: React.MouseEvent<HTMLElement>) => {
     stopRecording();
+
+    dispatch(topicSliceActions.addMessage({
+      from: "chat",
+      message: message.join(" ")
+    }))
+
     onStop(e);
   }
+
+  const actionButtons = <div className="conspect-interaction">
+    <Button 
+      children={"Изменить"}  
+      cssClass="interaction" 
+      isDisabled={isRecording || isEditingNow}
+      IconLeft={editIcon} 
+      onclick={() => dispatch(socketSliceActions.allowEdit())} 
+    />
+
+    <Button 
+      children={isCopied ? "Скопировано" : "Копировать"}
+      cssClass="copy-button interaction"
+      isDisabled={isRecording || isEditingNow}
+      IconLeft={linkIcon} 
+      onclick={copyToCLipboard}
+    />
+  </div>
+
+  const recorderButtons = <div className="actions">
+    <Button
+      cssClass="stop-button action-button"
+      onclick={handleStopRecording}
+      isDisabled={isEditingNow}
+    >
+      <div className="square-icon"></div>
+    </Button>
+
+    <Button
+      cssClass={createClassName("action-button", !isRecording && "paused")}
+      onclick={handlePauseRecord}
+      isDisabled={isEditingNow}
+    >
+      <img 
+        id="play-icon"
+        src={playIcon}
+        alt="play"
+      />
+
+      <img 
+        id="pause-icon"
+        src={pauseIcon}
+        alt="pause" 
+      />
+    </Button>
+  </div>
+
+  if (document.body.offsetWidth <= 480) return (
+    <div
+      onAnimationEnd={onAnimationEnd}
+      className={createClassName("user-recorder", !isFadeOut ? "--enter" : "--exit")}>
+      <div className="recorder-container">
+        <div
+          style={isRecording ? {color: "#707070"} : {color: "#AAA"}}
+          className="record-time"
+        >{recordTime()}</div>
+
+        {recorderButtons}
+      </div>
+      {actionButtons}
+    </div>
+  );
 
   return (
     <div 
@@ -78,50 +147,10 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
             {recordTime()}
           </div>
 
-          <div className="conspect-interaction">
-            <Button 
-              children={"Изменить"}  
-              cssClass="interaction" 
-              isDisabled={isRecording || isEditingNow}
-              IconLeft={editIcon} 
-              onclick={() => dispatch(socketSliceActions.allowEdit())} 
-            />
-
-            <Button 
-              children={isCopied ? "Скопировано" : "Копировать"}
-              cssClass="copy-button interaction"
-              isDisabled={isRecording || isEditingNow}
-              IconLeft={linkIcon} 
-              onclick={copyToCLipboard}
-            />
-          </div>
+          {recorderButtons}
         </div>
 
-        <div className="actions">
-          <Button
-            cssClass="stop-button action-button"
-            onclick={handleStopRecording}
-          >
-            <div className="square-icon"></div>
-          </Button>
-
-          <Button
-            cssClass={createClassName("action-button", !isRecording && "paused")}
-            onclick={handlePauseRecord}
-          >
-            <img 
-              id="play-icon"
-              src={playIcon}
-              alt="play"
-            />
-
-            <img 
-              id="pause-icon"
-              src={pauseIcon}
-              alt="pause" 
-            />
-          </Button>
-        </div>
+        {actionButtons}
       </div>
     </div>
   );

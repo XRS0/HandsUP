@@ -2,7 +2,6 @@ import { put, takeEvery } from "redux-saga/effects";
 import { socketSliceActions } from "./slice";
 
 export function* handleRecievedMessage(action: { payload: string }) {
-  console.log(action.payload);
   yield put(socketSliceActions.addMessage(action.payload));
 }
 
