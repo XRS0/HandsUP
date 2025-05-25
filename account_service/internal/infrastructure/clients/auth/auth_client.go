@@ -11,6 +11,7 @@ import (
 // AuthClient is a client for the Auth gRPC service.
 type AuthClient struct {
 	client pb.AuthServiceClient
+	Conn   *grpc.ClientConn
 }
 
 // NewAuthClient creates a new AuthClient.
@@ -20,7 +21,6 @@ func NewAuthClient() *AuthClient {
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
-	defer conn.Close()
 	// Create a new AuthServiceClient
 	client := pb.NewAuthServiceClient(conn)
 	if client == nil {
@@ -28,6 +28,7 @@ func NewAuthClient() *AuthClient {
 	}
 	return &AuthClient{
 		client: client,
+		Conn:   conn,
 	}
 }
 

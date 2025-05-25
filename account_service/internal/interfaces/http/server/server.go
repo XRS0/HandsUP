@@ -2,26 +2,29 @@ package server
 
 import (
 	"github.com/XRS0/HandsUp/account_service/internal/domain/ports/service"
+	"github.com/XRS0/HandsUp/account_service/internal/infrastructure/clients/auth"
 	"github.com/XRS0/HandsUp/account_service/internal/interfaces/http/handlers"
 	"github.com/gin-gonic/gin"
 )
 
 type HTTP_Server struct {
-	Router *gin.Engine
+	Router     *gin.Engine
+	AuthClient *auth.AuthClient
 }
 
-func NewHTTPServer(router *gin.Engine) *HTTP_Server {
+func NewHTTPServer(router *gin.Engine, authClient *auth.AuthClient) *HTTP_Server {
 	if router == nil {
 		router = gin.Default()
 	}
 	return &HTTP_Server{
-		Router: router,
+		Router:     router,
+		AuthClient: authClient,
 	}
 }
 
 func (s *HTTP_Server) RegisterRoutes(userService service.UserService) {
 	s.Router.GET("/get_user/:token", func(ctx *gin.Context) {
-		handlers.GetUserHandler(ctx, userService)
+		handlers.GetUserHandler(ctx, userService, s.AuthClient)
 	})
 }
 

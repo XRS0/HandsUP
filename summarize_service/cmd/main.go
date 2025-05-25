@@ -4,10 +4,10 @@ import (
 	"log"
 	"net"
 
-	"summarize_service/infrastructure/config"
-	summarizerGrpc "summarize_service/interface/grpc"
-	pb "summarize_service/interface/grpc/gen"
-	"summarize_service/internal/container"
+	"github.com/XRS0/HandsUp/summarize_service/config"
+	summarizerGrpc "github.com/XRS0/HandsUp/summarize_service/interface/grpc"
+	pb "github.com/XRS0/HandsUp/summarize_service/interface/grpc/gen"
+	"github.com/XRS0/HandsUp/summarize_service/internal/container"
 
 	"google.golang.org/grpc"
 )
