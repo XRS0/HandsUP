@@ -4,6 +4,7 @@ import { TopicMessage } from "@/features/UserTopics/types/topic";
 import MDMessageBlock from "./MDMessageBlock";
 
 import "../ui/LoadedChat.scss";
+import { useEffect, useRef } from "react";
 
 type OwnProps = {
   currentTopic: {
@@ -13,16 +14,21 @@ type OwnProps = {
 
 const LoadedChat: React.FC<OwnProps> = ({currentTopic}) => {
   const messages = [...Object.values(currentTopic)[0]].reverse();
+  const chatRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatRef.current) chatRef.current.style.justifyContent = "flex-start";
+  }, [chatRef.current?.offsetHeight]);
   
   return (
-    <div className="loaded-chat">
+    <div className="loaded-chat"  ref={chatRef}>
       <div className="messages-wrapper">
         <div className="gradient-top"></div>
 
         <div 
           className={"loaded-messages custom-scroll"}
         >
-          {<MDMessageBlock />}
+          <MDMessageBlock />
           {messages.map(message => 
             <UserMessage message={message.text} from={message.from} />
           )}
