@@ -2,9 +2,11 @@ import ChatMessage from "@/features/ChatMessage/containers/ChatMessage"
 import UserComposer from "@/features/UserComposer/UserComposer"
 import { UserFirstAction } from "@/features/UserFirstAction";
 import UserRecorder from "@/features/UserRecorder/ui/UserRecorder";
+import { useAppSelector } from "@/hooks/redux";
 import useAnimation from "@/hooks/useAnimation";
 
 const BeginChat = () => {
+  const {currentTopic} = useAppSelector(state => state.topics);
   const {
     handleAnimationEnd,
     handleOpen: handleBlockClose,
@@ -20,7 +22,14 @@ const BeginChat = () => {
   } = useAnimation({trigger: "click", initialVsibility: true});
 
   return (
-    <div className="chat">
+    !currentTopic 
+    ? <div className="without-topic">
+        <div>
+          <span>Please</span>, start with creating a <span>topic </span>
+          or choosing an <span>existing</span>
+        </div>
+      </div>
+    : <div className="chat">
       {/* <MDMessageBlock /> */}
       { !isVisible && <ChatMessage /> }
 

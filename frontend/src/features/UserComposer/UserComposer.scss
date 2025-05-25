@@ -1,9 +1,11 @@
 @use "@/shared/ui/mixins" as mixin;
+@use "@/shared/ui/media" as *;
 
 .main-prompt-input {
   border-radius: 20px;
   padding: 15px;
-  width: 80%;
+  width: 100%;
+  margin-bottom: 2rem;
   max-width: 800px;
   min-height: 120px;
   max-height: 250px;
@@ -14,8 +16,6 @@
   pointer-events: none;
   visibility: visible;
 
-  position: absolute;
-  bottom: 2rem;
   animation: ComposerFadeIn 0.5s forwards;
 
   textarea {
@@ -33,6 +33,46 @@
     }
   }
 
+  .conspect-config {
+    display: flex;
+    margin-block: 1rem;
+
+    .config {
+      border: 1px solid var(--main-border-color);
+      font-weight: 400;
+      color: #AAA;
+      padding: 6px 16px;
+      margin-right: 14px;
+      border-radius: 38px;
+      white-space: nowrap;
+
+      @include mobile {
+        width: 100%;
+        margin: 0;
+        height: 40px;
+        padding-inline: 4%;
+      }
+
+      &.actived {
+        border-color: var(--main-background-color) !important;
+        background-color: var(--main-background-color) !important;
+        color: var(--main-color);
+      }
+    
+      &:hover, &.active {
+        border-color: var(--main-background-color) !important;
+        background-color: var(--main-background-color) !important;
+        color: var(--main-color);
+      }
+    }
+
+    @include mobile {
+      width: 100%;
+      gap: 10px;
+      justify-content: space-between;
+    }
+  }
+
   .input-tools {
     margin-top: 10px;
     @include mixin.flex-between;
@@ -41,38 +81,36 @@
       padding: 7px 16px !important;
     }
   
-    .conspect-config {
-      display: flex;
-
-      .config {
-        border: 1px solid var(--main-border-color);
-        font-weight: 400;
-        color: #AAA;
-        padding: 6px 16px;
-        margin-right: 14px;
-        border-radius: 40px;
-        white-space: nowrap;
-
-        &.actived {
-          border-color: var(--main-background-color) !important;
-          background-color: var(--main-background-color) !important;
-          color: var(--main-color);
-        }
-    
-        &:hover, &.active {
-          border-color: var(--main-background-color) !important;
-          background-color: var(--main-background-color) !important;
-          color: var(--main-color);
-        }
-      }
-    }
-  
     .actions {
       display: flex;
 
       .record-button {
         margin-left: 14px;
         border-radius: 40px;
+      }
+    }
+
+    @include mobile {
+      margin-top: 0;
+      width: 100%;
+      display: flex;
+      gap: 10px;
+
+      input {
+        padding: 5px 15px;
+        color: #AAA;
+        width: 100%;
+        height: 46px;
+        font-size: 15px;
+        font-weight: 400;
+        border-radius: 2rem;
+        background-color: var(--secondary-color);
+        border: 1px solid var(--main-border-color);
+
+        &::placeholder {
+          color: #707070;
+          font-size: 14px;
+        }
       }
     }
   }
@@ -85,6 +123,20 @@
     bottom: -1.375rem;
     right: 0.5rem;
     color: var(--gray);
+  }
+
+  @include mobile {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    margin-bottom: 4px;
+    padding: 0 20px;
+
+    .record-button {
+      height: 46px;
+      padding: 0 5px;
+      border-radius: 2rem;
+    }
   }
 }
 

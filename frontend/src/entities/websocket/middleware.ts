@@ -21,6 +21,7 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
       socket.on('open', () => {
         console.log("[WS]: Connection opened");
         try {
+          socket.readyState = 1;
           startRecording();
         } catch (err: any) {
           alert("Error inside ws opening: " + err.message);
@@ -41,6 +42,7 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
 
       socket.on('close', () => {
         console.log("[WS]: Connection closed");
+        socket.readyState = 0;
       });
       break;
 
@@ -56,5 +58,5 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
       break
   }
 
-  return next(action)
+  return next(action);
 }

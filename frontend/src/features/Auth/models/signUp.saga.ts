@@ -8,7 +8,7 @@ export function* fetchRegisterSaga({ payload }: ReturnType<typeof AuthSliceActio
     const response: {message: string, token: string} = yield call(registerApiInstance, payload);
     console.log(response);
 
-    yield localStorage.setItem("access_token", response.token);
+    yield localStorage.setItem("token", response.token);
     yield put(AuthSliceActions.fetchSuccess(response.token));
   } catch (error: any) {
     console.error(error);

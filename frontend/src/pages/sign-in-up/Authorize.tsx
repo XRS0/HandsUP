@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import "./ui/Authorization.scss";
 import "./ui/Animations.scss";
@@ -10,7 +10,7 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import SignIn from "@/features/Auth/containers/SignIn";
 import SignUp from "@/features/Auth/containers/SignUp";
 import { createClassName } from "@/shared/utils/createClassName";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Authorize = () => {
   const [mode] = useState<"out-in" | "in-out" | undefined>("out-in");

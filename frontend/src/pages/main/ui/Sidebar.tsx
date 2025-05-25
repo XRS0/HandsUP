@@ -1,7 +1,4 @@
 import React from "react";
-import Button from "../../../views/Button/ui/Button";
-import ConspectHistoryElement from "../../../features/UserTopics/containers/ConspectHistoryElement";
-
 import "./Sidebar.scss";
 
 import logo from "@assets/welcome-page/logo.svg";
@@ -32,8 +29,7 @@ const Sidebar = () => {
   return (
     <>
       <div className="sidebar">
-        <img src={logo} alt="Logo" />
-
+        <img src={logo} alt="Logo" className="side-logo" />
         <CreateTopicBtn />
 
         <div className="line" />
@@ -44,7 +40,7 @@ const Sidebar = () => {
           <div className="user-block">
             <div className="upgrade-price-plan">
               <div>
-                <img src={priceIcon} alt="icon" />
+                <img src={priceIcon} alt="icon" className="price-icon" />
                 Upgrade plan
               </div>
 

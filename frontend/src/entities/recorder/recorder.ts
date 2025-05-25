@@ -19,9 +19,10 @@ export async function startRecording() {
     workletNode = new AudioWorkletNode(audioContext, 'pcm-processor');
 
     workletNode.port.onmessage = (event) => {
+      console.log(globalSocket.readyState);
+      
       if (globalSocket.readyState === WebSocket.OPEN) {
         globalSocket.send(event.data);
-        console.log("[WS] sended message:", event.data);
       }
     };
 

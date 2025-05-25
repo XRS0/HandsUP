@@ -1,9 +1,9 @@
-import apiInstance from "./instance/axiosInstance";
+import { userApiInstance } from "./instance/axiosInstance";
 
 export const getUserApiInstance = async (token: string) => {
-  const response = await apiInstance({
+  const response = await userApiInstance({
     method: "get",
-    url: `/get_user/:${token}`,
+    url: `/get_user/${token}`,
     headers: { Authorization: `Bearer ${token}` },
   });
 
