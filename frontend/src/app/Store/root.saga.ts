@@ -4,6 +4,7 @@ import { watchAuth } from '@/features/Auth';
 import watchFetchLogin from '../providers/auth/models/saga';
 import { watchGetTopic } from '@/features/UserTopics';
 import watchRegisterTopic from '@/features/CreateTopic/models/saga';
+import { watchGenerateMessage } from '@/features/UserTopics/models/saga';
 
 export default function* rootSaga() {
   yield all([
@@ -12,5 +13,6 @@ export default function* rootSaga() {
     watchGetTopic(),
     watchFetchLogin(),
     watchRegisterTopic(),
+    watchGenerateMessage(),
   ]);
 }

@@ -3,7 +3,7 @@ import { topicApiInstance } from "./instance/axiosInstance";
 export const getTopicApiInstance = async (payload: string, token: string) => {
   const response = await topicApiInstance({
     method: 'get',
-    url: `/get_topic/${payload}`,   //topic name
+    url: `/chats/${payload.split(" ").join("_")}`,   //topic name
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -11,7 +11,7 @@ export const getTopicApiInstance = async (payload: string, token: string) => {
     throw new Error('Failed to get user');
   }
 
-  return response;
+  return response.data;
 }
 
 export const getAllTopicApiInstance = async (token: string) => {

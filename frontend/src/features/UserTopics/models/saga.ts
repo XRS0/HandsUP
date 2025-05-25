@@ -10,13 +10,20 @@ export function* getTopicSaga({payload}: {payload: string}) {
     const token: string = yield localStorage.getItem("token");
 
     const response: Topic = yield call(getTopicApiInstance, payload, token);  // give them type when i will
-    console.log(response);
 
-    yield put(topicSliceActions.cashTopic(response));
-    yield put(topicSliceActions.switchTopic(response));
+    const formattedTopic: Topic = {
+      [Object.keys(response)[0].split("_").join(" ")]: response[0],
+    }
+
+    yield put(topicSliceActions.cashTopic(formattedTopic));
+    yield put(topicSliceActions.switchTopic(formattedTopic));
   } catch (error: any) {
     console.error(error.message);
   }
+}
+
+export default function* watchGetTopic() {
+  yield takeLatest(topicSliceActions.openTopic, getTopicSaga);
 }
 
 export function* generateMessageSaga({payload}: ReturnType<typeof topicSliceActions.generateMessage>) {
@@ -44,6 +51,6 @@ export function* generateMessageSaga({payload}: ReturnType<typeof topicSliceActi
   }
 }
 
-export default function* watchGetTopic() {
+export function* watchGenerateMessage() {
   yield takeLatest(topicSliceActions.generateMessage, generateMessageSaga);
 }

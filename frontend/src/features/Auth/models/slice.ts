@@ -31,7 +31,10 @@ const userSlice = createSlice({
     },
     getUserSucess: (state, action: PayloadAction<{user: IUser, topics: TopicPreview[]}>) => {
       state.user = action.payload.user;
-      state.user.topics = action.payload.topics;
+      
+      if (!action.payload.topics) state.user.topics = []
+      else state.user.topics = action.payload.topics;
+
       state.loading = false;
       state.error = null;
     },
