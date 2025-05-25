@@ -108,6 +108,8 @@ func (router *Router) InitRoutes(tokenService *jwt.TokenService) {
 			// Check if the user is already authorized
 			check := c.Request.Header.Get("Authorization")
 			if check != "" {
+				// Validate the token
+				check = check[len("Bearer "):] // Remove "Bearer " prefix
 				if _, err := tokenService.ValidateToken(check); err != nil {
 					c.JSON(401, gin.H{
 						"error": "Unauthorized",
