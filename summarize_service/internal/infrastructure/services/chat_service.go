@@ -68,3 +68,11 @@ func (s *ChatService) AddMessageToChat(chatID string, message *models.Message) (
 	}
 	return createdMessage, nil
 }
+
+func (s *ChatService) GetChatByTopic(topic, userId string) (*models.Chat, error) {
+	chat, err := s.chatRepo.GetChatByTopic(context.Background(), topic, userId)
+	if err != nil {
+		return nil, err
+	}
+	return chat, nil
+}

@@ -28,6 +28,23 @@ func (r *ChatRepository) CreateChat(ctx context.Context, chat *models.Chat) (*mo
 	return chat, nil
 }
 
+func (r *ChatRepository) GetChatByTopic(ctx context.Context, topic, userId string) (*models.Chat, error) {
+	var chat models.Chat
+
+	if err := r.db.WithContext(ctx).First(&chat, "topic = ? AND user_id = ?", topic, userId).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, fmt.Errorf("chat not found: %w", err)
+		}
+		return nil, fmt.Errorf("failed to get chat by ID: %w", err)
+	}
+
+	if err := r.db.WithContext(ctx).Model(&chat).Association("Messages").Find(&chat.Messages); err != nil {
+		return nil, fmt.Errorf("failed to preload messages for chat: %w", err)
+	}
+
+	return &chat, nil
+}
+
 func (r *ChatRepository) GetChatByID(ctx context.Context, id string) (*models.Chat, error) {
 	var chat models.Chat
 

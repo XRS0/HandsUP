@@ -25,9 +25,9 @@ func (h *ChatHandler) CreateChat(c *gin.Context, topic string) {
 
 	_, err = h.chatService.CreateChat(chat)
 	if err != nil {
-		c.JSON(500, gin.H{"error": "Failed to delete chat"})
+		c.JSON(500, gin.H{"error": "Failed to create chat"})
 		return
 	}
 
-	c.JSON(200, gin.H{"message": "Chat deleted successfully"})
+	c.JSON(200, gin.H{"message": "Chat create successfully"})
 }
