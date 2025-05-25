@@ -2,9 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import Markdown from "react-markdown";
 
-import "../ui/MainPage.scss";
 import "../ui/LoadedChat.scss";
 import "../ui/MDMessageBlock.scss";
+import "@/features/ChatMessage/ui/StaticMessage.scss";
 
 const MDMessageBlock = () => {
   const { markdown } = useAppSelector(state => state.socket);
@@ -45,14 +45,6 @@ const MDMessageBlock = () => {
       }, 100 * i);
     });
   }, [markdown]);
-
-  // useEffect(() => {
-  //   animationInterval.current = setInterval(() => forceUpdate(), 400);
-
-  //   return () => {
-  //     if (animationInterval.current) clearInterval(animationInterval.current);
-  //   }
-  // }, []);
 
   return (
     <div className="chat-message-container md-block --enter"

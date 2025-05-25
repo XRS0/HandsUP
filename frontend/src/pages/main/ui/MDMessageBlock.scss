@@ -7,6 +7,7 @@
   ul, pre, a {
     font-family: "Jost";
     color: var(--light-gray);
+    filter: blur(2px);
     // margin: 0;
   }
 
@@ -56,5 +57,12 @@
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
+  }
+}
+
+@keyframes fade-word {
+  100% {
+    opacity: 1;
+    filter: blur(0);
   }
 }

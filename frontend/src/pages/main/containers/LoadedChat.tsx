@@ -4,8 +4,6 @@ import { TopicMessage } from "@/features/UserTopics/types/topic";
 import MDMessageBlock from "./MDMessageBlock";
 
 import "../ui/LoadedChat.scss";
-import { useAppSelector } from "@/hooks/redux";
-import { globalSocket } from "@/entities/websocket/middleware";
 
 type OwnProps = {
   currentTopic: {
@@ -21,11 +19,10 @@ const LoadedChat: React.FC<OwnProps> = ({currentTopic}) => {
       <div className="messages-wrapper">
         <div className="gradient-top"></div>
 
-        {<MDMessageBlock />}
-
         <div 
           className={"loaded-messages custom-scroll"}
         >
+          {<MDMessageBlock />}
           {messages.map(message => 
             <UserMessage message={message.text} from={message.from} />
           )}
