@@ -61,6 +61,7 @@ func (s *ChatService) GetMessagesByChatID(chatID string) ([]models.Message, erro
 }
 
 func (s *ChatService) AddMessageToChat(chatID string, message *models.Message) (*models.Message, error) {
+	message.ID = uuid.NewString()
 	message.ChatID = chatID
 	createdMessage, err := s.chatRepo.AddMessageToChat(context.Background(), chatID, message)
 	if err != nil {

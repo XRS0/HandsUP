@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/XRS0/HandsUp/summarize_service/internal/domain/models"
@@ -31,15 +32,13 @@ func (r *ChatRepository) CreateChat(ctx context.Context, chat *models.Chat) (*mo
 func (r *ChatRepository) GetChatByTopic(ctx context.Context, topic, userId string) (*models.Chat, error) {
 	var chat models.Chat
 
-	if err := r.db.WithContext(ctx).First(&chat, "topic = ? AND user_id = ?", topic, userId).Error; err != nil {
-		if err == gorm.ErrRecordNotFound {
+	if err := r.db.WithContext(ctx).
+		Preload("Messages").
+		First(&chat, "topic = ? AND user_id = ?", topic, userId).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, fmt.Errorf("chat not found: %w", err)
 		}
-		return nil, fmt.Errorf("failed to get chat by ID: %w", err)
-	}
-
-	if err := r.db.WithContext(ctx).Model(&chat).Association("Messages").Find(&chat.Messages); err != nil {
-		return nil, fmt.Errorf("failed to preload messages for chat: %w", err)
+		return nil, fmt.Errorf("failed to get chat by topic and user_id: %w", err)
 	}
 
 	return &chat, nil
