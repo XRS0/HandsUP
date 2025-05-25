@@ -1,1 +1,69 @@
 package services
+
+import (
+	"context"
+
+	"github.com/XRS0/HandsUp/summarize_service/internal/domain/models"
+	"github.com/XRS0/HandsUp/summarize_service/internal/domain/ports/repository"
+	"github.com/XRS0/HandsUp/summarize_service/internal/domain/ports/service"
+)
+
+type ChatService struct {
+	chatRepo    repository.ChatRepository
+	messageRepo repository.MessageRepository
+}
+
+func NewChatService(chatRepo repository.ChatRepository, messageRepo repository.MessageRepository) service.ChatService {
+	return &ChatService{
+		chatRepo:    chatRepo,
+		messageRepo: messageRepo,
+	}
+}
+
+func (s *ChatService) CreateChat(chat *models.Chat) (*models.Chat, error) {
+	createdChat, err := s.chatRepo.CreateChat(context.Background(), chat)
+	if err != nil {
+		return nil, err
+	}
+	return createdChat, nil
+}
+
+func (s *ChatService) GetChatByID(id string) (*models.Chat, error) {
+	chat, err := s.chatRepo.GetChatByID(context.Background(), id)
+	if err != nil {
+		return nil, err
+	}
+	return chat, nil
+}
+
+func (s *ChatService) GetAllChatsByUserID(userID string) ([]models.Chat, error) {
+	chats, err := s.chatRepo.GetAllChatsByUserID(context.Background(), userID)
+	if err != nil {
+		return nil, err
+	}
+	return chats, nil
+}
+
+func (s *ChatService) UpdateChat(chat *models.Chat) (*models.Chat, error) {
+	updatedChat, err := s.chatRepo.UpdateChat(context.Background(), chat)
+	if err != nil {
+		return nil, err
+	}
+	return updatedChat, nil
+}
+
+func (s *ChatService) DeleteChat(id string) error {
+	err := s.chatRepo.DeleteChat(context.Background(), id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *ChatService) GetMessagesByChatID(chatID string) ([]models.Message, error) {
+	messages, err := s.messageRepo.GetMessagesByChatID(chatID)
+	if err != nil {
+		return nil, err
+	}
+	return messages, nil
+}
