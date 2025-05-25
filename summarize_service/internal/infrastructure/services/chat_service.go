@@ -9,14 +9,12 @@ import (
 )
 
 type ChatService struct {
-	chatRepo    repository.ChatRepository
-	messageRepo repository.MessageRepository
+	chatRepo repository.ChatRepository
 }
 
-func NewChatService(chatRepo repository.ChatRepository, messageRepo repository.MessageRepository) service.ChatService {
+func NewChatService(chatRepo repository.ChatRepository) service.ChatService {
 	return &ChatService{
-		chatRepo:    chatRepo,
-		messageRepo: messageRepo,
+		chatRepo: chatRepo,
 	}
 }
 
@@ -44,14 +42,6 @@ func (s *ChatService) GetAllChatsByUserID(userID string) ([]models.Chat, error) 
 	return chats, nil
 }
 
-func (s *ChatService) UpdateChat(chat *models.Chat) (*models.Chat, error) {
-	updatedChat, err := s.chatRepo.UpdateChat(context.Background(), chat)
-	if err != nil {
-		return nil, err
-	}
-	return updatedChat, nil
-}
-
 func (s *ChatService) DeleteChat(id string) error {
 	err := s.chatRepo.DeleteChat(context.Background(), id)
 	if err != nil {
@@ -61,9 +51,18 @@ func (s *ChatService) DeleteChat(id string) error {
 }
 
 func (s *ChatService) GetMessagesByChatID(chatID string) ([]models.Message, error) {
-	messages, err := s.messageRepo.GetMessagesByChatID(chatID)
+	messages, err := s.chatRepo.GetMessagesByChatID(context.Background(), chatID)
 	if err != nil {
 		return nil, err
 	}
 	return messages, nil
+}
+
+func (s *ChatService) AddMessageToChat(chatID string, message *models.Message) (*models.Message, error) {
+	message.ChatID = chatID
+	createdMessage, err := s.chatRepo.AddMessageToChat(context.Background(), chatID, message)
+	if err != nil {
+		return nil, err
+	}
+	return createdMessage, nil
 }

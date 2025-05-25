@@ -8,10 +8,9 @@ import (
 
 type ChatRepository interface {
 	CreateChat(ctx context.Context, chat *models.Chat) (*models.Chat, error)
-	GetChatByID(ctx context.Context, id string) (*models.Chat, error)
 	GetAllChatsByUserID(ctx context.Context, userID string) ([]models.Chat, error)
-	UpdateChat(ctx context.Context, chat *models.Chat) (*models.Chat, error)
 	DeleteChat(ctx context.Context, id string) error
+	GetChatByID(ctx context.Context, id string) (*models.Chat, error)
 	GetMessagesByChatID(ctx context.Context, chatID string) ([]models.Message, error)
-	CreateMessage(ctx context.Context, message *models.Message) (*models.Message, error)
+	AddMessageToChat(ctx context.Context, chatID string, message *models.Message) (*models.Message, error)
 }
