@@ -50,7 +50,6 @@ func (s *Server) Start(port string) error {
 }
 
 func (s *Server) registerRoutes(wsHandler *ws.GeneratorWSHandler) {
-	s.Router.POST("/message/:topic", s.handler.ToGenerateMessage)
 	s.Router.GET("/chats", s.handler.GetAllChatsByToken)
 	s.Router.GET("/chats/:topic", s.handler.GetChatByTopic)
 	s.Router.POST("/chats/:topic", func(ctx *gin.Context) {

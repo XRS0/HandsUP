@@ -1,62 +1,97 @@
 package ws
 
 import (
-	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
+	"github.com/XRS0/HandsUp/summarize_service/internal/domain/models"
 	"github.com/XRS0/HandsUp/summarize_service/internal/domain/ports/service"
+	"github.com/XRS0/HandsUp/summarize_service/internal/infrastructure/clients/auth"
+	"github.com/XRS0/HandsUp/summarize_service/internal/infrastructure/clients/auth/gen"
 	"github.com/gorilla/websocket"
 )
 
-type Request struct {
-	Text       string `json:"text"`
-	Lang       string `json:"lang"`
-	UserPrompt string `json:"userPrompt"`
-	Fullness   uint8  `json:"fullness"`
-}
-
 type GeneratorWSHandler struct {
 	Summarizer service.SummarizeService
+	ChatSvc    service.ChatService
+	AuthClient *auth.AuthClient
 }
 
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
-		return true // ❗️В проде лучше ограничивать Origin
+		return true
 	},
 }
 
 func (h *GeneratorWSHandler) Handle(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Printf("Failed to upgrade to WebSocket: %v", err)
+		log.Printf("WebSocket upgrade failed: %v", err)
 		http.Error(w, "WebSocket upgrade failed", http.StatusBadRequest)
 		return
 	}
 	defer conn.Close()
 
-	_, message, err := conn.ReadMessage()
+	query := r.URL.Query()
+
+	token := query.Get("token")
+	if token == "" {
+		conn.WriteMessage(websocket.TextMessage, []byte("Missing token"))
+		return
+	}
+
+	resp, err := h.AuthClient.ValidateToken(&gen.ValidateTokenRequest{Token: token})
 	if err != nil {
-		log.Printf("Failed to read message: %v", err)
+		conn.WriteMessage(websocket.TextMessage, []byte("Invalid token"))
 		return
 	}
 
-	var req Request
-	if err := json.Unmarshal(message, &req); err != nil {
-		conn.WriteMessage(websocket.TextMessage, []byte("Invalid request format"))
+	topic := query.Get("topic")
+	text := query.Get("text")
+	lang := query.Get("lang")
+	userPrompt := query.Get("userPrompt")
+	fullnessStr := query.Get("fullness")
+
+	if topic == "" || text == "" || lang == "" || fullnessStr == "" {
+		conn.WriteMessage(websocket.TextMessage, []byte("Missing required query parameters"))
 		return
 	}
 
-	content, err := h.Summarizer.BuildPrompt(req.Fullness, req.Text, req.UserPrompt, req.Lang)
+	var fullness uint8
+	_, err = fmt.Sscanf(fullnessStr, "%d", &fullness)
+	if err != nil {
+		conn.WriteMessage(websocket.TextMessage, []byte("Invalid fullness value"))
+		return
+	}
+
+	chat, err := h.ChatSvc.GetChatByTopic(topic, resp.UserId)
+	if err != nil {
+		conn.WriteMessage(websocket.TextMessage, []byte("Failed to get chat: "+err.Error()))
+		return
+	}
+
+	message := models.Message{
+		Text: text,
+		From: true,
+	}
+
+	_, err = h.ChatSvc.AddMessageToChat(chat.ID, &message)
+	if err != nil {
+		conn.WriteMessage(websocket.TextMessage, []byte("Failed to save message: "+err.Error()))
+		return
+	}
+
+	content, err := h.Summarizer.BuildPrompt(fullness, text, userPrompt, lang)
 	if err != nil {
 		conn.WriteMessage(websocket.TextMessage, []byte("Prompt error: "+err.Error()))
 		return
 	}
 
-	// Потоковая генерация и отправка клиенту
 	err = h.Summarizer.StreamGenerate(content, func(chunk string) {
-		if err := conn.WriteMessage(websocket.TextMessage, []byte(chunk)); err != nil {
-			log.Printf("WriteMessage error: %v", err)
+		err := conn.WriteMessage(websocket.TextMessage, []byte(chunk))
+		if err != nil {
+			log.Printf("WebSocket write error: %v", err)
 		}
 	})
 
