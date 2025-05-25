@@ -16,13 +16,13 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
     case 'socket/connect':
       console.log(wsAction.url);
       
-      socket.connect(wsAction.url);
+      socket.connect(wsAction.url, wsAction.payload);
 
       socket.on('open', () => {
         console.log("[WS]: Connection opened");
         try {
           socket.readyState = 1;
-          startRecording();
+          if (wsAction.url !== "ws://localhost:8083/ws/generate") startRecording();
         } catch (err: any) {
           alert("Error inside ws opening: " + err.message);
         }
@@ -51,6 +51,7 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
       break;
     
     case 'socket/sendMessage':
+      console.log("после ответа", wsAction.payload);
       socket.send(wsAction.payload);
       break;
 

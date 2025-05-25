@@ -11,17 +11,14 @@ export function* generateMessageSaga({payload}: ReturnType<typeof topicSliceActi
     
     if (!rawConspect) throw new Error("Conspect is not defined");
 
-    yield put(topicSliceActions.addMessage({from: false, text: rawConspect}))
-
-    if (payload) {
-      yield put(topicSliceActions.addMessage({from: true, text: payload.text}));
-    }
-
-    const response: AxiosResponse<any> = yield call(sendMessageApiInstance, payload, token);
+    if (payload.text) yield put(topicSliceActions.addMessage({from: false, text: payload.text}));
+    if (payload.user_prompt) yield put(topicSliceActions.addMessage({from: true, text: payload.user_prompt!}));
     
-    if (response.status === 200) {
-      yield put({type: 'socket/connect', url: process.env.WS_SUMMARISE_URL});
-    }
+    yield put({type: 'socket/connect', url: process.env.WS_SUMMARISE_URL, payload: {...payload, token}});
+    //const response: AxiosResponse<any> = yield call(sendMessageApiInstance, payload, token);
+    // if (response.status === 200) {
+    //   yield put({type: 'socket/connect', url: process.env.WS_SUMMARISE_URL});
+    // }
   } catch (error: any) {
     console.error(error.message);
   }
