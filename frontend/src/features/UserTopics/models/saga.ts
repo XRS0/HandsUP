@@ -12,8 +12,10 @@ export function* getTopicSaga({payload}: {payload: string}) {
     const response: Topic = yield call(getTopicApiInstance, payload, token);  // give them type when i will
 
     const formattedTopic: Topic = {
-      [Object.keys(response)[0].split("_").join(" ")]: response[0],
+      [Object.keys(response)[0].split("_").join(" ")]: Object.values(response)[0],
     }
+
+    console.log(formattedTopic);
 
     yield put(topicSliceActions.cashTopic(formattedTopic));
     yield put(topicSliceActions.switchTopic(formattedTopic));
@@ -24,33 +26,4 @@ export function* getTopicSaga({payload}: {payload: string}) {
 
 export default function* watchGetTopic() {
   yield takeLatest(topicSliceActions.openTopic, getTopicSaga);
-}
-
-export function* generateMessageSaga({payload}: ReturnType<typeof topicSliceActions.generateMessage>) {
-  try {
-    const token: string = yield localStorage.getItem("token"); 
-    const rawConspect: string = yield select(selectMessage);
-
-    if (!rawConspect) throw new Error("Conspect is not defined");
-
-    const topicName: Topic = yield select(selectCurrentTopic);
-
-    const message: MessageForGeneration = {
-      topicName: Object.keys(topicName)[0],
-      message: rawConspect,
-      prompt: payload
-    }
-
-    if (payload) {
-      yield put(topicSliceActions.addMessage({from: "user", message: payload}))
-    }
-    const response: [] = yield call(sendMessageApiInstance, message, token);
-    console.log(response);
-  } catch (error: any) {
-    console.error(error.message);
-  }
-}
-
-export function* watchGenerateMessage() {
-  yield takeLatest(topicSliceActions.generateMessage, generateMessageSaga);
 }

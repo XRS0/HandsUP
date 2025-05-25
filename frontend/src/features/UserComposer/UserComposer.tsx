@@ -7,12 +7,10 @@ import linkIcon from "@/shared/assets/main-page/icons/link.svg?react";
 import stormIcon from "@/shared/assets/main-page/icons/storm_iocn.svg?react";
 import { createClassName } from "@/shared/utils/createClassName";
 import useInput from "@/hooks/useInput";
-import { useAppDispatch } from "@/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { topicSliceActions } from "../UserTopics/models/slice";
 
 const UserComposer = () => {
-  const dispatch = useAppDispatch()
-
   const textareaRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
   const {value, onChange, clear} = useInput();
   const [isClicked, setIsClicked] = useState({
@@ -20,6 +18,11 @@ const UserComposer = () => {
     without_changes: false,
     expanded: false,
   });
+
+  const dispatch = useAppDispatch();
+  const { language } = useAppSelector(state => state.settings);
+  const {message} = useAppSelector(state => state.socket);
+  const { currentTopic } = useAppSelector(state => state.topics);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -53,7 +56,34 @@ const UserComposer = () => {
   }
 
   const handleSendMessage = () => {
-    dispatch(topicSliceActions.generateMessage(value));
+    let conspectFullness: number;
+
+    switch(true) {
+      case isClicked["short"]:
+        conspectFullness = 0;
+        break;
+
+      case isClicked["without_changes"]:
+        conspectFullness = 1;
+        break;
+
+      case isClicked["expanded"]:
+        conspectFullness = 2;
+        break;
+
+      default:
+        conspectFullness = 3;
+        break;
+    }
+
+    dispatch(topicSliceActions.generateMessage({
+      user_prompt: value,
+      fullness: conspectFullness,
+      lang: language === "English" ? "en" : "ru",
+      text: message,
+      topic: Object.keys(currentTopic!)[0]
+    }));
+
     clear();
   }
 

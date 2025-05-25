@@ -2,7 +2,7 @@ import { RootState } from '@/app/Store/store';
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type WebSocketState = {
-  message: string[];     // it's a splited arr of message
+  message: string;     // it's a splited arr of message
   newMessage: string;
   markdown: string;
   isRecording: boolean;
@@ -10,7 +10,7 @@ type WebSocketState = {
 }
 
 const initialState: WebSocketState = {
-  message: [],
+  message: "",
   newMessage: '',   //проверяться через новое сообщение, если чел отменил то мы откатываемся до сообщения
   markdown: '',
   isRecording: false,
@@ -22,7 +22,7 @@ const socketSlice = createSlice({
   initialState,
   reducers: {
     addMessage(state, action: PayloadAction<string>) {
-      state.message.push(action.payload);
+      state.message = action.payload;
     },
     allowEdit(state) {
       state.isEditingNow = !state.isEditingNow;
@@ -31,7 +31,7 @@ const socketSlice = createSlice({
       state.newMessage = action.payload;
     },
     setMessage(state) {
-      state.message = state.newMessage.split(" ");
+      state.message = state.newMessage;
       state.newMessage = "";
     },
     cancelMessage(state) {
@@ -50,7 +50,6 @@ const socketSlice = createSlice({
 export const socketSliceActions = {
   ...socketSlice.actions,
   handleMessage: createAction<string>(`${socketSlice.name}/handleMessage`),
-  // handleAvaliableData: createAction<string>(`${socketSlice.name}/handleAvaliableData`)
 };
 
 export default socketSlice.reducer;

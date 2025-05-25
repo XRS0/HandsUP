@@ -18,9 +18,7 @@ export async function startRecording() {
 
     workletNode = new AudioWorkletNode(audioContext, 'pcm-processor');
 
-    workletNode.port.onmessage = (event) => {
-      console.log(globalSocket.readyState);
-      
+    workletNode.port.onmessage = (event) => {      
       if (globalSocket.readyState === WebSocket.OPEN) {
         globalSocket.send(event.data);
       }
@@ -67,5 +65,6 @@ export const stopRecording = () => {
     workletNode = null;
     console.log("[AudioWorklet]: Recording was stopped");
     store.dispatch(socketSliceActions.handlePause());
+    store.dispatch({type: 'socket/disconnect'});
   }
 };

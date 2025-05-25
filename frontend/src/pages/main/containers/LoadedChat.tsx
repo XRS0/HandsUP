@@ -3,7 +3,6 @@ import UserComposer from "@/features/UserComposer/UserComposer";
 import { TopicMessage } from "@/features/UserTopics/types/topic";
 
 import "../ui/LoadedChat.scss";
-import { createClassName } from "@/shared/utils/createClassName";
 
 type OwnProps = {
   currentTopic: {
@@ -24,7 +23,7 @@ const LoadedChat: React.FC<OwnProps> = ({currentTopic}) => {
           className={"loaded-messages custom-scroll"}
         >
           {messages.map(message => 
-            <UserMessage message={message.message} from={message.from} />
+            <UserMessage message={message.text} from={message.from} />
           )}
         </div>
 
@@ -32,7 +31,6 @@ const LoadedChat: React.FC<OwnProps> = ({currentTopic}) => {
       </div>
     
       <UserComposer />
-      {/* <div className="cover-block" /> */}
     </div>
   );
 }

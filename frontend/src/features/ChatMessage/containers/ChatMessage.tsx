@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef } from "react";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { socketSliceActions } from "@/entities/websocket/slice";
 
@@ -11,7 +11,8 @@ const AnimateMessage = () => {
   const { message, newMessage, isEditingNow } = useAppSelector(state => state.socket);
   const dispatch = useAppDispatch();
 
-  const [, forceUpdate] = useReducer(x => x + 1, 0);  // for updating
+  const [, updateState] = useState({});
+  const forceUpdate = useCallback(() => updateState({}), []); // for updating
 
   const messageRef = useRef<HTMLDivElement>(null);
   const messageHeightRef = useRef<number | string>(0);                 // height of message conntainer
@@ -21,23 +22,23 @@ const AnimateMessage = () => {
 
   useEffect(() => {
     // some defense from rerender
-    if (message.join(" ") === newMessage) return;
-    if (renderedMessage.current.join(" ") === message.join(" ")) return;
+    if (message === newMessage) return;
+    if (renderedMessage.current.join(" ") === message) return;
 
     const wordsToRender = renderedMessage.current.length
-    ? message.slice(renderedMessage.current.length)
-    : message;
+    ? message.split(" ").slice(renderedMessage.current.length)
+    : message.split(" ");
 
     wordsToRender.map((word, i) => {
       if (messageRef.current) messageHeightRef.current = messageRef.current.offsetHeight;
       setTimeout(() => {
-        const wordLength = word.length + 1;           // +1 for add space
+        const wordLength = word.length + 1;                               // +1 for add space
       
-        if ((wordLength + lettersCountRef.current) >= 112) {
+        if ((wordLength + lettersCountRef.current) >= 108) {
           if (messageRef.current) {
-            messageHeightRef.current = +messageHeightRef.current +  23;           // add some px for increase height
+            messageHeightRef.current = +messageHeightRef.current +  23;   // add some px for increase height
           }
-          lettersCountRef.current = 0;                // reset letters count
+          lettersCountRef.current = 0;                                    // reset letters count
         }
 
         lettersCountRef.current += wordLength;
