@@ -52,7 +52,7 @@ const MDMessageBlock = () => {
     >
       <div className="static-message">
         <Markdown components={{h1: 'h2'}}>
-          {markdown}
+          {renderedMessage.current.join("")}
         </Markdown>
       </div>
     </div>
