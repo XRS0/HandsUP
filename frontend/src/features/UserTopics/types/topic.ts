@@ -1,6 +1,6 @@
 export interface TopicPreview {
-  name: string;
-  time?: string;   //timestamp
+  topic: string;
+  created_at?: string | number;
 }
 
 export type MessageForGeneration = {

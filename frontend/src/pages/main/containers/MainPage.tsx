@@ -31,7 +31,7 @@ const MainPage = () => {
     forceUpdate();
   }, [document.body.offsetWidth]);
 
-  const openSidebar = () =>setIsOpened(prev => !prev);
+  const openSidebar = () => setIsOpened(prev => !prev);
   
   return (
     <div className={createClassName("wrapper", isOpened && "sidebar-open")} ref={parentRef}>
@@ -51,7 +51,7 @@ const MainPage = () => {
           className="chat-background" 
           onClick={isOpened ? openSidebar : () => {}}
         >
-          { currentTopic && Object.values(currentTopic)[0].length !== 0 // check is topic messages exist
+          { currentTopic && Object.values(currentTopic)[0]              // check is topic messages exist
           ? <LoadedChat currentTopic={currentTopic} />                  // chat will be loaded form server
           : <BeginChat />
           }

@@ -12,13 +12,13 @@ const NewTopic = () => {
   const dispatch = useAppDispatch();
 
   const handleTopicCreate = () => {
-    const topicData = { name: value }
+    const topicData = { topic: value, created_at: Date.now() }
 
     dispatch(AuthSliceActions.addTopic(topicData));
     dispatch(topicSliceActions.switchCreatingTopic());
 
-    dispatch(topicSliceActions.cashTopic({ [topicData.name]: [] }));
-    dispatch(topicSliceActions.switchTopic({ [topicData.name]: [] }));
+    dispatch(topicSliceActions.cashTopic({ [topicData.topic]: [] }));
+    dispatch(topicSliceActions.switchTopic({ [topicData.topic]: [] }));
 
     dispatch(topicSliceActions.registerTopic(topicData));
   }
