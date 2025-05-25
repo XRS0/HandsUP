@@ -21,14 +21,14 @@ const LoadedChat: React.FC<OwnProps> = ({currentTopic}) => {
       <div className="messages-wrapper">
         <div className="gradient-top"></div>
 
+        {<MDMessageBlock />}
+
         <div 
           className={"loaded-messages custom-scroll"}
         >
           {messages.map(message => 
             <UserMessage message={message.text} from={message.from} />
           )}
-
-          {globalSocket.readyState && <MDMessageBlock />}
         </div>
 
         <div className="gradient-bottom"></div>
