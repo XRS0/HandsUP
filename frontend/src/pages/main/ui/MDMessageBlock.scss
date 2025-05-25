@@ -1,13 +1,15 @@
 .md-block {
+  transition: height var(--short-transition);
   &.--enter {
-    animation: fadeInMDMessage 0.4s forwards;
+    animation: fadeInMDMessage 0.6s forwards;
   }
 
   h2, h3, p, span,
   ul, pre, a {
     font-family: "Jost";
     color: var(--light-gray);
-    filter: blur(2px);
+    opacity: 0.2;
+    // filter: blur(1px);
     // margin: 0;
   }
 
@@ -62,7 +64,7 @@
 
 @keyframes fade-word {
   100% {
-    opacity: 1;
-    filter: blur(0);
+    opacity: 1 !important;
+    // filter: blur(0) !important;
   }
 }
