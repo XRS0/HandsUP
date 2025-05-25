@@ -20,11 +20,14 @@ export function* getUserSaga(action: any) {
       topic: topic.topic.split("_").join(" "),
       created_at: topic.created_at
     }));
-    
-    if (user.status === 200) {
+
+    if (!topics) {
+      yield put(AuthSliceActions.getUserSucess({user: user.data, topics: []}));
+    } else {
       yield put(AuthSliceActions.getUserSucess({user: user.data, topics: formattedTopics}));
     }
   } catch (error: any) {
+    console.log(error);
     yield put(AuthSliceActions.fetchFailure(error.message));
     navigate('/auth', { replace: true });
   }
