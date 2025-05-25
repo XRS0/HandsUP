@@ -24,6 +24,9 @@ const socketSlice = createSlice({
     addMessage(state, action: PayloadAction<string>) {
       state.message = action.payload;
     },
+    addMarkdown(state, action: PayloadAction<string>) {
+      state.markdown = action.payload;
+    },
     allowEdit(state) {
       state.isEditingNow = !state.isEditingNow;
     },

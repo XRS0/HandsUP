@@ -1,4 +1,8 @@
-.conspect-message-block {
+.md-block {
+  &.--enter {
+    animation: fadeInMDMessage 0.4s forwards;
+  }
+
   h2, h3, p, span,
   ul, pre, a {
     font-family: "Jost";
@@ -39,5 +43,18 @@
     border-radius: 0.5rem;
     color: #bbbbbb;
     background-color: #656c7633;
+  }
+}
+
+@keyframes fadeInMDMessage {
+  from {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 }

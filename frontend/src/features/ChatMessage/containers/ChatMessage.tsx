@@ -7,8 +7,8 @@ import EditMessageTextarea from "./EditMessageTextarea";
 
 import "../ui/ChatMessage.scss";
 
-const AnimateMessage = () => {
-  const { message, newMessage, isEditingNow } = useAppSelector(state => state.socket);
+const ChatMessage = () => {
+  const { message, newMessage, isEditingNow, markdown } = useAppSelector(state => state.socket);
   const dispatch = useAppDispatch();
 
   const [, updateState] = useState({});
@@ -67,4 +67,4 @@ const AnimateMessage = () => {
   );
 }
 
-export default AnimateMessage;
+export default ChatMessage;

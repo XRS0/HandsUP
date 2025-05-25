@@ -35,7 +35,7 @@ const BeginChat = () => {
       </div>
     </div>
   );
-        
+
   return (
     isVisible 
     ? <div className="chat">
@@ -52,7 +52,7 @@ const BeginChat = () => {
           <div 
             className={"loaded-messages custom-scroll begin-chat"}
           >
-            { !isVisible && <ChatMessage /> }
+            {!isVisible && <ChatMessage />}
           </div>
 
           <div className="gradient-bottom"></div>
