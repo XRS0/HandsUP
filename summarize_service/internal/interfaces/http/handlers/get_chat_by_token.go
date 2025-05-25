@@ -48,16 +48,17 @@ func (h *ChatHandler) GetChatByTopic(c *gin.Context) {
 }
 
 func (h *ChatHandler) GetAllChatsByToken(c *gin.Context) {
-	chats, err := getAllChatsByToken(c, h)
-	if err.Err != nil {
-		c.JSON(err.Code, gin.H{"error": err.Err})
+	chats, httpErr := getAllChatsByToken(c, h)
+	if httpErr != nil {
+		c.JSON(httpErr.Code, gin.H{"error": httpErr.Err.Error()})
+		return
 	}
 
 	var chatToReturn []dto.ChatPreview
 	for _, chat := range chats {
 		chatToReturn = append(chatToReturn, dto.ChatPreview{
 			Topic:     chat.Topic,
-			CreatedAt: chat.CreatedAt,
+			CreatedAt: chat.CreatedAt.Format("2006-01-02 15:04:05"),
 		})
 	}
 
