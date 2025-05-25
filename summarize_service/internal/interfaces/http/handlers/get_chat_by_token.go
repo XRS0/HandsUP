@@ -74,7 +74,7 @@ func getAllChatsByToken(c *gin.Context, h *ChatHandler) ([]models.Chat, *HTTP_Er
 	}
 	token = token[7:]
 
-	userID, err := validateToken(token, h.authClient)
+	userID, err := ValidateToken(token, h.authClient)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 		return []models.Chat{}, &HTTP_Error{
@@ -95,7 +95,7 @@ func getAllChatsByToken(c *gin.Context, h *ChatHandler) ([]models.Chat, *HTTP_Er
 	return chats, nil
 }
 
-func validateToken(token string, ac *auth.AuthClient) (string, error) {
+func ValidateToken(token string, ac *auth.AuthClient) (string, error) {
 	if token == "" {
 		return "", errors.New("token cannot be empty")
 	}

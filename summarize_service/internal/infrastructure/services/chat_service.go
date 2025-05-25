@@ -6,6 +6,7 @@ import (
 	"github.com/XRS0/HandsUp/summarize_service/internal/domain/models"
 	"github.com/XRS0/HandsUp/summarize_service/internal/domain/ports/repository"
 	"github.com/XRS0/HandsUp/summarize_service/internal/domain/ports/service"
+	"github.com/google/uuid"
 )
 
 type ChatService struct {
@@ -19,6 +20,7 @@ func NewChatService(chatRepo repository.ChatRepository) service.ChatService {
 }
 
 func (s *ChatService) CreateChat(chat *models.Chat) (*models.Chat, error) {
+	chat.ID = uuid.NewString()
 	createdChat, err := s.chatRepo.CreateChat(context.Background(), chat)
 	if err != nil {
 		return nil, err
