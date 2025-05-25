@@ -34,7 +34,7 @@ const AnimateMessage = () => {
       setTimeout(() => {
         const wordLength = word.length + 1;                               // +1 for add space
       
-        if ((wordLength + lettersCountRef.current) >= 108) {
+        if ((wordLength + lettersCountRef.current) >= 105) {
           if (messageRef.current) {
             messageHeightRef.current = +messageHeightRef.current +  23;   // add some px for increase height
           }

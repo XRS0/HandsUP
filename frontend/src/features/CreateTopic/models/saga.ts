@@ -13,10 +13,10 @@ export function* getTopicSaga({payload}: {payload: TopicPreview}) {
 
     const userTopics = user.topics.map(topic => topic.topic);
     if (userTopics.includes(payload.topic)) throw new Error("Name of topic was already taken");
-    
+
     const response: {} = yield call(registerTopicApiInstance, payload, token);
 
-    yield put(AuthSliceActions.addTopic(payload))
+    yield put(AuthSliceActions.addTopic(payload));
     yield put(topicSliceActions.cashTopic({ [payload.topic]: [] }));
     yield put(topicSliceActions.switchTopic({ [payload.topic]: [] }));
     console.log(response);

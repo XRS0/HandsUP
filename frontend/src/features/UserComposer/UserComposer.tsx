@@ -81,7 +81,7 @@ const UserComposer = () => {
       fullness: conspectFullness,
       lang: language === "English" ? "en" : "ru",
       text: message,
-      topic: Object.keys(currentTopic!)[0]
+      topic: Object.keys(currentTopic!)[0].split(" ").join("_")
     }));
 
     clear();

@@ -1,9 +1,7 @@
-import { call, put, select, takeLatest } from "redux-saga/effects";
-import { selectCurrentTopic, topicSliceActions } from "./slice";
+import { call, put, takeLatest } from "redux-saga/effects";
+import { topicSliceActions } from "./slice";
 import { getTopicApiInstance } from "@/app/api/getTopicApi";
-import { MessageForGeneration, Topic } from "../types/topic";
-import { selectMessage } from "@/entities/websocket/slice";
-import { sendMessageApiInstance } from "@/app/api/sendMessageApi";
+import { Topic } from "../types/topic";
 
 export function* getTopicSaga({payload}: {payload: string}) {
   try {
