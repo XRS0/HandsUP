@@ -1,5 +1,6 @@
 package dto
 
 type Message struct {
-	Payload string `json:"payload"`
+	Text   string `json:"text"`
+	Prompt string `json:"prompt"`
 }

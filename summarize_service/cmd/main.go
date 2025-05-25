@@ -34,6 +34,7 @@ func main() {
 	authClient := auth.NewAuthClient()
 
 	http_server := summarizerHTTP.NewServer(chatService, authClient)
+	http_server.RegisterRoutes()
 	http_server.Start(":8083")
 
 	// cfg := config.Init()
