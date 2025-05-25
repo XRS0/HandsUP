@@ -1,3 +1,5 @@
+@use "@/shared/ui/media" as *;
+
 .history {
   min-height: 0;
   flex: 1 1 auto;
@@ -9,7 +11,7 @@
   .history-container {
     width: 100%;
     font-family: "Jost";
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 400;
     // margin-bottom: 20px;
 
@@ -19,24 +21,40 @@
 
     .header-date {
       color: #707070;
-      font-size: 12px;
+      font-size: 13px;
       margin-bottom: 5px;
+
+      @include mobile {
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
     }
 
     .conspect-name {
       color: var(--light-gray);
-      padding-block: 5px;
+      padding-block: 6px;
       border-radius: 0.5rem;
       background-color: transparent;
       cursor: pointer;
       transition: background-color var(--hover-transition);
 
-      &:hover, &.active {
+      &:hover {
         background-color: #22252E;
       }
 
       &.selected {
         background-color: #34353f;
+      }
+
+      @include mobile {
+        font-size: 16px;
+
+        &:hover {
+          background-color: transparent;
+        }
+        &:active {
+          background-color: #22252E;
+        }
       }
     }
   }

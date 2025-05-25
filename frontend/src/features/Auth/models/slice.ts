@@ -2,6 +2,7 @@ import { TopicPreview } from '@/features/UserTopics/types/topic';
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IUser } from '../types/user';
 import { SignInResponseData, SignUpResponseData } from '../types/auth';
+import { RootState } from '@/app/Store/store';
 
 interface UserSlice {
   user: IUser | null;
@@ -61,3 +62,5 @@ export const AuthSliceActions = {
 }
 
 export default userSlice.reducer;
+
+export const selectUser = ((state: RootState) => state.user.user);

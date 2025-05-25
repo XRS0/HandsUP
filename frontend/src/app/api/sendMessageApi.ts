@@ -1,5 +1,5 @@
 import { MessageForGeneration } from "@/features/UserTopics/types/topic";
-import apiInstance, { topicApiInstance } from "./instance/axiosInstance";
+import { topicApiInstance } from "./instance/axiosInstance";
 
 export const sendMessageApiInstance = async (payload: MessageForGeneration, token: string) => {
   const messageDTO = {...payload}
