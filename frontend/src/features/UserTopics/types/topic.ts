@@ -1,9 +1,10 @@
 export interface TopicPreview {
   name: string;
-  time: number;   //timestamp
+  time?: string;   //timestamp
 }
 
 export type MessageForGeneration = {
+  topicName: string;
   message: string;
   prompt?: string;
 }
