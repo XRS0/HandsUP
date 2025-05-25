@@ -16,11 +16,9 @@ type Server struct {
 func NewServer(cs service.ChatService, ac *auth.AuthClient, ss service.SummarizeService) *Server {
 	router := gin.Default()
 	router.Use(CORS())
-	handler := handlers.NewChatHandler(cs, ac)
 
-	wsHandler := &ws.GeneratorWSHandler{
-		Summarizer: ss,
-	}
+	handler := handlers.NewChatHandler(cs, ac)
+	wsHandler := ws.NewGeneratorWSHandler(ac, cs, ss)
 
 	server := &Server{
 		Router:  router,

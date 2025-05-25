@@ -18,6 +18,14 @@ type GeneratorWSHandler struct {
 	AuthClient *auth.AuthClient
 }
 
+func NewGeneratorWSHandler(ac *auth.AuthClient, cs service.ChatService, ss service.SummarizeService) *GeneratorWSHandler {
+	return &GeneratorWSHandler{
+		AuthClient: ac,
+		ChatSvc:    cs,
+		Summarizer: ss,
+	}
+}
+
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
 		return true
@@ -50,7 +58,7 @@ func (h *GeneratorWSHandler) Handle(w http.ResponseWriter, r *http.Request) {
 	topic := query.Get("topic")
 	text := query.Get("text")
 	lang := query.Get("lang")
-	userPrompt := query.Get("userPrompt")
+	userPrompt := query.Get("user_prompt")
 	fullnessStr := query.Get("fullness")
 
 	if topic == "" || text == "" || lang == "" || fullnessStr == "" {
