@@ -24,7 +24,10 @@ const Profile: React.FC<OwnProps> = ({ ref }) => {
       <MenuField 
         name="Password"
         data-content={user.password} 
-        value={user.password.replace(/[a-z]/gi, "*")}
+        value={
+          "********"
+          //user.password.replace(/[a-z]/gi, "*")
+        }
       />
       <Button 
         cssClass="warning-button"
