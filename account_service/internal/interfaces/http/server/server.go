@@ -16,9 +16,6 @@ func NewHTTPServer(router *gin.Engine, authClient *auth.AuthClient) *HTTP_Server
 	if router == nil {
 		router = gin.Default()
 	}
-
-	router.Use(CORS())
-
 	return &HTTP_Server{
 		Router:     router,
 		AuthClient: authClient,
