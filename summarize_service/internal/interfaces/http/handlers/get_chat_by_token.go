@@ -38,7 +38,8 @@ func (h *ChatHandler) GetChatByTopic(c *gin.Context) {
 
 	for _, message := range currentChat.Messages {
 		chatToReturn[currentChat.Topic] = append(chatToReturn[currentChat.Topic], dto.Message{
-			Payload: message.Payload,
+			Text:   message.Text,
+			Prompt: message.Prompt,
 		})
 	}
 
