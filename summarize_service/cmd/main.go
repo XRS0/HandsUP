@@ -30,11 +30,14 @@ func main() {
 
 	chatRepo := postgres.NewChatRepository(db)
 	chatService := services.NewChatService(chatRepo)
+	summarizeService, err := services.NewOpenChatApi()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	authClient := auth.NewAuthClient()
 
-	http_server := summarizerHTTP.NewServer(chatService, authClient)
-	http_server.RegisterRoutes()
+	http_server := summarizerHTTP.NewServer(chatService, authClient, summarizeService)
 	http_server.Start(":8083")
 
 	// cfg := config.Init()
