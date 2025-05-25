@@ -21,6 +21,7 @@ async def recognize(websocket):
     recognizer.SetWords(True)
 
     last_partial = ""
+    last_final_text = ""
 
     while True:
         try:
@@ -34,15 +35,26 @@ async def recognize(websocket):
 
         if recognizer.AcceptWaveform(data):
             result = json.loads(recognizer.Result())
-            text = clean_text(result.get("text", ""))
-            if text:
-                await websocket.send(text)
+            full_text = result.get("text", "").strip()
+
+            if full_text.startswith(last_final_text):
+                new_part = full_text[len(last_final_text):].strip()
+            else:
+                new_part = full_text
+
+            cleaned = clean_text(new_part)
+            if cleaned:
+                await websocket.send(cleaned)
+                last_final_text = full_text  
+
             last_partial = ""
+
         else:
-            partial = json.loads(recognizer.PartialResult()).get("partial", "")
+            partial = json.loads(recognizer.PartialResult()).get("partial", "").strip()
             if partial != last_partial:
                 await websocket.send(partial)
                 last_partial = partial
+
 
 async def handler(websocket):
     await recognize(websocket)
