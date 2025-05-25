@@ -4,7 +4,7 @@ import Sidebar from "../ui/Sidebar";
 import BeginChat from "../ui/BeginChat";
 import LoadedChat from "./LoadedChat";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AuthSliceActions } from "@/features/Auth/models/slice";
 import { useNavigate } from "react-router-dom";
 
@@ -18,14 +18,21 @@ const MainPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //  dispatch({ type: AuthSliceActions.getUser.type, meta: { navigate }}
-  // }, []);
+  useEffect(() => {
+   dispatch({ type: AuthSliceActions.getUser.type, meta: { navigate }})
+  }, []);
 
-  const openSidebar = () => {
-    setIsOpened(prev => !prev);
-  }
+  //for rerender component when width changes
+  const [, updateState] = useState({});
+  const forceUpdate = useCallback(() => updateState({}), []);
 
+  useEffect(() => {
+    document.body.style.overflowY = "hidden";
+    forceUpdate();
+  }, [document.body.offsetWidth]);
+
+  const openSidebar = () =>setIsOpened(prev => !prev);
+  
   return (
     <div className={createClassName("wrapper", isOpened && "sidebar-open")} ref={parentRef}>
       { document.body.offsetWidth <= 480 

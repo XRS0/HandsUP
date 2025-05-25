@@ -1,6 +1,8 @@
+import { getAllTopicApiInstance } from "@/app/api/getTopicApi";
 import { getUserApiInstance } from "@/app/api/getUserApi";
 import { AuthSliceActions } from "@/features/Auth/models/slice";
 import { IUser } from "@/features/Auth/types/user";
+import { TopicPreview } from "@/features/UserTopics/types/topic";
 import { AxiosResponse } from "axios";
 import { call, put, takeEvery } from "redux-saga/effects";
 
@@ -13,13 +15,12 @@ export function* getUserSaga(action: any) {
     //i dont sure this is needed or not because sever refreshs tokens automaticly
     if (!access_token) throw new Error("access token does not exist");
 
-    const response: AxiosResponse<IUser> = yield call(getUserApiInstance, access_token);
-    console.log(response);
-    // if (response.status == 401) {
-    //   yield put(AuthSliceActions.getRefreshToken());
-    // }
-    if (response.status === 200) {
-      yield put(AuthSliceActions.getUserSucess(response.data));
+    const user: AxiosResponse<IUser> = yield call(getUserApiInstance, access_token);
+    const topics: AxiosResponse<TopicPreview[]> = yield call(getAllTopicApiInstance, access_token);
+    console.log(user, topics);
+
+    if (user.status === 200) {
+      yield put(AuthSliceActions.getUserSucess({user: user.data, topics: topics.data}));
     }
   } catch (error: any) {
     // console.error(error);

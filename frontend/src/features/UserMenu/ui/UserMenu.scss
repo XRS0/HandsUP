@@ -1,3 +1,5 @@
+@use "@/shared/ui/media" as *;
+
 :root {
   --slide-from: 0%;
   --slide-to: 100%;
@@ -10,7 +12,7 @@
   background-color: #22252E;
   border-radius: 2rem;
   border: 1px solid #2C2F3A;
-  padding: 20px 30px;
+  padding: 20px;
   transition: height var(--long-transition);
   box-shadow: 0 0 6px 2px #111318;
   overflow: hidden;
@@ -35,13 +37,16 @@
     &.active {
       color: #E0E0E0;
     }
+
+    @include mobile {
+      font-size: 21px;
+    }
   }
 
   .navigator {
     position: relative;
     width: 100%;
     padding-inline: 10px;
-    margin-bottom: 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -54,6 +59,19 @@
       border: 1px solid var(--main-color);
       border-radius: 5px;
       transition: width 0.3s, left 0.3s;
+
+      @include mobile {
+        width: 68px;
+        height: 1px;
+        left: -2px;
+        top: 30px;
+        background-color: var(--main-color);
+        border: none;
+      }
+    }
+
+    @include mobile { 
+      padding-inline: 0;
     }
   }
 
@@ -62,12 +80,21 @@
     gap: 0px 40px;
     margin-top: 24px;
     transition: transformX var(--long-transition);
+
+    @include mobile {
+      margin-top: 20px;
+      gap: 0 30px;
+    }
   }
 
   button {
     font-weight: 400;
     margin-top: 15px;
     padding: 10px 14px;
+
+    @include mobile {
+      margin-top: 12px;
+    }
   }
 
   .warning-button {
@@ -77,6 +104,23 @@
     &:hover {
       background-color: rgba(197, 7, 48, 0.8);
     }
+
+    @include mobile {
+      &:hover {
+        background-color: #C50730;
+      }
+
+      &:active {
+        background-color: rgba(197, 7, 48, 0.8);
+      }
+    }
+  }
+
+  @include mobile {
+    width: 100%;
+    padding: 15px;
+    margin-inline: 20px;
+    border-radius: 1rem;
   }
 }
 

@@ -46,7 +46,7 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
         <div className="actions">
           <StartRecordingButton startAnimation={onVoice} />
           
-          {document.body.offsetWidth <= 480 
+          {document.body.offsetWidth <= 480
             ? <Button
                 onclick={() => {}}
                 children="Import"

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import "./ui/Authorization.scss";
 import "./ui/Animations.scss";
@@ -19,6 +19,10 @@ const Authorize = () => {
   const titleRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const switchTextRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+      document.body.style.overflowY = "hidden";
+  }, []);
   
   return (
     <div className="form-container" style={{backgroundImage: `url(${bg}`}}>

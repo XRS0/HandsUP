@@ -35,7 +35,6 @@
 
   .conspect-config {
     display: flex;
-    margin-block: 1rem;
 
     .config {
       border: 1px solid var(--main-border-color);
@@ -67,6 +66,7 @@
     }
 
     @include mobile {
+      margin-block: 1rem;
       width: 100%;
       gap: 10px;
       justify-content: space-between;
