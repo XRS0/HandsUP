@@ -1,10 +1,11 @@
 PROTO_SUMM_SRC = proto/summarizer.proto
 PROTO_AUTH_SRC = proto/auth.proto
+PROTO_AUTH_OUT3 = ./summarize_service/internal/infrastructure/clients/auth
 PROTO_AUTH_OUT2 = ./account_service/internal/infrastructure/clients/auth
 PROTO_ACC_OUT = ./account_service/internal/interfaces/grpc
 PROTO_ACC_OUT2 = ./auth/internal/infrastructure/clients/account
 PROTO_ACC_SRC = proto/account.proto
-PROTO_SUMM_OUT = ./summarize_service/interfaces/grpc
+PROTO_SUMM_OUT = ./summarize_service/internal/interfaces/grpc
 PROTO_AUTH_OUT = ./auth/internal/interfaces/grpc
 PROTO_STT_OUT = ./stt_service
 
@@ -49,7 +50,8 @@ build_as:
 genprotoauth:
 	@PATH="$(shell go env GOPATH)/bin:$$PATH" \
 	protoc --go_out=$(PROTO_AUTH_OUT) --go-grpc_out=$(PROTO_AUTH_OUT) $(PROTO_AUTH_SRC) && \
-	protoc --go_out=$(PROTO_AUTH_OUT2) --go-grpc_out=$(PROTO_AUTH_OUT2) $(PROTO_AUTH_SRC)
+	protoc --go_out=$(PROTO_AUTH_OUT2) --go-grpc_out=$(PROTO_AUTH_OUT2) $(PROTO_AUTH_SRC) && \
+	protoc --go_out=$(PROTO_AUTH_OUT3) --go-grpc_out=$(PROTO_AUTH_OUT3) $(PROTO_AUTH_SRC)
 
 genprotoaccount:
 	@PATH="$(shell go env GOPATH)/bin:$$PATH" \

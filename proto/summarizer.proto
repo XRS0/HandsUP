@@ -6,9 +6,27 @@ option go_package = "./gen";
 
 service SummarizerService {
   rpc Summarize(SummarizeRequest) returns (SummarizeResponse);
-
+  // rpc GetChatsByUserId(GetChatsByUserIdRequest) returns (GetChatsByUserIdResponse);
   rpc StreamSummarize(stream StreamSummarizeRequest) returns (stream StreamSummarizeResponse);
 }
+
+// message GetChatsByUserIdRequest {
+//   string user_id = 1;
+// }
+
+// message GetChatsByUserIdResponse {
+//   repeated Chat chat_list = 1;
+// }
+
+// message Chat {
+//   string topic = 3;
+//   repeated chat_message messages = 5;
+// }
+
+// message chat_message {
+//   bool from = 1; // true if from user, false if from AI
+//   string payload = 2; // Content of the message
+// }
 
 message SummarizeRequest {
   string session_id = 1;

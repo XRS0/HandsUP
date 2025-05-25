@@ -6,9 +6,9 @@ import (
 
 type ChatService interface {
 	CreateChat(chat *models.Chat) (*models.Chat, error)
-	GetChatByID(id string) (*models.Chat, error)
-	GetAllChatsByUserID(userID string) ([]models.Chat, error)
-	UpdateChat(chat *models.Chat) (*models.Chat, error)
 	DeleteChat(id string) error
+	// GetChatByTopic(topic string) (*models.Chat, error)
+	GetAllChatsByUserID(userID string) ([]models.Chat, error)
+	AddMessageToChat(chatID string, message *models.Message) (*models.Message, error)
 	GetMessagesByChatID(chatID string) ([]models.Message, error)
 }
