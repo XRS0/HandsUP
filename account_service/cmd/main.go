@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/XRS0/HandsUp/account_service/internal/domain/models"
+	"github.com/XRS0/HandsUp/account_service/internal/infrastructure/clients/auth"
 	userRepo "github.com/XRS0/HandsUp/account_service/internal/infrastructure/persistence/postgres"
 	grpc_server "github.com/XRS0/HandsUp/account_service/internal/interfaces/grpc/server"
 	http_server "github.com/XRS0/HandsUp/account_service/internal/interfaces/http/server"
@@ -31,6 +32,9 @@ func main() {
 	// Initialize services
 	userService := userService.NewUserService(userRepo)
 
+	// Initialize the Auth client (assuming it's already implemented)
+	authClient := auth.NewAuthClient() // Uncomment if you have an Auth client
+
 	wg := &sync.WaitGroup{}
 	wg.Add(2) // We will start two goroutines
 
@@ -46,9 +50,9 @@ func main() {
 	}()
 
 	go func() {
-		httpServer := http_server.NewHTTPServer(nil)
+		httpServer := http_server.NewHTTPServer(nil, authClient) // Pass the Auth client to the HTTP server
 		httpServer.RegisterRoutes(userService)
-		port := ":8080"
+		port := ":8082"
 		log.Printf("Starting HTTP server on port %s", port)
 		if err := httpServer.Start(port); err != nil {
 			log.Fatal(err)

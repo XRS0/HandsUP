@@ -1,6 +1,8 @@
 package postgres
 
 import (
+	"log"
+
 	"github.com/XRS0/HandsUp/account_service/internal/domain/models"
 	"github.com/XRS0/HandsUp/account_service/internal/domain/ports/repository"
 	"gorm.io/gorm"
@@ -28,7 +30,7 @@ func (r *UserRepository) CreateUser(user models.User) error {
 // GetUserByID retrieves a user by their ID.
 func (r *UserRepository) GetUserByID(id string) (*models.User, error) {
 	var user models.User
-	if err := r.db.First(&user, id).Error; err != nil {
+	if err := r.db.Where("id = ?", id).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
@@ -38,8 +40,10 @@ func (r *UserRepository) GetUserByID(id string) (*models.User, error) {
 func (r *UserRepository) GetUserByEmail(email string) (*models.User, error) {
 	var user models.User
 	if err := r.db.Where("email = ?", email).First(&user).Error; err != nil {
+		log.Printf("Looking for user with email %s: %v", email, err)
 		return nil, err
 	}
+	log.Printf("Looking for user with email %s", email)
 	return &user, nil
 }
 

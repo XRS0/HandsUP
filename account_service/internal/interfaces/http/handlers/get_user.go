@@ -11,7 +11,7 @@ import (
 )
 
 // GetUserHandler handles the GET request to retrieve a user by ID
-func GetUserHandler(c *gin.Context, s service.UserService) {
+func GetUserHandler(c *gin.Context, s service.UserService, authClient *auth.AuthClient) {
 	// Extract the token from the URL parameters
 	token := c.Param("token")
 	if token == "" {
@@ -19,10 +19,10 @@ func GetUserHandler(c *gin.Context, s service.UserService) {
 		return
 	}
 
-	authClient := auth.NewAuthClient() // Initialize the Auth client
 	log.Println("Validating token:", token)
 	resp, err := authClient.ValidateToken(&pb.ValidateTokenRequest{Token: token})
 	if err != nil {
+		log.Println("Failed to validate token:", err)
 		c.JSON(500, gin.H{"error": "Failed to validate token"})
 		return
 	}
