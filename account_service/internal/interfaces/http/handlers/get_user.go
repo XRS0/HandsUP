@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"log"
+
 	"github.com/XRS0/HandsUp/account_service/internal/domain/ports/service"
 	"github.com/XRS0/HandsUp/account_service/internal/infrastructure/clients/auth"
 	pb "github.com/XRS0/HandsUp/account_service/internal/infrastructure/clients/auth/gen"
@@ -18,6 +20,7 @@ func GetUserHandler(c *gin.Context, s service.UserService) {
 	}
 
 	authClient := auth.NewAuthClient() // Initialize the Auth client
+	log.Println("Validating token:", token)
 	resp, err := authClient.ValidateToken(&pb.ValidateTokenRequest{Token: token})
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Failed to validate token"})

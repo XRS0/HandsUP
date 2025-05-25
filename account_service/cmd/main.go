@@ -55,4 +55,6 @@ func main() {
 		}
 		wg.Done() // Signal that the HTTP server has started
 	}()
+
+	wg.Wait()
 }

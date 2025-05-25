@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package gen;
+
+option go_package = "./gen";
+
+service STTService {
+  rpc Generate (stream STTRequest) returns (stream STTResponse);  
+}
+
+message STTRequest {
+	bytes audio = 1;
+	string language = 2;  
+}
+
+message STTResponse {
+  string result = 1;
+}
