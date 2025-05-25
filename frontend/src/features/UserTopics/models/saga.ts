@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest } from "redux-saga/effects";
-import { topicSliceActions } from "./slice";
+import { selectCurrentTopic, topicSliceActions } from "./slice";
 import { getTopicApiInstance } from "@/app/api/getTopicApi";
 import { MessageForGeneration, Topic } from "../types/topic";
 import { selectMessage } from "@/entities/websocket/slice";
@@ -26,7 +26,10 @@ export function* generateMessageSaga({payload}: ReturnType<typeof topicSliceActi
 
     if (!rawConspect) throw new Error("Conspect is not defined");
 
+    const topicName: Topic = yield select(selectCurrentTopic);
+
     const message: MessageForGeneration = {
+      topicName: Object.keys(topicName)[0],
       message: rawConspect,
       prompt: payload
     }

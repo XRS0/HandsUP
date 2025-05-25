@@ -3,27 +3,45 @@
 
 html, body, #root {
   height: 100%;
-
-  @include mobile {
-    overflow-y: hidden;
-  }
 }
 
 .without-topic {
   @include mixin.flex-center();
+  flex-direction: column;
   text-align: center;
   padding-inline: 30px;
   font-family: "Jost";
-  font-size: 2rem;
-  font-weight: 500;
+  font-size: 1.5rem;
+  font-weight: 400;
+  max-width: 340px;
   color: #cecece;
+  // margin-bottom: 25%;
+
+  .side-logo {
+    height: 70px;
+    margin-bottom: 1rem;
+
+    @include mobile {
+      margin-bottom: 0.5rem;
+      height: 60px;
+    }
+  }
 
   span {
     font-family: "Jost";
     display: inline;
-    font-size: 2rem;
-    font-weight: 500;
+    font-size: 1.5rem;
+    font-weight: 400;
     color: var(--main-color);
+
+    @include mobile {
+      font-size: 1rem;
+    }
+  }
+
+  @include mobile {
+    width: 100%;
+    font-size: 1rem;
   }
 }
 
@@ -77,6 +95,13 @@ html, body, #root {
   align-items: center;
   transition: transform var(--short-transition),
     opacity var(--short-transition);
+
+  @include mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+  }
 }
 
 .chat-background {

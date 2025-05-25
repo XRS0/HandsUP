@@ -4,7 +4,7 @@ import apiInstance from "./instance/axiosInstance";
 export const registerTopicApiInstance = async (payload: TopicPreview, token: string) => {
   const response = await apiInstance({
     method: 'post',
-    url: '/create_topic',
+    url: '/chats',
     data: payload,
     headers: { Authorization: `Bearer ${token}` },
   });
