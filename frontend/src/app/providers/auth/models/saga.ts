@@ -15,15 +15,15 @@ export function* getUserSaga(action: any) {
     const user: AxiosResponse<IUser> = yield call(getUserApiInstance, access_token);
     const topics: AxiosResponse<{chats: TopicPreview[]}> = yield call(getAllTopicApiInstance, access_token);
 
+    if (!topics) {
+      yield put(AuthSliceActions.getUserSucess({user: user.data, topics: []}));
+    } else {
     // My_Topic_4 => My Topic 4
     const formattedTopics: TopicPreview[] = topics.data.chats.map(topic => ({
       topic: topic.topic.split("_").join(" "),
       created_at: topic.created_at
     }));
-
-    if (!topics) {
-      yield put(AuthSliceActions.getUserSucess({user: user.data, topics: []}));
-    } else {
+    
       yield put(AuthSliceActions.getUserSucess({user: user.data, topics: formattedTopics}));
     }
   } catch (error: any) {
