@@ -56,6 +56,11 @@
       padding-top: 6.2vh;
     }
   }
+
+  .main-prompt-input {
+    animation: none !important;
+  }
+
   @include mobile {
     padding-bottom: 1.2rem;
   }
