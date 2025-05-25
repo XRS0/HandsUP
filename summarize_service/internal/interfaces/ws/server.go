@@ -79,12 +79,14 @@ func (h *GeneratorWSHandler) Handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	message := models.Message{
-		Text: text,
-		From: true,
+	UserMessage := models.Message{
+		Text:   text,
+		From:   true,
+		ChatID: chat.ID,
+		Prompt: userPrompt,
 	}
 
-	_, err = h.ChatSvc.AddMessageToChat(chat.ID, &message)
+	_, err = h.ChatSvc.AddMessageToChat(chat.ID, &UserMessage)
 	if err != nil {
 		conn.WriteMessage(websocket.TextMessage, []byte("Failed to save message: "+err.Error()))
 		return
@@ -96,14 +98,29 @@ func (h *GeneratorWSHandler) Handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var generated string
 	err = h.Summarizer.StreamGenerate(content, func(chunk string) {
 		err := conn.WriteMessage(websocket.TextMessage, []byte(chunk))
 		if err != nil {
 			log.Printf("WebSocket write error: %v", err)
 		}
+		generated += chunk
 	})
 
 	if err != nil {
 		conn.WriteMessage(websocket.TextMessage, []byte("Generation error: "+err.Error()))
+	}
+
+	LLMMessage := models.Message{
+		Text:   generated,
+		From:   false,
+		ChatID: chat.ID,
+		Prompt: "",
+	}
+
+	_, err = h.ChatSvc.AddMessageToChat(chat.ID, &LLMMessage)
+	if err != nil {
+		conn.WriteMessage(websocket.TextMessage, []byte("Failed to save message: "+err.Error()))
+		return
 	}
 }

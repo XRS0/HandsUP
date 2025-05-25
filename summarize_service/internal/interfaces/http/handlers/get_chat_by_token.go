@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"errors"
+	"log"
 	"net/http"
 
 	"github.com/XRS0/HandsUp/summarize_service/internal/domain/models"
@@ -17,40 +18,75 @@ type HTTP_Error struct {
 }
 
 func (h *ChatHandler) GetChatByTopic(c *gin.Context) {
-	//TODO сделать отдельный запрос для выдачи одного чата
+	check := c.Request.Header.Get("Authorization")
 	topic := c.Param("topic")
-	chats, httpErr := getAllChatsByToken(c, h)
-	var currentChat models.Chat
-	if httpErr != nil {
-		c.JSON(httpErr.Code, gin.H{"error": httpErr.Err})
-	}
-
-	for _, chat := range chats {
-		if chat.Topic == topic {
-			currentChat = chat
-			break
-		}
-	}
-
-	chatToReturn := dto.Chat{
-		currentChat.Topic: []dto.ChatMessage{},
-	}
-
-	for _, message := range currentChat.Messages {
-		if message.Prompt != "" {
-			chatToReturn[currentChat.Topic] = append(chatToReturn[currentChat.Topic], dto.ChatMessage{
-				Text: message.Text,
-				From: true,
+	if check != "Bearer" {
+		// Validate the token
+		check = check[len("Bearer "):] // Remove "Bearer " prefix
+		claims, err := h.authClient.ValidateToken(&pb.ValidateTokenRequest{Token: check})
+		if err != nil {
+			c.JSON(401, gin.H{
+				"error": "Unauthorized",
 			})
-		} else {
-			chatToReturn[currentChat.Topic] = append(chatToReturn[currentChat.Topic], dto.ChatMessage{
-				Text: message.Text,
-				From: false,
+			return
+		}
+
+		chat, err := h.chatService.GetChatByTopic(topic, claims.UserId)
+		if err != nil {
+			c.JSON(404, gin.H{
+				"error": "Chat not found",
+			})
+			return
+		}
+
+		log.Println(chat.Messages)
+
+		msgsDTO := []dto.ChatMessage{}
+
+		for _, msg := range chat.Messages {
+			msgsDTO = append(msgsDTO, dto.ChatMessage{
+				Text: msg.Text,
+				From: msg.From,
 			})
 		}
-	}
 
-	c.JSON(200, chatToReturn)
+		chatToReturn := dto.Chat{
+			chat.Topic: msgsDTO,
+		}
+
+		c.JSON(200, chatToReturn)
+	}
+	// chats, httpErr := getAllChatsByToken(c, h)
+	// var currentChat models.Chat
+	// if httpErr != nil {
+	// 	c.JSON(httpErr.Code, gin.H{"error": httpErr.Err})
+	// 	return
+	// }
+
+	// for _, chat := range chats {
+	// 	if chat.Topic == topic {
+	// 		currentChat = chat
+	// 		break
+	// 	}
+	// }
+
+	// chatToReturn := dto.Chat{
+	// 	currentChat.Topic: []dto.ChatMessage{},
+	// }
+
+	// for _, message := range currentChat.Messages {
+	// 	if message.Prompt != "" {
+	// 		chatToReturn[currentChat.Topic] = append(chatToReturn[currentChat.Topic], dto.ChatMessage{
+	// 			Text: message.Text,
+	// 			From: true,
+	// 		})
+	// 	} else {
+	// 		chatToReturn[currentChat.Topic] = append(chatToReturn[currentChat.Topic], dto.ChatMessage{
+	// 			Text: message.Text,
+	// 			From: false,
+	// 		})
+	// 	}
+	// }
 
 }
 
