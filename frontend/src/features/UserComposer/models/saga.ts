@@ -1,0 +1,35 @@
+import { sendMessageApiInstance } from "@/app/api/sendMessageApi";
+import { selectMessage } from "@/entities/websocket/slice";
+import { selectCurrentTopic, topicSliceActions } from "@/features/UserTopics/models/slice";
+import { MessageForGeneration, Topic } from "@/features/UserTopics/types/topic";
+import { AxiosResponse } from "axios";
+import { call, put, select, takeLatest } from "redux-saga/effects";
+
+export function* generateMessageSaga({payload}: ReturnType<typeof topicSliceActions.generateMessage>) {
+  try {
+    const token: string = yield localStorage.getItem("token"); 
+    const rawConspect: string = yield select(selectMessage);
+    console.log("bobi");
+    
+    if (!rawConspect) throw new Error("Conspect is not defined");
+
+    const topicName: Topic = yield select(selectCurrentTopic);
+
+    if (payload) {
+      yield put(topicSliceActions.addMessage({from: true, text: payload.text}));
+    }
+
+    const response: AxiosResponse<any> = yield call(sendMessageApiInstance, payload, token);
+    
+    console.log(response.status);
+    if (response.status === 200) {
+      yield put({type: 'socket/connect', url: process.env.WS_SUMMARISE_URL});
+    }
+  } catch (error: any) {
+    console.error(error.message);
+  }
+}
+
+export function* watchGenerateMessage() {
+  yield takeLatest(topicSliceActions.generateMessage, generateMessageSaga);
+}

@@ -51,7 +51,7 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
   }
 
   const copyToCLipboard = () => {
-    navigator.clipboard.writeText(message.join(" "));
+    navigator.clipboard.writeText(message);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 1500);
   }

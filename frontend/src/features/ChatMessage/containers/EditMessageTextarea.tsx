@@ -8,7 +8,7 @@ import Button from "@/views/Button/ui/Button";
 
 const EditMessageTextarea = () => {
   const { message } = useAppSelector(state => state.socket);
-  const { value, onChange } = useInput(message.join(" "));
+  const { value, onChange } = useInput(message);
   const dispatch = useAppDispatch();
   const textRef = useRef<HTMLTextAreaElement>(null);
 

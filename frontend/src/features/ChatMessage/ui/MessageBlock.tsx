@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 type OwnProps = {
   ref: React.Ref<HTMLDivElement>;
   height: number | string;
@@ -16,7 +14,7 @@ const MessageBlock: React.FC<OwnProps> = ({ref, height, message}) => {
       {message.map((word, i) => {
         return <span
           key={i}
-          style={{animation: 'fade-word 0.8s forwards cubic-bezier(0.11, 0, 0.5, 0)'}}    //change how cool will work sppechToText
+          style={{animation: 'fade-word 0.8s forwards cubic-bezier(0.11, 0, 0.5, 0)'}}
         >{word} </span>
       })}
     </div>

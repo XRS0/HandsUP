@@ -4,14 +4,16 @@ export interface TopicPreview {
 }
 
 export type MessageForGeneration = {
-  topicName: string;
-  message: string;
-  prompt?: string;
+  fullness: number  //0, 1, 2, 3;
+  lang: "ru" | "en"
+  topic?: string;
+  text: string;
+  user_prompt?: string;
 }
 
 export type TopicMessage = {
-  from: "user" | "chat";    // can be diff, but only 2 types
-  message: string;
+  from: boolean;    // 1 user, 0 chat
+  text: string;
 };
 
 export type Topic = {

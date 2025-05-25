@@ -9,17 +9,3 @@ export const getUserApiInstance = async (token: string) => {
 
   return response;
 }
-
-// token refresh automaticly
-// export const updateUserTokenApiInstance = async () => {
-//   const response = await apiInstance({
-//     method: 'get',
-//     url: '/refresh',
-//   });
-
-//   if (!response.data) {
-//     throw new Error('Failed to get new jwts');
-//   }
-
-//   return response.data;
-// }

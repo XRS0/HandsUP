@@ -1,5 +1,5 @@
-import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Topic, TopicMessage, TopicPreview } from '../types/topic';
+import { createAction, createSlice, current, PayloadAction } from '@reduxjs/toolkit';
+import { MessageForGeneration, Topic, TopicMessage, TopicPreview } from '../types/topic';
 import { RootState } from '@/app/Store/store';
 
 type TopicsState = {
@@ -29,7 +29,12 @@ const topicSlice = createSlice({
       state.isTopicCreating = !state.isTopicCreating;
     },
     addMessage(state, action: PayloadAction<TopicMessage>) {
-      Object.values(state.currentTopic!)[0].push(action.payload);
+      const topic = state.currentTopic;
+      if (!topic) return;
+
+      const [topicName, messages] = Object.entries(topic)[0];
+      messages.push(action.payload);
+      state.cashedTopics.find(t => topicName in t)?.[topicName].push(action.payload);
     }
   }
 });
@@ -38,7 +43,7 @@ export const topicSliceActions = {
   ...topicSlice.actions,
   openTopic: createAction<string>(`${topicSlice.name}/openTopic`),
   registerTopic: createAction<TopicPreview>(`${topicSlice.name}/registerTopic`),
-  generateMessage: createAction<string | undefined>(`${topicSlice.name}/generateMessage`),
+  generateMessage: createAction<MessageForGeneration>(`${topicSlice.name}/generateMessage`),
 };
 
 export default topicSlice.reducer;

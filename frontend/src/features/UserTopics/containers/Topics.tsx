@@ -41,6 +41,9 @@ const Topics = () => {
     const topicName = e.currentTarget.innerText;
     const switchedTopic = cashedTopics.find(t => Object.keys(t)[0] === topicName);   //get only keys (names) of topics
     
+    console.log(topicName)
+    console.log(switchedTopic);
+
     if (switchedTopic) {
       dispatch(topicSliceActions.switchTopic(switchedTopic));
     } else {

@@ -22,7 +22,6 @@ class Socket {
   disconnect() {
     if (this.socket) {
       this.socket.close()
-      console.log("connection is closed");
       this.socket = null;
     }
   }
