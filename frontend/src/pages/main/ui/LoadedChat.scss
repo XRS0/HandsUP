@@ -57,11 +57,13 @@
     }
   }
 
-  .main-prompt-input {
-    animation: none !important;
-  }
-
   @include mobile {
     padding-bottom: 1.2rem;
+  }
+}
+
+.begin-chat {
+  .main-prompt-input {
+    animation: none !important;
   }
 }
