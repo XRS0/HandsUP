@@ -1,4 +1,5 @@
 @use "@/shared/ui/mixins" as mixin;
+@use "@/shared/ui/media" as *;
 
 .begin-action-block {
   max-width: 680px;
@@ -22,6 +23,21 @@
       font-family: 'Brygada 1918';
       color: var(--main-color);
     }
+
+    @include mobile {
+      text-align: center;
+      font-family: "Jost";
+      margin-block: 0.75rem;
+      line-height: 1.2;
+      font-size: 2.2rem;
+      font-weight: 700;
+
+      span {
+        white-space: nowrap;
+        font-family: "Jost";
+        color: var(--main-color);
+      }
+    }
   }
 
   .action-container {
@@ -36,6 +52,10 @@
       padding: 20px;
       max-width: 540px;
       color: var(--light-gray);
+
+      @include mobile {
+        font-size: 15px;
+      }
     }
 
     .actions {
@@ -51,6 +71,14 @@
         width: 120px;
         height: 100%;
         border-radius: 40px;
+
+        @include mobile {
+          font-size: 20px;
+          height: 54px !important;
+          max-height: none;
+          width: 180px;
+          margin-top: 2.5rem;
+        }
       }
 
       .button-dropdown-container {
@@ -77,7 +105,34 @@
           fill: #5E657A;
         }
       }
+
+      @include mobile {
+        flex-direction: column;
+      }
     }
+
+    @include mobile {
+      align-items: center;
+      flex-direction: column;
+
+      .secondary-button {
+        &:active {
+          background-color: var(--main-background-color) !important;
+          color: var(--main-color) !important;
+          transition-delay: 0s;
+
+          & * {
+            fill: var(--main-color);
+            transition: fill var(--hover-transition);
+          }
+        }
+      }
+    }
+  }
+
+  @include mobile {
+    width: 100%;
+    margin-bottom: 16%;
   }
 }
 

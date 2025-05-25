@@ -14,7 +14,7 @@ const AnimateMessage = () => {
   const [, forceUpdate] = useReducer(x => x + 1, 0);  // for updating
 
   const messageRef = useRef<HTMLDivElement>(null);
-  const messageHeightRef = useRef(0);                 // height of message conntainer
+  const messageHeightRef = useRef<number | string>(0);                 // height of message conntainer
   const lettersCountRef = useRef(0);                  // for counting we sould height will changed
 
   const renderedMessage = useRef<string[]>([]);       // collecting already rendered words
@@ -24,8 +24,8 @@ const AnimateMessage = () => {
     if (message.join(" ") === newMessage) return;
     if (renderedMessage.current.join(" ") === message.join(" ")) return;
 
-    const wordsToRender = renderedMessage.current.length 
-    ? message.slice(message.length - renderedMessage.current.length)
+    const wordsToRender = renderedMessage.current.length
+    ? message.slice(renderedMessage.current.length)
     : message;
 
     wordsToRender.map((word, i) => {
@@ -33,9 +33,9 @@ const AnimateMessage = () => {
       setTimeout(() => {
         const wordLength = word.length + 1;           // +1 for add space
       
-        if ((wordLength + lettersCountRef.current) >= 115) {
+        if ((wordLength + lettersCountRef.current) >= 112) {
           if (messageRef.current) {
-            messageHeightRef.current += 23;           // add some px for increase height
+            messageHeightRef.current = +messageHeightRef.current +  23;           // add some px for increase height
           }
           lettersCountRef.current = 0;                // reset letters count
         }
@@ -51,10 +51,11 @@ const AnimateMessage = () => {
     if (!isEditingNow && newMessage) {
       renderedMessage.current = newMessage.split(" ");
       dispatch(socketSliceActions.setMessage());
+      messageHeightRef.current = "auto";
     }
   }, [isEditingNow]);
 
-  if (isEditingNow) return <EditMessageTextarea height={messageHeightRef.current} />
+  if (isEditingNow) return <EditMessageTextarea />
 
   return (
     <MessageBlock

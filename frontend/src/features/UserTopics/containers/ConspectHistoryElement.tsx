@@ -9,7 +9,6 @@ type OwnProps = {
 }
 
 const ConspectHistoryElement: React.FC<OwnProps> = ({ date, topics, onClick, selected }) => {
-
   return (
     <div className="history-container" onClick={onClick}>
       <div className="header-date">{date}</div>
