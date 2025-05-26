@@ -15,7 +15,7 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
 
   switch (wsAction.type) {
     case 'socket/connect':
-      console.log(wsAction.url);
+      // console.log(wsAction.payload);
       
       socket.connect(wsAction.url, wsAction.payload);
 
@@ -47,6 +47,7 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
           store.dispatch(topicSliceActions.setMarkdownVisibility());
           store.dispatch(topicSliceActions.addMarkdownToChat());
         }
+        socket.disconnect()
         console.log("[WS]: Connection closed");
         socket.readyState = 0;
       });
@@ -57,7 +58,7 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
       break;
     
     case 'socket/sendMessage':
-      console.log("после ответа", wsAction.payload);
+      // console.log("после ответа", wsAction.payload);
       socket.send(wsAction.payload);
       break;
 

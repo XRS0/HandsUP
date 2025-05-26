@@ -52,7 +52,7 @@ const Topics = () => {
   }
 
   const selected = currentTopic && Object.keys(currentTopic)[0];
-  console.log(groupedTopics);
+
 
   return (
     <div className="history custom-scroll">
