@@ -8,14 +8,14 @@ import EditMessageTextarea from "./EditMessageTextarea";
 import "../ui/ChatMessage.scss";
 
 const ChatMessage = () => {
-  const { message, newMessage, isEditingNow, markdown } = useAppSelector(state => state.socket);
+  const { message, newMessage, isEditingNow } = useAppSelector(state => state.socket);
   const dispatch = useAppDispatch();
 
   const [, updateState] = useState({});
   const forceUpdate = useCallback(() => updateState({}), []); // for updating
 
   const messageRef = useRef<HTMLDivElement>(null);
-  const messageHeightRef = useRef<number | string>(0);                 // height of message conntainer
+  const messageHeightRef = useRef<number | string>(65);                 // height of message conntainer
   const lettersCountRef = useRef(0);                  // for counting we sould height will changed
 
   const renderedMessage = useRef<string[]>([]);       // collecting already rendered words
@@ -34,7 +34,7 @@ const ChatMessage = () => {
       setTimeout(() => {
         const wordLength = word.length + 1;                               // +1 for add space
       
-        if ((wordLength + lettersCountRef.current) >= 104) {
+        if ((wordLength + lettersCountRef.current) >= 100) {
           if (messageRef.current) {
             messageHeightRef.current = +messageHeightRef.current +  23;   // add some px for increase height
           }

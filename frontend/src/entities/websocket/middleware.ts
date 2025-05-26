@@ -4,6 +4,7 @@ import { socketAction } from "./types";
 import { socketSliceActions } from "./slice";
 import { Middleware } from "@reduxjs/toolkit";
 import { startRecording } from "../recorder/recorder";
+import { topicSliceActions } from "@/features/UserTopics/models/slice";
 
 export let globalSocket: Socket; // for sending raw binary unserialized data
 
@@ -23,6 +24,7 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
         try {
           socket.readyState = 1;
           if (wsAction.url !== "ws://localhost:8083/ws/generate?") startRecording();
+          else store.dispatch(topicSliceActions.setMarkdownVisibility());
         } catch (err: any) {
           alert("Error inside ws opening: " + err.message);
         }
@@ -30,16 +32,21 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
       
       socket.on('message', (event: MessageEvent) => {
         try {
-          console.log(event.data);
-          if (wsAction.url === "ws://localhost:8083/ws/generate?") store.dispatch(socketSliceActions.addMarkdown(event.data));
-          else store.dispatch(socketSliceActions.handleMessage(event.data));
-          
+          if (wsAction.url === "ws://localhost:8083/ws/generate?") {
+            store.dispatch(topicSliceActions.addMarkdown(event.data));
+          } else {
+            store.dispatch(socketSliceActions.handleMessage(event.data));
+          }
         } catch (err) {
           console.error("[WS]: Parsing json error:", err);
         }
       });
 
       socket.on('close', () => {
+        if (wsAction.url === "ws://localhost:8083/ws/generate?") {
+          store.dispatch(topicSliceActions.setMarkdownVisibility());
+          store.dispatch(topicSliceActions.addMarkdownToChat());
+        }
         console.log("[WS]: Connection closed");
         socket.readyState = 0;
       });

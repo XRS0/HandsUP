@@ -19,8 +19,8 @@ const Topics = () => {
   const groupedTopics: { [topic: string]: string[] } = {}
 
   try {
-    topics
-    .sort(({created_at: timeA}, {created_at: timeB}) => new Date(timeB!).getMinutes() - new Date(timeA!).getMinutes())
+    topics.reverse()
+    // .sort(({created_at: timeA}, {created_at: timeB}) => new Date(timeB!).getMinutes() - new Date(timeA!).getMinutes())
     .map(({topic, created_at}, i) => {
       if (!topic) return;
       
@@ -52,7 +52,7 @@ const Topics = () => {
   }
 
   const selected = currentTopic && Object.keys(currentTopic)[0];
-  console.log(selected);
+  console.log(groupedTopics);
 
   return (
     <div className="history custom-scroll">

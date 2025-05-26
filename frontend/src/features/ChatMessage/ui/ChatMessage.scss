@@ -12,6 +12,7 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  margin-bottom: 4rem;
 
   &.--enter {
     animation: fadeInMessage 0.4s forwards;

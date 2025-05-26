@@ -4,7 +4,6 @@ import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 type WebSocketState = {
   message: string;     // it's a splited arr of message
   newMessage: string;
-  markdown: string[];
   isRecording: boolean;
   isEditingNow: boolean;    // if user wants to edit text
 }
@@ -12,7 +11,6 @@ type WebSocketState = {
 const initialState: WebSocketState = {
   message: "",
   newMessage: '',   //проверяться через новое сообщение, если чел отменил то мы откатываемся до сообщения
-  markdown: [],
   isRecording: false,
   isEditingNow: false
 };
@@ -23,9 +21,6 @@ const socketSlice = createSlice({
   reducers: {
     addMessage(state, action: PayloadAction<string>) {
       state.message = action.payload;
-    },
-    addMarkdown(state, action: PayloadAction<string>) {
-      state.markdown.push(action.payload);
     },
     allowEdit(state) {
       state.isEditingNow = !state.isEditingNow;

@@ -1,4 +1,4 @@
-import { createAction, createSlice, current, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MessageForGeneration, Topic, TopicMessage, TopicPreview } from '../types/topic';
 import { RootState } from '@/app/Store/store';
 
@@ -6,12 +6,16 @@ type TopicsState = {
   cashedTopics: Topic[];
   currentTopic: Topic | null;
   isTopicCreating: boolean;
+  markdown: { [key: string]: string[] };
+  isMarkdownVisible: boolean
 }
 
 const initialState: TopicsState = {
   cashedTopics: [],
   currentTopic: null,
-  isTopicCreating: false
+  isTopicCreating: false,
+  markdown: {},
+  isMarkdownVisible: false
 };
 
 const topicSlice = createSlice({
@@ -35,6 +39,28 @@ const topicSlice = createSlice({
       const [topicName, messages] = Object.entries(topic)[0];
       messages.push(action.payload);
       state.cashedTopics.find(t => topicName in t)?.[topicName].push(action.payload);
+    },
+    addMarkdownToChat(state) {
+      const topic = state.currentTopic;
+      if (!topic) return;
+
+      const [topicName, messages] = Object.entries(topic)[0];
+      messages.push({ from: false, text: Object.values(state.markdown)[0].join("")});
+      state.cashedTopics.find(t => topicName in t)?.[topicName].push({ from: false, text: Object.values(state.markdown)[0].join("")});
+      state.markdown = {}
+    },
+    addMarkdown(state, action: PayloadAction<string>) {
+      if (!state.currentTopic) return;
+      const topicId = Object.keys(state.currentTopic)[0];
+    
+      if (!state.markdown[topicId]) {
+        state.markdown[topicId] = [];
+      }
+      
+      state.markdown[topicId].push(action.payload);
+    },
+    setMarkdownVisibility(state) {
+      state.isMarkdownVisible = !state.isMarkdownVisible;
     }
   }
 });

@@ -11,7 +11,6 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { continueRecording, pauseRecording, stopRecording } from "@/entities/recorder/recorder";
 import { createClassName } from "@/shared/utils/createClassName";
 import { socketSliceActions } from "@/entities/websocket/slice";
-import { topicSliceActions } from "@/features/UserTopics/models/slice";
 
 type OwnProps = {
   onStop: (e: React.MouseEvent<HTMLElement>) => void;

@@ -44,10 +44,10 @@ const WelcomePage = () => {
       <nav>
           <img src={logo} alt="logo" />
           <div className="nav-bar">
-            <div>About me</div>
-            <div>Pricing plans</div>
+            <div>О сервисе</div>
+            <div>Тарифные планы</div>
             <NavLink to={"/auth"}>
-              <Button children="Sign in" onclick={() => {}}/>
+              <Button children="Войти" onclick={() => {}}/>
             </NavLink>
           </div>
       </nav>
@@ -59,8 +59,8 @@ const WelcomePage = () => {
           <h1>Convert audio to text</h1>
 
           <p style={{marginBlock: "0 20px"}}>
-            Upload or record your text message and recieve
-            customisable conspect message in a minute
+            Загрузите или запишите голос и получите
+            конспект любой сложности в течение минуты
           </p>
 
           <NavLink to="/chat">
@@ -81,53 +81,50 @@ const WelcomePage = () => {
 
       <div className="target-blocks">
           <div className="block">
-            <h4>Start now</h4>
+            <h4>Прямо сейчас</h4>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Экономия времени Конспект формируется автоматически — больше не нужно записывать вручную
             </p>
           </div>
           <div className="block">
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Точная и структурированная запись Искусственный интеллект распознаёт речь с высокой точностью и оформляет текст в виде понятного конспекта.
             </p>
-            <Button onclick={() => {}} children="Start now"/>
+            <NavLink to="/chat">
+              <Button onclick={() => {}} children="Start now"/>
+            </NavLink>
           </div>
       </div>
 
-      <h2>How it works?</h2>
+      <h2>Как это работает?</h2>
 
       <div className="steps-block">
           <div className="blocks-row">
             <div className="block">
-              <h4>First Step</h4>
+              <h4>Регистрация</h4>
 
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                sed do eiusmod tempor.
+                Зарегистрируйтесь на сайте, создайте личный кабинет и выберите подходящий тариф. Доступен бесплатный пробный период, чтобы оценить возможности сервиса
               </p>
 
               <div className="rank-circle">1</div>
             </div>
             
             <div className="block">
-              <h4>Second Step</h4>
+              <h4>Выбор формата</h4>
 
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                sed do eiusmod tempor.
+                Вы можете начать запись лекции в прямом эфире через сайт или загрузить заранее записанную аудиозапись
               </p>
 
               <div className="rank-circle">2</div>
             </div>
 
             <div className="block">
-              <h4>Third Step</h4>
+              <h4>Запуск обработки</h4>
 
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                sed do eiusmod tempor.
+                Нажмите «Начать запись» для прямой трансляции или «Загрузить файл», если лекция уже записана.
               </p>
 
               <div className="rank-circle">3</div>
@@ -136,12 +133,12 @@ const WelcomePage = () => {
 
           <div className="blocks-row">
             <div className="block" style={{height: "250px"}}>
-              <h4>Fourth Step</h4>
+              <h4>Получение и просмотр</h4>
 
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, 
-                consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                После завершения обработки конспект всегда можно найти в 
+                одном из созданных вами ранее чатов. Конспекты хранятся 
+                в течение 90 дней и вы всегда можете к ним обратиться
               </p>
 
               <div className="rank-circle">4</div>
@@ -150,19 +147,18 @@ const WelcomePage = () => {
             <div className="final-step-wrapper">
               <img src={rectangleBlock} style={{width: "100%", height: "100%"}} alt="block" />
               <div className="content">
-                <h4>Fifth Step</h4>
+                <h4>Подписка</h4>
 
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                  sed do eiusmod tempor incididunt ut labore et dolore magna 
-                  aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
-                  ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-                  Duis aute irure dolor in reprehenderit in voluptate velit 
-                  esse cillum dolore eu fugiat nulla pariatur. Excepteur 
-                  sint occaecat cupidatat non proident.
+                  В разделе настроек аккаунта пользователи могут управлять своей подпиской:
+                  продлить её срок действия, изменить тарифный план или пополнить баланс.
+                  Здесь же отображается информация о текущих лимитах использования сервиса
+                  (например, количество доступных запросов, хранилище данных и т.д.),
+                  а также список активных функций, доступных в рамках выбранного тарифа.
+                  Это позволяет удобно контролировать свой аккаунт.
                 </p>
 
-                <Button onclick={() => {}} children="Try it for free" isFilled={false} />
+                <Button onclick={() => {}} children="Попробовать бесплатно" isFilled={false} />
 
                 <div className="rank-circle">5</div>
               </div>
@@ -170,50 +166,50 @@ const WelcomePage = () => {
           </div>
       </div>
 
-      <h2>Pricing plans</h2>
+      <h2>Тарифные планы</h2>
 
       <div className="plans-container">
         <div className="price-plan">
           <div className="header">
-            Primary <span>Free</span>
+            Пробная <span>Free</span>
           </div>
           <div className="line" />
           <div className="content">
             <div className="option">
               <div className="dot" />
-              First option
+              3 дня после входа
             </div>
 
             <div className="option">
               <div className="dot" />
-              Second option
+              Хранение до 7 дней в лк.
             </div>
 
             <div className="option disabled">
               <div className="dot" />
-              Third option
+              1 лекция в прямом эфире (15 минут)
             </div>
 
             <div className="option disabled">
               <div className="dot" />
-              Fourth option
+              1 загрузка готового файла
             </div>
 
             <div className="option disabled">
               <div className="dot" />
-              Fifth option
+              Только база
             </div>
           </div>
 
             <div className="button-container">
-              <Button isDisabled onclick={() => {}} children="Current plan"/>
+              <Button isDisabled onclick={() => {}} children="Текущий план"/>
             </div>
         </div>
 
         <div className="price-plan">
           <div className="header">
             <div className="text-red">V.I.P</div>
-            <span>29$/m</span>
+            <span>$$$/m</span>
           </div>
 
           <div className="line" />
@@ -221,39 +217,39 @@ const WelcomePage = () => {
           <div className="content">
             <div className="option">
               <div className="dot" />
-              First option
+              Срок на 1 месяц
             </div>
 
             <div className="option">
               <div className="dot" />
-              Second option
+              Хранение до 30 дней в лк.
             </div>
 
             <div className="option">
               <div className="dot" />
-              Third option
+              Безлимитные лекции в прямом эфире
             </div>
 
             <div className="option disabled">
               <div className="dot" />
-              Fourth option
+              Загрузка файлов до 60 минут
             </div>
 
             <div className="option disabled">
               <div className="dot" />
-              Fifth option
+              Наличие техподдержки
             </div>
           </div>
 
           <div className="button-container">
-            <Button onclick={() => {}} children="Upgrade your plan"/>
+            <Button onclick={() => {}} children="Улучшить свой план"/>
           </div>
         </div>
 
         <div className="price-plan">
           <div className="header">
             <div className="text-red">Premium</div>
-            <span>49$/m</span>
+            <span>$$$/m</span>
           </div>
 
           <div className="line" />
@@ -261,32 +257,32 @@ const WelcomePage = () => {
           <div className="content">
             <div className="option">
               <div className="dot" />
-              First option
+              Срок на 1 месяц
             </div>
 
             <div className="option">
               <div className="dot" />
-              Second option
+              Хранение до 90 дней в лк.
             </div>
 
             <div className="option">
               <div className="dot" />
-              Third option
+              Включает всё из VIP
             </div>
 
             <div className="option">
               <div className="dot" />
-              Fourth option
+              Повышенная точность распознавания
             </div>
 
             <div className="option">
               <div className="dot" />
-              Fifth option
+              Быстрая техподдержка через чат
             </div>
           </div>
 
           <div className="button-container">
-            <Button onclick={() => {}} children="Upgrade your plan" />
+            <Button onclick={() => {}} children="Улучшить свой план" />
           </div>
         </div>
       </div>

@@ -1,3 +1,4 @@
+import Markdown from "react-markdown";
 import "./StaticMessage.scss";
 
 type OwnProps = {
@@ -12,7 +13,9 @@ const Static: React.FC<OwnProps> = ({message, from}) => {
       : "user-message-container"
     }>
       <div className="static-message">
-        {message}
+        <Markdown components={{h1: 'h2'}}>
+          {message}
+        </Markdown>
       </div>
     </div>
   );
