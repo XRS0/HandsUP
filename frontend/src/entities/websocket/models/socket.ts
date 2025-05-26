@@ -15,10 +15,11 @@ class Socket {
   }
 
   connect(url: string, payload: (MessageForGeneration & {token: string}) | null) {
+    // console.log(payload)
     if (!this.socket) {
       if (!payload) this.socket = new WebSocket(url);
       else {
-        console.log(payload.text);
+        // console.log(payload);
         
         this.socket = new WebSocket(
         url +
