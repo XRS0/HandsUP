@@ -12,6 +12,7 @@ import { topicSliceActions } from "../UserTopics/models/slice";
 
 const UserComposer = () => {
   const textareaRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
+  const [isCopied, setIsCopied] = useState(false);
   const {value, onChange, clear} = useInput();
   const [isClicked, setIsClicked] = useState({
     short: false,
@@ -21,7 +22,7 @@ const UserComposer = () => {
 
   const dispatch = useAppDispatch();
   const { language } = useAppSelector(state => state.settings);
-  const {message} = useAppSelector(state => state.socket);
+  const { message } = useAppSelector(state => state.socket);
   const { currentTopic } = useAppSelector(state => state.topics);
 
   useEffect(() => {
@@ -76,15 +77,24 @@ const UserComposer = () => {
         break;
     }
 
+    const lastBotMessage = Object.values(currentTopic!)[0].filter(topic => topic.from === false).at(-1);
+    
     dispatch(topicSliceActions.generateMessage({
       user_prompt: value,
       fullness: conspectFullness,
       lang: language === "English" ? "en" : "ru",
-      text: message,
+      text: lastBotMessage ? lastBotMessage.text : message,
       topic: Object.keys(currentTopic!)[0].split(" ").join("_")
     }));
 
     clear();
+  }
+
+  const copyToCLipboard = () => {
+    const lastBotMessage = Object.values(currentTopic!)[0].filter(topic => topic.from === false).at(-1);
+    navigator.clipboard.writeText(lastBotMessage!.text);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 1500);
   }
 
   const conspectConfigButtons = <div className="conspect-config">
@@ -92,7 +102,7 @@ const UserComposer = () => {
       name="short"
       onclick={handleOptionClick} 
       cssClass={createClassName("config", isClicked["short"] && "actived")} 
-      children={"Short"} 
+      children={"Краткий"} 
       isFilled={false}
     />
 
@@ -100,7 +110,7 @@ const UserComposer = () => {
       name="without_changes"
       onclick={handleOptionClick} 
       cssClass={createClassName("config", isClicked["without_changes"] && "actived")} 
-      children={"Without changes"} 
+      children={"Без изменений"} 
       isFilled={false}
     />
 
@@ -108,7 +118,7 @@ const UserComposer = () => {
       name="expanded"
       onclick={handleOptionClick} 
       cssClass={createClassName("config", isClicked["expanded"] && "actived")}
-      children={"Expanded"} 
+      children={"Объемный"} 
       isFilled={false} 
     />
   </div>
@@ -121,12 +131,12 @@ const UserComposer = () => {
           ref={textareaRef as React.Ref<HTMLInputElement>}
           value={value}
           onChange={onChange}
-          placeholder="Type something.."
+          placeholder="Что нибудь.."
         />
 
         <Button
           IconLeft={stormIcon}
-          children="Generate"
+          children="Сгенерировать"
           cssClass="record-button"
           onclick={handleSendMessage}
         />
@@ -142,11 +152,11 @@ const UserComposer = () => {
         ref={textareaRef as React.Ref<HTMLTextAreaElement>}
         value={value}
         onChange={onChange}
-        placeholder="Type something for config a conspect..."
+        placeholder="Напиши что нибудь для конфигурации"
       />
 
       <div className="hint-text">
-        ← Don’t forget to choose the type of conspect
+        ← Не забудь выбрать пресет для конспекта
       </div>
 
       <div className="input-tools">
@@ -154,15 +164,15 @@ const UserComposer = () => {
 
         <div className="actions">
           <Button 
-            children={"Copy"}
+            children={isCopied ? "Скопировано" : "Копировать"}
             cssClass="copy-button" 
             IconLeft={linkIcon} 
-            onclick={() => {}}
+            onclick={copyToCLipboard}
           />
 
           <Button
             IconLeft={stormIcon}
-            children="Generate"
+            children="Сгенерировать"
             cssClass="record-button"
             onclick={handleSendMessage}
           />

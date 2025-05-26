@@ -43,8 +43,12 @@
       height: 100%;
       width: 100%;
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       flex-direction: column-reverse;
+
+      & > *:first-child {
+        margin-bottom: 30px;
+      }
 
       @include mobile {
         justify-content: flex-start;
@@ -63,6 +67,8 @@
 }
 
 .begin-chat {
+  justify-content: center !important;
+
   .main-prompt-input {
     animation: none !important;
   }

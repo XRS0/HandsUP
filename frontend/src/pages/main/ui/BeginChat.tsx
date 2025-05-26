@@ -47,15 +47,13 @@ const BeginChat = () => {
     </div>  
     : <div className="loaded-chat">
         <div className="messages-wrapper">
-          <div className="gradient-top"></div>
+          <div className="gradient-top" />
 
-          <div 
-            className={"loaded-messages custom-scroll begin-chat"}
-          >
+          <div className="loaded-messages custom-scroll begin-chat">
             {!isVisible && <ChatMessage />}
           </div>
 
-          <div className="gradient-bottom"></div>
+          <div className="gradient-bottom" />
         </div>
 
         {((isFadeOutBlock || !isVisible) && isRecorderVisible)

@@ -1,5 +1,6 @@
 .md-block {
   transition: height var(--long-transition);
+
   &.--enter {
     animation: fadeInMDMessage 0.6s forwards;
   }
@@ -7,13 +8,13 @@
   h2, h3, p, span,
   ul, pre, a, ol, ul, li {
     font-family: "Jost";
-    color: var(--light-gray);
-    animation: fade-md-word 0.5s forwards cubic-bezier(0.11, 0, 0.5, 0),
+    color: var(--light-gray) !important;
+    animation: fade-md-word 1.5s forwards cubic-bezier(0.11, 0, 0.5, 0),
   }
 
   h2 {
-    color: #e0e0e0;
-    font-size: 1.625rem;
+    color: #bebebe;
+    font-size: 1.2rem;
     text-align: start;
     font-weight: 600;
     margin: 0;
@@ -21,10 +22,9 @@
   }
 
   p {
-    color: #e0e0e0;
-    font-size: 1.625rem;
+    color: #aaa;
+    font-size: 1rem;
     text-align: start;
-    font-weight: 600;
   }
 
   a {

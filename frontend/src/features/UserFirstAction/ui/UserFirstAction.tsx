@@ -38,10 +38,7 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
       <div className="title">Welcome to the <span>Hands Up</span></div>
       <div className="action-container">
         <div className="message-block">
-          Lorem ipsum odor amet, consectetuer adipiscing elit. Mollis potenti
-          morbi pellentesque sodales suscipit ultricies. Tellus hac primis
-          vestibulum aliquet platea convallis gravida, quam suspendisse.
-          Praesent consequat.
+          Больше не нужно тратить время на ручную запись — просто говорите, а наш сервис оформит в удобный формат. Поддерживаются разные языки. Экономьте время, и работайте продуктивнее!
         </div>
         <div className="actions">
           <StartRecordingButton startAnimation={onVoice} />
