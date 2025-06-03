@@ -1,7 +1,8 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import MainPage from "../pages/main/containers/MainPage";
 
-import "./ui/index.scss";
+import "../index.scss";
+
+import MainPage from "../pages/main/containers/MainPage";
 import WelcomePage from "@/pages/home/WelcomePage";
 import Authorize from "@/pages/sign-in-up/Authorize";
 

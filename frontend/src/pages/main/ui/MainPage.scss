@@ -122,18 +122,18 @@ html, body, #root {
   position: relative;
   z-index: 1;
 
-  .chat {
-    width: 100%;
-    max-width: 800px;
-    height: 100%;
-    @include mixin.flex-center;
+  // .chat {
+  //   width: 100%;
+  //   max-width: 800px;
+  //   height: 100%;
+  //   @include mixin.flex-center;
 
-    @include mobile {
-      display: flex;
-      align-items: center;
-      padding-inline: 20px;
-    }
-  }
+  //   @include mobile {
+  //     display: flex;
+  //     align-items: center;
+  //     padding-inline: 20px;
+  //   }
+  // }
 
   @include mobile {
     width: 100%;

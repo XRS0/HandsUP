@@ -7,8 +7,8 @@ import bg from "@assets/authorize/bg.svg";
 import logo from "@assets/welcome-page/logo.svg";
 import barkArrow from "@assets/authorize/back-arrow.svg";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import SignIn from "@/features/Auth/containers/SignIn";
-import SignUp from "@/features/Auth/containers/SignUp";
+import { SignIn } from "@/features/LoginUser";
+import { SignUp } from "@/features/RegisterUser";
 import { createClassName } from "@/shared/utils/createClassName";
 import { NavLink } from "react-router-dom";
 

@@ -3,24 +3,24 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import "../ui/Topic.scss";
 
 import { getDateAgo } from "@/shared/utils/date";
-import ConspectHistoryElement from "./ConspectHistoryElement";
-import { topicSliceActions } from "../models/slice";
-import NewTopic from "@/features/CreateTopic/containers/NewTopic";
+import ConspectHistoryElement from "../ui/ConspectHistoryElement";
+import NewTopic from "@/features/NewTopicButton/containers/NewTopic";
+import { TopicMessage, TopicPreview } from "@/features/UserChat/types";
+import { TopicSliceActions } from "../models/slice";
+import { getKey, getValue } from "@/shared/utils/hashMapGet";
 
 const Topics = () => {
-  const { user } = useAppSelector(state => state.user);
-  const { isTopicCreating, cashedTopics, currentTopic } = useAppSelector(state => state.topics);
+  const { isTopicCreating, currentTopic, topics } = useAppSelector(state => state.topics);
+  const { cachedChats } = useAppSelector(state => state.chat);
   const dispatch = useAppDispatch();
 
-  if (!user) return;
-  if (!user?.topics) return <div className="history custom-scroll">{isTopicCreating && <NewTopic />}</div>;
+  if (topics.length === 0) return <div className="history custom-scroll">{isTopicCreating && <NewTopic />}</div>;
 
-  const topics = [...user!.topics];   // sort not working without absolute copy
+  const currentChat = cachedChats.filter(topic => getKey(topic) === currentTopic)[0];
   const groupedTopics: { [topic: string]: string[] } = {}
 
   try {
     topics.reverse()
-    // .sort(({created_at: timeA}, {created_at: timeB}) => new Date(timeB!).getMinutes() - new Date(timeA!).getMinutes())
     .map(({topic, created_at}, i) => {
       if (!topic) return;
       
@@ -39,20 +39,16 @@ const Topics = () => {
     e.stopPropagation();
 
     const topicName = e.currentTarget.innerText;
-    const switchedTopic = cashedTopics.find(t => Object.keys(t)[0] === topicName);   //get only keys (names) of topics
-    
-    console.log(topicName)
-    console.log(switchedTopic);
+    const switchedTopic = getValue(currentChat).find((t: TopicMessage) => getKey(t) === topicName);
 
     if (switchedTopic) {
-      dispatch(topicSliceActions.switchTopic(switchedTopic));
+      dispatch(TopicSliceActions.switchTopic(getKey(switchedTopic)));
     } else {
-      dispatch(topicSliceActions.openTopic(topicName))  //action tries to get from server
+      dispatch(TopicSliceActions.openTopic(topicName));
     }
   }
 
   const selected = currentTopic && Object.keys(currentTopic)[0];
-
 
   return (
     <div className="history custom-scroll">

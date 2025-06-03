@@ -1,0 +1,1 @@
+export { default as watchGenerateMessage } from './models/saga';
