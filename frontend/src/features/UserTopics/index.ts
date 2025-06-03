@@ -1,3 +1,5 @@
-export { default as Topics } from './containers/Topics';
-export { default as ConspectHistoryElement } from './containers/ConspectHistoryElement';
-export { default as watchGetTopic } from './models/saga';
+export { TopicSliceActions } from './models/slice';
+export { selectCurrentTopic } from './models/slice';
+export { default as watchGetTopics } from './models/saga';
+export { default as topicsReducer } from './models/slice';
+export { default as ConspectHistoryElement } from '../UserTopics/ui/ConspectHistoryElement';

@@ -1,4 +1,4 @@
-import { socketSliceActions } from "@/entities/websocket/slice";
+import { SocketSliceActions } from "@/entities/websocket/models/slice";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useEffect, useRef } from "react";
 
@@ -13,7 +13,7 @@ const EditMessageTextarea = () => {
   const textRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    dispatch(socketSliceActions.editMessage(value));
+    dispatch(SocketSliceActions.editMessage(value));
 
     if (!textRef.current) return;
       textRef.current.style.height = 'auto';
@@ -21,7 +21,7 @@ const EditMessageTextarea = () => {
   }, [value]);
 
   return (
-    <div className="edit-textarea">
+    <div className="edit-textarea custom-scroll">
       <textarea
         ref={textRef}
         autoComplete="off"
@@ -33,12 +33,12 @@ const EditMessageTextarea = () => {
         <Button 
           children={"Cancel"} 
           cssClass={"copy-button"} 
-          onclick={() => dispatch(socketSliceActions.cancelMessage())} 
+          onclick={() => dispatch(SocketSliceActions.cancelMessage())} 
         />
         
         <Button 
         children={"Accept"} 
-        onclick={() => dispatch(socketSliceActions.allowEdit())} 
+        onclick={() => dispatch(SocketSliceActions.allowEdit())} 
         />
       </div>
     </div>

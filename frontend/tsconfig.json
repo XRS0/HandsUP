@@ -17,6 +17,6 @@
       "@views/*": ["src/views/*"]
     }
   },
-  "include": ["src", "./src/declaration.d.ts", "__mocks__/sum.test.ts"],
+  "include": ["src", "./src/declaration.d.ts", "__mocks__/sum.test.ts", "src/features/UserChat/containers/.tsx"],
   "exclude": ["node_modules"]
 }

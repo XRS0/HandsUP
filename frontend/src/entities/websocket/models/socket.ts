@@ -1,4 +1,4 @@
-import { MessageForGeneration } from "@/features/UserTopics/types/topic";
+import { MessageForGeneration } from "@/features/UserChat/types";
 
 class Socket {
   public socket: WebSocket | null;
@@ -15,11 +15,9 @@ class Socket {
   }
 
   connect(url: string, payload: (MessageForGeneration & {token: string}) | null) {
-    // console.log(payload)
     if (!this.socket) {
       if (!payload) this.socket = new WebSocket(url);
       else {
-        // console.log(payload);
         
         this.socket = new WebSocket(
         url +

@@ -14,7 +14,7 @@ type OwnProps = {
 }
 
 const Profile: React.FC<OwnProps> = ({ ref }) => {
-  const {user} = useAppSelector(state => state.user);
+  const user = useAppSelector(state => state.user);
   if (!user) return;
 
   return (
@@ -23,7 +23,6 @@ const Profile: React.FC<OwnProps> = ({ ref }) => {
       <MenuField name="Email" value={maskEmail(user.email)}/>
       <MenuField 
         name="Password"
-        data-content={user.password} 
         value={
           "********"
           //user.password.replace(/[a-z]/gi, "*")

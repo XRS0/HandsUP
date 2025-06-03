@@ -8,7 +8,7 @@ import stormIcon from "@/shared/assets/main-page/icons/storm_iocn.svg?react";
 import { createClassName } from "@/shared/utils/createClassName";
 import useInput from "@/hooks/useInput";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { topicSliceActions } from "../UserTopics/models/slice";
+import { ChatSliceActions } from "../UserChat/models/slice";
 
 const UserComposer = () => {
   const textareaRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
@@ -24,6 +24,7 @@ const UserComposer = () => {
   const { language } = useAppSelector(state => state.settings);
   const { message } = useAppSelector(state => state.socket);
   const { currentTopic } = useAppSelector(state => state.topics);
+  const { chatMessages } = useAppSelector(state => state.chat);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -77,9 +78,9 @@ const UserComposer = () => {
         break;
     }
 
-    const lastBotMessage = Object.values(currentTopic!)[0].filter(topic => topic.from === false).at(-1);
+    const lastBotMessage = chatMessages.filter(topic => topic.from === false).at(-1);
     
-    dispatch(topicSliceActions.generateMessage({
+    dispatch(ChatSliceActions.generateMessage({
       user_prompt: value,
       fullness: conspectFullness,
       lang: language === "English" ? "en" : "ru",
@@ -91,7 +92,7 @@ const UserComposer = () => {
   }
 
   const copyToCLipboard = () => {
-    const lastBotMessage = Object.values(currentTopic!)[0].filter(topic => topic.from === false).at(-1);
+    const lastBotMessage = chatMessages.filter(topic => topic.from === false).at(-1);
     navigator.clipboard.writeText(lastBotMessage!.text);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 1500);

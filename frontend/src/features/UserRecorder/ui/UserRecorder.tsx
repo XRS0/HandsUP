@@ -10,7 +10,7 @@ import linkIcon from "@/shared/assets/main-page/icons/link.svg?react";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { continueRecording, pauseRecording, stopRecording } from "@/entities/recorder/recorder";
 import { createClassName } from "@/shared/utils/createClassName";
-import { socketSliceActions } from "@/entities/websocket/slice";
+import { SocketSliceActions } from "@/entities/websocket/models/slice";
 
 type OwnProps = {
   onStop: (e: React.MouseEvent<HTMLElement>) => void;
@@ -46,7 +46,6 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
 
     const time = [hours, minutes, seconds].map(e => e.toString().padStart(2, "0"));
     return `${time.join(":")}`;
-    //${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}
   }
 
   const copyToCLipboard = () => {
@@ -59,11 +58,6 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
   const handleStopRecording = (e: React.MouseEvent<HTMLElement>) => {
     onStop(e);
     stopRecording();
-
-    // dispatch(topicSliceActions.addMessage({
-    //   from: "chat",
-    //   message: message.join(" ")
-    // }));
   }
 
   const actionButtons = <div className="conspect-interaction">
@@ -72,7 +66,7 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
       cssClass="interaction" 
       isDisabled={isRecording || isEditingNow}
       IconLeft={editIcon} 
-      onclick={() => dispatch(socketSliceActions.allowEdit())} 
+      onclick={() => dispatch(SocketSliceActions.allowEdit())} 
     />
 
     <Button 

@@ -9,7 +9,7 @@ import useAnimation from "@/hooks/useAnimation";
 import UserMenu from "@/features/UserMenu";
 import ModalOverflow from "@/features/UserMenu/ui/ModalOverflow";
 import Topics from "@/features/UserTopics/containers/Topics";
-import CreateTopicBtn from "@/features/CreateTopic/containers/CreateTopicBtn";
+import { CreateTopicBtn } from "@/features/NewTopicButton";
 
 const Sidebar = () => {
   const {

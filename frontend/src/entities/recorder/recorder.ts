@@ -1,6 +1,6 @@
-import { store } from "@/app/Store/store";
-import { socketSliceActions } from "../websocket/slice";
+import { store } from "@/app/store";
 import { globalSocket } from "../websocket/middleware";
+import { SocketSliceActions } from "../websocket/models/slice";
 
 let stream: MediaStream;
 let audioContext: AudioContext;
@@ -27,7 +27,7 @@ export async function startRecording() {
     mediaStreamSource = audioContext.createMediaStreamSource(stream);
     mediaStreamSource.connect(workletNode);
     
-    store.dispatch(socketSliceActions.handleOpen());
+    store.dispatch(SocketSliceActions.handleOpen());
   } catch (error) {
     console.error('Error inside recoreder:', error);
   }
@@ -37,7 +37,7 @@ export const pauseRecording = () => {
   if (workletNode) {
     workletNode.port.onmessage = null;
     console.log("[AudioWorklet]: Recording was paused");
-    store.dispatch(socketSliceActions.handlePause());
+    store.dispatch(SocketSliceActions.handlePause());
   }
 };
 
@@ -49,7 +49,7 @@ export const continueRecording = () => {
       }
     };
     console.log("[AudioWorklet]: Recording continues");
-    store.dispatch(socketSliceActions.handleOpen());
+    store.dispatch(SocketSliceActions.handleOpen());
   }
 };
 
@@ -64,7 +64,7 @@ export const stopRecording = () => {
     
     workletNode = null;
     console.log("[AudioWorklet]: Recording was stopped");
-    store.dispatch(socketSliceActions.handlePause());
+    store.dispatch(SocketSliceActions.handlePause());
     store.dispatch({type: 'socket/disconnect'});
   }
 };

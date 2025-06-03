@@ -1,37 +1,35 @@
 import "../ui/MainPage.scss";
 
 import Sidebar from "../ui/Sidebar";
-import BeginChat from "../ui/BeginChat";
-import LoadedChat from "./LoadedChat";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { AuthSliceActions } from "@/features/Auth/models/slice";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Navigate } from "react-router-dom";
 
 import sidebarIcon from "@/shared/assets/main-page/icons/sidebar-icon.svg"
 import { createClassName } from "@/shared/utils/createClassName";
+import { UserSliceActions } from "@/features/AuthUser";
+import { TopicSliceActions } from "@/features/UserTopics/models/slice";
+import Chat from "@/features/UserChat/containers/Chat";
 
 const MainPage = () => {
   const parentRef = useRef(null);
   const [isOpened, setIsOpened] = useState(false);
   const { currentTopic } = useAppSelector(state => state.topics);
+  const { isLoading, token } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
-   dispatch({ type: AuthSliceActions.getUser.type, meta: { navigate }})
-  }, []);
+    if (!token) {
+      dispatch(UserSliceActions.getUser());
+    } else {
+      dispatch(TopicSliceActions.getTopics());
+    }
+  }, [token]);
 
-  //for rerender component when width changes
-  const [, updateState] = useState({});
-  const forceUpdate = useCallback(() => updateState({}), []);
-
-  useEffect(() => {
-    document.body.style.overflowY = "hidden";
-    forceUpdate();
-  }, [document.body.offsetWidth]);
-
-  const openSidebar = () => setIsOpened(prev => !prev);  
+  const openSidebar = () => setIsOpened(prev => !prev); 
+  
+  if (!isLoading && !token) return <Navigate to={"/auth"} replace />
+  
   return (
     <div className={createClassName("wrapper", isOpened && "sidebar-open")} ref={parentRef}>
       { document.body.offsetWidth <= 480 
@@ -50,10 +48,7 @@ const MainPage = () => {
           className="chat-background" 
           onClick={isOpened ? openSidebar : () => {}}
         >
-          { currentTopic && Object.values(currentTopic)[0].length !== 0 // check is topic messages exist
-          ? <LoadedChat currentTopic={currentTopic} />                  // chat will be loaded form server
-          : <BeginChat />
-          }
+          <Chat />
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { handleRecievedMessage } from "../saga";
+import { handleRecievedMessage } from "../models/saga";
 
 describe("WebSocket saga test", () => {
   test("func is done", () => {
