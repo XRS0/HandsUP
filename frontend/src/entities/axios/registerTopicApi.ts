@@ -13,5 +13,5 @@ export const registerTopicApiInstance = async (payload: TopicPreview, token: str
     throw new Error('Failed to to create topics');
   }
 
-  return response;
+  return response.data;
 }
