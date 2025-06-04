@@ -5,9 +5,11 @@ import { LoginSliceActions } from "./slice";
 export function* SignInSaga({ payload }: ReturnType<typeof LoginSliceActions.fetchRequest>) {
   try {
     const token: string = yield localStorage.getItem("token");
-    const response: {token: string} & {message: string} = yield call(loginApiInstance, payload, token);
+    const response: { token: string, message: string } = yield call(loginApiInstance, payload, token);
     
-    yield localStorage.setItem("token", response.token);
+    if (response.message !== "Already authorized" && response.token) {
+      yield localStorage.setItem("token", response.token);
+    }
 
     yield put(LoginSliceActions.fetchSuccess(response.token));
   } catch (error: any) {
