@@ -11,7 +11,7 @@ import DropArrowIcon from "@/shared/assets/main-page/icons/dropdown-arrow.svg?re
 // import dropArrow from "@/shared/assets/main-page/icons/dropdown-arrow.svg";
 import { createPortal } from "react-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { appLanguage, appTheme, settingsSliceActions } from "../../models/slice";
+import { appLanguage, appTheme, SettingsSliceActions } from "../../models/slice";
 
 type OwnProps = {
   ref: React.Ref<HTMLDivElement> | undefined
@@ -59,7 +59,7 @@ const Settings: React.FC<OwnProps> = ({ ref }) => {
 
       if (event?.currentTarget instanceof HTMLDivElement) return;
 
-      dispatch(settingsSliceActions.switchSetting({
+      dispatch(SettingsSliceActions.switchSetting({
         setting: event!.currentTarget.name as "language" | "theme",
         option: event!.currentTarget.textContent as appLanguage & appTheme
       }))

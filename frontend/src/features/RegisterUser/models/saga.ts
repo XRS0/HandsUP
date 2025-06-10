@@ -8,7 +8,7 @@ export function* registerSaga({ payload }: ReturnType<typeof RegisterSliceAction
     
     yield localStorage.setItem("token", response.token);
 
-    yield put(RegisterSliceActions.fetchSuccess(response.token));
+    yield put(RegisterSliceActions.fetchSuccess());
   } catch (error: any) {
     console.error(error);
     yield put(RegisterSliceActions.fetchFailure(error.message));

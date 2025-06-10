@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useRef, useState } from "react";
-import Button from "../../../views/Button/ui/Button";
+import Button from "@/views/Button/ui/Button";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { Navigate } from "react-router-dom";
 import { RegisterSliceActions } from "../models/slice";

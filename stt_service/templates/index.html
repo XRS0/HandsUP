@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-	<title>Speech to Text</title>
+	<meta charset="UTF-8" />
+	<title>Whisper STT</title>
 	<style>
 		#output {
 			font-family: sans-serif;
@@ -12,10 +13,6 @@
 
 		.final {
 			color: black;
-		}
-
-		.partial {
-			color: gray;
 		}
 	</style>
 </head>
@@ -28,8 +25,6 @@
 	<script>
 		const output = document.getElementById('output');
 		const startBtn = document.getElementById('start');
-
-		let partialSpan = null;
 
 		startBtn.onclick = async () => {
 			const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -53,20 +48,16 @@
 				const message = event.data.trim();
 				if (!message) return;
 
-				// Если короткий текст, считаем его partial
 				if (message.endsWith('.')) {
-					// Это финальный результат
 					const finalDiv = document.createElement('div');
 					finalDiv.className = 'final';
 					finalDiv.textContent = message;
 					output.appendChild(finalDiv);
-					// Очистить partial
 					if (partialSpan) {
 						partialSpan.remove();
 						partialSpan = null;
 					}
 				} else {
-					// Это partial результат
 					if (!partialSpan) {
 						partialSpan = document.createElement('div');
 						partialSpan.className = 'partial';
@@ -74,14 +65,13 @@
 					}
 					partialSpan.textContent = message;
 				}
-				output.scrollTop = output.scrollHeight; // прокрутка вниз
+				output.scrollTop = output.scrollHeight;
 			};
 
 			source.connect(processorNode).connect(audioContext.destination);
 		};
+
 	</script>
-
-
 </body>
 
 </html>

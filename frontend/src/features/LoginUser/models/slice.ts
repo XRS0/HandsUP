@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SignInClientData } from '../types';
 
-interface loginType {
+export interface loginState {
   isLoading: boolean;
   error: string;
   isSuccess: boolean | null;
 }
 
-const initialState: loginType = {
+export const initialState: loginState = {
   isLoading: false,
   error: "",
   isSuccess: null,
@@ -20,7 +20,7 @@ const loginSlice = createSlice({
     fetchRequest: (state, action: PayloadAction<SignInClientData>) => {
       state.isLoading = true;
     },
-    fetchSuccess: (state, action: PayloadAction<string>) => {
+    fetchSuccess: (state) => {
       state.isLoading = false;
       state.error = "";
       state.isSuccess = true;

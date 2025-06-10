@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SignUpClientData } from '../types';
 
-interface RegisterType {
+export type RegisterState = {
   isLoading: boolean;
   error: string;
   isSuccess: boolean | null;
 }
 
-const initialState: RegisterType = {
+export const initialState: RegisterState = {
   isLoading: true,
   error: "",
   isSuccess: null,
@@ -20,7 +20,7 @@ const registerSlice = createSlice({
     fetchRequest: (state, action: PayloadAction<SignUpClientData>) => {
       state.isLoading = true;
     },
-    fetchSuccess: (state, action: PayloadAction<string>) => {
+    fetchSuccess: (state) => {
       state.isLoading = false;
       state.error = "";
       state.isSuccess = true;
