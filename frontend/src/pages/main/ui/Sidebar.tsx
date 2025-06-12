@@ -6,7 +6,7 @@ import priceIcon from "@assets/main-page/icons/price-plan.svg";
 import settingsIcon from "@assets/main-page/icons/settings.svg";
 import avatarIcon from "@assets/main-page/avatar.svg";
 import useAnimation from "@/hooks/useAnimation";
-import UserMenu from "@/features/UserMenu";
+import UserMenu from "@/features/UserMenu/ui/UserMenu";
 import ModalOverflow from "@/features/UserMenu/ui/ModalOverflow";
 import Topics from "@/features/UserTopics/containers/Topics";
 import { CreateTopicBtn } from "@/features/NewTopicButton";

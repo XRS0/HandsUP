@@ -6,11 +6,14 @@ import Button from "@/views/Button/ui/Button";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { LoginSliceActions } from "../models/slice";
 import { Navigate } from "react-router-dom";
+import Loader from "@/views/Loader/Loader";
+import ModalOverflow from "@/features/UserMenu/ui/ModalOverflow";
+import useAnimation from "@/hooks/useAnimation";
+import ForgotPassword from "../ui/ForgotPassword";
 
-//TODO сделать отображение ошибки входа
 const SignIn = () => {
   const dispatch = useAppDispatch();
-  const { error, isSuccess } = useAppSelector(state => state.login);
+  const { error, isSuccess, isLoading } = useAppSelector(state => state.login);
 
   const [value, setValue] = useState({
     email: "",
@@ -25,9 +28,19 @@ const SignIn = () => {
   }
 
   const handleButtonClick = () => {
-    if (!value.email || !value.password) return console.log("rejected");
+    if (!value.email || !value.password) {
+      dispatch(LoginSliceActions.fetchFailure("Заполните все поля!"));
+      return;
+    }
     dispatch(LoginSliceActions.fetchRequest(value));
   };
+
+  const {
+    isVisible,
+    isFadeOut,
+    handleOpen,
+    handleAnimationEnd,
+  } = useAnimation();
 
   if (isSuccess) return <Navigate to={"/chat"} replace />
 
@@ -55,9 +68,20 @@ const SignIn = () => {
         />
       </label>
 
-      <div className="reset-pass">Forgot password?</div>
+      <div className="reset-pass">Забыли пароль?</div>
 
-      <Button children="Log in" onclick={handleButtonClick} />
+      {/* <ModalOverflow isOpen={!isFadeOut} onClick={handleOpen}>
+          <ForgotPassword
+            isFadeOut={isFadeOut}
+            onAnimationEnd={handleAnimationEnd}
+          />
+      </ModalOverflow> */}
+
+      <Button onclick={handleButtonClick}>
+        {isLoading 
+        ? <Loader />
+        : "Войти"}
+      </Button>
 
       <div className="error-message" children={error} />
 

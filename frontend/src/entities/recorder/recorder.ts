@@ -13,7 +13,7 @@ export async function startRecording() {
     audioContext = new AudioContext({ sampleRate: 16000 });
 
     await audioContext.audioWorklet.addModule(
-      new URL('./pcm-processor.js', require.resolve('path/to/recorder'))
+      new URL('./pcm-processor.js', import.meta.url)
     );
 
     workletNode = new AudioWorkletNode(audioContext, 'pcm-processor');

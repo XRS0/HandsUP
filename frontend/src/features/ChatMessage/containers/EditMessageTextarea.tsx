@@ -37,8 +37,8 @@ const EditMessageTextarea = () => {
         />
         
         <Button 
-        children={"Accept"} 
-        onclick={() => dispatch(SocketSliceActions.allowEdit())} 
+          children={"Accept"} 
+          onclick={() => dispatch(SocketSliceActions.allowEdit())} 
         />
       </div>
     </div>

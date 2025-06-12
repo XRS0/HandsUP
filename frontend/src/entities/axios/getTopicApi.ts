@@ -25,5 +25,5 @@ export const getAllTopicApiInstance = async (token: string) => {
     throw new Error('Failed to get user');
   }
 
-  return response;
+  return response.data;
 }

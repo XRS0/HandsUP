@@ -16,16 +16,6 @@ const Chat = () => {
   const { currentTopic } = useAppSelector(state => state.topics);
   const { isRecording } = useAppSelector(state => state.socket);
 
-  if (!currentTopic) return (
-    <div className="without-topic">
-      <img src={logo} alt="Logo" className="side-logo" />
-      <div>
-        Создайте новую <span>тему </span>
-        или выберите <span>существующую</span>
-      </div>
-    </div>
-  );
-
   const {
     handleAnimationEnd,
     handleOpen: handleBlockClose,
@@ -40,17 +30,9 @@ const Chat = () => {
     isFadeOut: isRecorderFadeOut
   } = useAnimation({trigger: "click", initialVsibility: true});
 
-  if (chatMessages.length == 0 || isVisible) return (
-    <UserFirstAction
-      onVoice={handleBlockClose}
-      onAnimationEnd={handleAnimationEnd}
-      isFadeOut={isFadeOutBlock}
-    />
-  );
-
   let currentComposer: JSX.Element | null = null;
 
-  if (chatMessages.length === 0) currentComposer = <UserComposer />;
+  if (chatMessages.length !== 0) currentComposer = <UserComposer />;
   else if ((isFadeOutBlock || !isVisible) && isRecorderVisible) {
     currentComposer = <UserRecorder
       isFadeOut={isRecorderFadeOut}
@@ -59,6 +41,24 @@ const Chat = () => {
     />
   }
   else if (isRecorderFadeOut || !isRecorderVisible) currentComposer = <UserComposer />
+
+  if (!currentTopic) return (
+    <div className="without-topic">
+      <img src={logo} alt="Logo" className="side-logo" />
+      <div>
+        Создайте новую <span>тему </span>
+        или выберите <span>существующую</span>
+      </div>
+    </div>
+  );
+
+  if (chatMessages.length === 0 && isVisible) return (
+    <UserFirstAction
+      onVoice={handleBlockClose}
+      onAnimationEnd={handleAnimationEnd}
+      isFadeOut={isFadeOutBlock}
+    />
+  );
   
   return (
     <div className="loaded-chat">

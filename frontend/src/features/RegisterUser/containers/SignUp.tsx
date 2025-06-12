@@ -3,12 +3,13 @@ import Button from "@/views/Button/ui/Button";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { Navigate } from "react-router-dom";
 import { RegisterSliceActions } from "../models/slice";
+import Loader from "@/views/Loader/Loader";
 
 //TODO сделать отображение ошибки входа
 
 const SignUp = () => {
   const dispatch = useAppDispatch();
-  const { error, isSuccess } = useAppSelector(state => state.register);
+  const { error, isSuccess, isLoading } = useAppSelector(state => state.register);
 
   const confirmPassInput = useRef<HTMLInputElement>(null);
   
@@ -26,7 +27,10 @@ const SignUp = () => {
   }
   
   const handleButtonClick = () => {
-    if (!value.email || !value.username || !value.password || !confirmPassInput.current?.value) return console.log("rejected");
+    if (!value.email || !value.username || !value.password || !confirmPassInput.current?.value) {
+      dispatch(RegisterSliceActions.fetchFailure("Заполните все поля!"));
+      return;
+    }
     if (value.password !== confirmPassInput.current?.value) {
       dispatch(RegisterSliceActions.fetchFailure("Пароли не совпадают!"));
       return;
@@ -78,7 +82,11 @@ const SignUp = () => {
         <input type="password" placeholder="Once again.." ref={confirmPassInput} autoComplete="new-password"  />
       </label>
 
-      <Button children={"Sign Up"} onclick={handleButtonClick} />
+      <Button onclick={handleButtonClick}>
+        {isLoading
+        ? <Loader />
+        : "Зарегистрироваться"}
+      </Button>
 
       <div className="error-message" children={error} />
     </>

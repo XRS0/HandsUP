@@ -8,7 +8,7 @@ export type WebSocketState = {
   isEditingNow: boolean;    // if user wants to edit text
 }
 
-const initialState: WebSocketState = {
+export const initialState: WebSocketState = {
   message: "",
   newMessage: '',   //проверяться через новое сообщение, если чел отменил то мы откатываемся до сообщения
   isRecording: false,
@@ -28,13 +28,13 @@ const socketSlice = createSlice({
     editMessage(state, action: PayloadAction<string>) {
       state.newMessage = action.payload;
     },
-    setMessage(state) {
-      state.message = state.newMessage;
-      state.newMessage = "";
-    },
     cancelMessage(state) {
       state.newMessage = "";
       state.isEditingNow = false;
+    },
+    setMessage(state) {
+      state.message = state.newMessage;
+      state.newMessage = "";
     },
     handleOpen(state) {
       state.message = "";

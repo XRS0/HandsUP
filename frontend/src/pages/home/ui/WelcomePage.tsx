@@ -1,4 +1,13 @@
-import "./ui/WelcomePage.scss";
+import { useEffect, useRef } from "react";
+import { NavLink } from "react-router-dom";
+import Button from "@/views/Button/ui/Button";
+
+import "./WelcomePage.scss";
+
+import mainDecor from "@/shared/assets/welcome-page/main-decoration.svg";
+import firstDecor from "@/shared/assets/welcome-page/first_decoration.svg"
+import secondDecor from "@/shared/assets/welcome-page/second-decoration.svg";
+import thirdDecor from "@/shared/assets/welcome-page/third-decoration.svg";
 
 import logo from "@/shared/assets/welcome-page/logo.svg";
 import wave from "@/shared/assets/welcome-page/waveform/wave.svg";
@@ -7,15 +16,10 @@ import micro from "@/shared/assets/welcome-page/waveform/micro.svg";
 import hoveredMicro from "@/shared/assets/welcome-page/waveform/hovered_micro.svg";
 import rectangleBlock from "@/shared/assets/welcome-page/rectangle.png";
 
-import mainDecor from "@/shared/assets/welcome-page/main-decoration.svg";
-import firstDecor from "@/shared/assets/welcome-page/first_decoration.svg"
-import secondDecor from "@/shared/assets/welcome-page/second-decoration.svg";
-import thirdDecor from "@/shared/assets/welcome-page/third-decoration.svg";
-import Button from "@/views/Button/ui/Button";
-import { NavLink } from "react-router-dom";
-import { useEffect } from "react";
-
 const WelcomePage = () => {
+  const AboutService = useRef<HTMLDivElement>(null);
+  const pricePlan = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     document.body.style.overflowY = "auto";
   }, []);
@@ -44,8 +48,12 @@ const WelcomePage = () => {
       <nav>
           <img src={logo} alt="logo" />
           <div className="nav-bar">
-            <div>О сервисе</div>
-            <div>Тарифные планы</div>
+            <div 
+              onClick={() => AboutService.current?.scrollIntoView({ behavior: 'smooth' })
+            }>О сервисе</div>
+            <div 
+              onClick={() => pricePlan.current?.scrollIntoView({ behavior: 'smooth' })}
+            >Тарифные планы</div>
             <NavLink to={"/auth"}>
               <Button children="Войти" onclick={() => {}}/>
             </NavLink>
@@ -91,12 +99,12 @@ const WelcomePage = () => {
               Точная и структурированная запись Искусственный интеллект распознаёт речь с высокой точностью и оформляет текст в виде понятного конспекта.
             </p>
             <NavLink to="/chat">
-              <Button onclick={() => {}} children="Start now"/>
+              <Button onclick={() => {}} children="Вперед!"/>
             </NavLink>
           </div>
       </div>
 
-      <h2>Как это работает?</h2>
+      <h2 ref={AboutService} >Как это работает?</h2>
 
       <div className="steps-block">
           <div className="blocks-row">
@@ -158,15 +166,16 @@ const WelcomePage = () => {
                   Это позволяет удобно контролировать свой аккаунт.
                 </p>
 
-                <Button onclick={() => {}} children="Попробовать бесплатно" isFilled={false} />
-
+                <NavLink to="/chat">
+                  <Button onclick={() => {}} children="Попробовать бесплатно" isFilled={false} />
+                </NavLink>
                 <div className="rank-circle">5</div>
               </div>
             </div>
           </div>
       </div>
 
-      <h2>Тарифные планы</h2>
+      <h2 ref={pricePlan}>Тарифные планы</h2>
 
       <div className="plans-container">
         <div className="price-plan">

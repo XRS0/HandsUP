@@ -8,6 +8,8 @@ import { selectMessage, SocketSliceActions } from "@/entities/websocket/models/s
 
 export function* getTopicSaga({payload}: {payload: string}) {
   try {
+    console.log("hello");
+    
     const token: string = yield select(selectToken);
     const response: Topic = yield call(getTopicApiInstance, payload, token);
 

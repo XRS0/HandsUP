@@ -6,12 +6,14 @@ export type TopicsState = {
   topics: TopicPreview[];
   isTopicCreating: boolean;
   currentTopic: string | null;
+  error: string;
 }
 
 export const initialState: TopicsState = {
   topics: [],
   currentTopic: null,
   isTopicCreating: false,
+  error: ""
 };
 
 const topicSlice = createSlice({
@@ -34,6 +36,12 @@ const topicSlice = createSlice({
 
       state.topics.push(action.payload);
       state.currentTopic = Object.keys(action.payload)[0];
+      state.isTopicCreating = false;
+
+      state.error = "";
+    },
+    createFailure(state, action: PayloadAction<string>) {
+      state.error = action.payload;
       state.isTopicCreating = false;
     }
   }

@@ -28,6 +28,9 @@ export const userSlice = createSlice({
     },
     getUserFailure(state) {
       state.isLoading = false;
+    },
+    setToken(state, action: PayloadAction<string>) {
+      state.token = action.payload;
     }
   }
 });

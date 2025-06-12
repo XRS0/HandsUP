@@ -79,6 +79,16 @@ describe("Test for topics slice", () => {
     expect(state.topics).toStrictEqual([...initialState.topics]);
   });
 
+  test("createFailure action", () => {
+    const state = topicReducer(
+      initialState,
+      TopicSliceActions.createFailure("Error")
+    );
+
+    expect(state.error).toBe("Error");
+    expect(state.isTopicCreating).toBe(false);
+  });
+
   // action creator test
   test("openTopic action has correct type", () => {
     expect(TopicSliceActions.openTopic.type).toBe("topics/openTopic");

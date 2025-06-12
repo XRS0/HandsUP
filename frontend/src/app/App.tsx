@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import "../index.scss";
 
 import MainPage from "../pages/main/containers/MainPage";
-import WelcomePage from "@/pages/home/WelcomePage";
+import WelcomePage from "@/pages/home/ui/WelcomePage";
 import Authorize from "@/pages/sign-in-up/Authorize";
 
 const App = () => {

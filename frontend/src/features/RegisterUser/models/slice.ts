@@ -8,7 +8,7 @@ export type RegisterState = {
 }
 
 export const initialState: RegisterState = {
-  isLoading: true,
+  isLoading: false,
   error: "",
   isSuccess: null,
 };

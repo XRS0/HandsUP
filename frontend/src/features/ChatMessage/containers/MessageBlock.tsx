@@ -1,11 +1,11 @@
+import Markdown from "react-markdown";
+import EditMessageTextarea from "./EditMessageTextarea";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { SocketSliceActions } from "@/entities/websocket/models/slice";
 
 import "@/features/ChatMessage/ui/StaticMessage.scss";
-import Markdown from "react-markdown";
-import EditMessageTextarea from "./EditMessageTextarea";
-import { SocketSliceActions } from "@/entities/websocket/models/slice";
 
 const MessageBlock = () => {
   const { message, isEditingNow, newMessage } = useAppSelector(state => state.socket);

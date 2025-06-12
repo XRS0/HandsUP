@@ -6,6 +6,7 @@ import { watchWsMessage } from '@/entities/websocket';
 import { watchGenerateMessage } from '@/features/UserComposer';
 import { watchRegisterTopic } from '@/features/NewTopicButton';
 import { watchGetUser } from '@/features/AuthUser';
+import { watchGetTopic } from '@/features/UserChat';
 
 export default function* rootSaga() {
   yield all([
@@ -13,6 +14,7 @@ export default function* rootSaga() {
     watchGetUser(),
     watchRegister(),
     watchWsMessage(),
+    watchGetTopic(),
     watchGetTopics(),
     watchRegisterTopic(),
     watchGenerateMessage(),

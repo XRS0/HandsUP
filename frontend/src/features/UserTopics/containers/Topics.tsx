@@ -5,7 +5,7 @@ import "../ui/Topic.scss";
 import { getDateAgo } from "@/shared/utils/date";
 import ConspectHistoryElement from "../ui/ConspectHistoryElement";
 import NewTopic from "@/features/NewTopicButton/containers/NewTopic";
-import { TopicMessage, TopicPreview } from "@/features/UserChat/types";
+import { TopicMessage } from "@/features/UserChat/types";
 import { TopicSliceActions } from "../models/slice";
 import { getKey, getValue } from "@/shared/utils/hashMapGet";
 
@@ -20,8 +20,8 @@ const Topics = () => {
   const groupedTopics: { [topic: string]: string[] } = {}
 
   try {
-    topics.reverse()
-    .map(({topic, created_at}, i) => {
+    [...topics].reverse()     //I CANT CHANGE REDUX DATA BUT REVERCE TRIES TO CJANGE THEM!
+    .map(({topic, created_at}) => {
       if (!topic) return;
       
       if (groupedTopics[getDateAgo(new Date(created_at!))!]) {
@@ -32,16 +32,16 @@ const Topics = () => {
       }
     });
   } catch (err: any) {
-    console.error("Error while parsing a topic date", err.message);
+    console.error("Error while parsing a topic date:", err.message);
   }
 
   const handleTopicClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
 
     const topicName = e.currentTarget.innerText;
-    const switchedTopic = getValue(currentChat).find((t: TopicMessage) => getKey(t) === topicName);
-
-    if (switchedTopic) {
+    
+    if (currentChat) {
+      const switchedTopic = getValue(currentChat).find((t: TopicMessage) => getKey(t) === topicName);
       dispatch(TopicSliceActions.switchTopic(getKey(switchedTopic)));
     } else {
       dispatch(TopicSliceActions.openTopic(topicName));

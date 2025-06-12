@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import "./ui/UserMenu.scss";
+import "./UserMenu.scss";
 import { createClassName } from "@/shared/utils/createClassName";
-import Profile from "./containers/profile/Profile";
-import Balance from "./containers/balance/Balance";
-import Settings from "./containers/settings/Settings";
+import Profile from "../containers/profile/Profile";
+import Balance from "../containers/balance/Balance";
+import Settings from "../containers/settings/Settings";
 
 type OwnProps = {
   isFadeOut: boolean;
@@ -20,11 +20,10 @@ const UserMenu: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd }) => {
   const balanceRef = useRef<HTMLDivElement>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
 
-  //const translations = ["0px", "-498px", "-996px"];  // c вычетом border
   const translations = useRef<string[]>([]);
 
   useEffect(() => {
-    translations.current = [                       //any of topics, cause same width
+    translations.current = [
       "0px",
       (profileRef.current!.offsetWidth + parseInt(getComputedStyle(menuBlock.current!).paddingInline) * 2) * -1 + "px",
       (profileRef.current!.offsetWidth * 2 + parseInt(getComputedStyle(menuBlock.current!).paddingInline) * 4) * -1 + "px"
@@ -59,14 +58,8 @@ const UserMenu: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd }) => {
     menuBlock.current.style.height = window.getComputedStyle(menuBlock.current).height;
     
     // меняем переменные на те, куда хотим переход
-    // if (document.body.offsetWidth > 480) {
     document.documentElement.style.setProperty('--slide-from', translations.current[topicsStatusesArr.indexOf(true)]);
     document.documentElement.style.setProperty('--slide-to', translations.current[topicsArr.indexOf(topic.innerText)]);
-    // } else {
-    //   console.log(translationsMobile);
-    //   document.documentElement.style.setProperty('--slide-from', translationsMobile.current[topicsStatusesArr.indexOf(true)]);
-    //   document.documentElement.style.setProperty('--slide-to', translationsMobile.current[topicsArr.indexOf(topic.innerText)]);
-    // }
     transitionBlock.current!.style.animation = "slideUserMenu var(--long-transition) forwards";
 
     setTopics(() => ({

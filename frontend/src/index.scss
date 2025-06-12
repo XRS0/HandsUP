@@ -114,6 +114,13 @@ span {
   cursor: default;
 }
 
+.error-message {
+  font-size: 12px;
+  min-height: 18px;
+  margin-block: 0.5rem;
+  color: #C50730;
+}
+
 .custom-scroll {
   scrollbar-width: thin;
   overflow: hidden overlay !important;

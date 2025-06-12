@@ -152,18 +152,12 @@ body {
     }
   }
 
-  .error-message {
-    font-size: 12px;
-    margin-block: 0.5rem;
-    color: #C50730;
-  }
-
   button {
     width: 100%;
     justify-content: center;
     height: 46px;
-    margin-block: 30px 20px;
-    font-size: 1.0625rem;
+    margin-block: 30px 0;
+    font-size: 1rem;
 
     @include mobile {
       margin-block: 30px 20px;
@@ -174,7 +168,7 @@ body {
   .ads-container {
     width: 100%;
     height: 80px;
-    margin-top: 25px;
+    // margin-top: 25px;
     gap: 2rem;
     @include mixin.flex-between();
 
