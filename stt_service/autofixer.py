@@ -1,10 +1,10 @@
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+from transformers import T5Tokenizer, AutoModelForSeq2SeqLM
 from huggingface_hub import login
 
 login(token="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")
 
 print("🧠 Загрузка модели автофикса...")
-tokenizer = AutoTokenizer.from_pretrained("cointegrated/rut5-base-multitask")
+tokenizer = T5Tokenizer.from_pretrained("cointegrated/rut5-base-multitask", use_fast=False)
 model = AutoModelForSeq2SeqLM.from_pretrained("cointegrated/rut5-base-multitask")
 print("✅ Модель загружена")
 
