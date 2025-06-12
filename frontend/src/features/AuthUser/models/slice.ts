@@ -4,11 +4,11 @@ import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Slice, containing user
 
-type UserState = IUser & JWT & {
+export type UserState = IUser & JWT & {
   isLoading: boolean;
 }
 
-const initialState: UserState = {
+export const initialState: UserState = {
   email: "",
   username: "",
   balance: 0,
@@ -17,12 +17,12 @@ const initialState: UserState = {
   isLoading: true,  //couse i need to init request immediately
 };
 
-const userSlice = createSlice({
+export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
     getUserSucess: (state, action: PayloadAction<{user: IUser, token: string}>) => {
-      Object.assign(state, action.payload.user)
+      Object.assign(state, action.payload.user);
       state.token = action.payload.token;
       state.isLoading = false;
     },

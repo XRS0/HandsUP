@@ -11,7 +11,7 @@ export function* SignInSaga({ payload }: ReturnType<typeof LoginSliceActions.fet
       yield localStorage.setItem("token", response.token);
     }
 
-    yield put(LoginSliceActions.fetchSuccess(response.token));
+    yield put(LoginSliceActions.fetchSuccess());
   } catch (error: any) {
     console.error(error);
     yield put(LoginSliceActions.fetchFailure(error.message));

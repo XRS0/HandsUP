@@ -40,7 +40,7 @@ const WelcomePage = () => {
     style={{bottom: "-850px", right: "calc(20vw - 290px)"}}
     alt="decor" />
 
-    <div className="container">
+    <div className="container" data-testid="welcome-page">
       <nav>
           <img src={logo} alt="logo" />
           <div className="nav-bar">

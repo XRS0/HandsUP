@@ -1,7 +1,7 @@
 import { RootState } from '@/app/store';
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-type WebSocketState = {
+export type WebSocketState = {
   message: string;     // it's a splited arr of message
   newMessage: string;
   isRecording: boolean;

@@ -25,7 +25,11 @@ const Authorize = () => {
   }, []);
   
   return (
-    <div className="form-container" style={{backgroundImage: `url(${bg}`}}>
+    <div 
+      data-testid="auth-page"
+      className="form-container" 
+      style={{backgroundImage: `url(${bg}`}}
+    >
       <img src={logo} alt="logo" className="auth-logo" />
       <div className="Auth-window">
         <NavLink to={"/"}>

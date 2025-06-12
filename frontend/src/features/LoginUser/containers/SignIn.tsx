@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from "react";
 
 import googleIcon from "@assets/authorize/gmail-sign-in.svg";
 import mailIcon from "@assets/authorize/email-sign-in.svg";
-import Button from "../../../views/Button/ui/Button";
+import Button from "@/views/Button/ui/Button";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { LoginSliceActions } from "../models/slice";
 import { Navigate } from "react-router-dom";

@@ -31,7 +31,11 @@ const MainPage = () => {
   if (!isLoading && !token) return <Navigate to={"/auth"} replace />
   
   return (
-    <div className={createClassName("wrapper", isOpened && "sidebar-open")} ref={parentRef}>
+    <div 
+      ref={parentRef}
+      data-testid="main-page"
+      className={createClassName("wrapper", isOpened && "sidebar-open")} 
+    >
       { document.body.offsetWidth <= 480 
       && <div className="sidebar-icon">
         <img
