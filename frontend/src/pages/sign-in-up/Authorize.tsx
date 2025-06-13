@@ -21,7 +21,7 @@ const Authorize = () => {
   const switchTextRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-      document.body.style.overflowY = "hidden";
+    document.body.style.overflowY = "hidden";
   }, []);
   
   return (

@@ -1,77 +1,42 @@
 @use "@/shared/ui/media" as *;
 
-.conspect-message-block {
-  min-height: 65px;
-  width: 100%;
-  background-color: var(--secondary-color);
-  border: 0.8px solid var(--main-border-color);
-  border-radius: 20px;
-  padding: 20px;
-  max-width: 800px;
-  transition: height 0.5s;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  margin-bottom: 4rem;
+// .conspect-message-block {
+//   min-height: 65px;
+//   width: 100%;
+//   background-color: var(--secondary-color);
+//   border: 0.8px solid var(--main-border-color);
+//   border-radius: 20px;
+//   padding: 20px;
+//   max-width: 800px;
+//   transition: height 0.5s;
+//   opacity: 0;
+//   visibility: hidden;
+//   pointer-events: none;
+//   margin-bottom: 4rem;
 
-  &.--enter {
-    animation: fadeInMessage 0.4s forwards;
-  }
+//   span {
+//     font-family: "Jost";
+//     font-size: 16px;
+//     opacity: 0;
+//     filter: blur(3px);    //change how cool will work sppechToText
+//     color: var(--light-gray);
+//     &::selection {
+//       background: #22252e!important;
+//       text-shadow: none;
+//     }
 
-  &.--exit {
-    animation: fadeOutMessage var(--long-transition) forwards;
-    cursor: default !important;
-  }
+//     &::-moz-selection {
+//       background: #22252e !important;
+//       text-shadow: none;
+//     }
+//   }
 
-  span {
-    font-family: "Jost";
-    font-size: 16px;
-    opacity: 0;
-    filter: blur(3px);    //change how cool will work sppechToText
-    color: var(--light-gray);
-    &::selection {
-      background: #22252e!important;
-      text-shadow: none;
-    }
-
-    &::-moz-selection {
-      background: #22252e !important;
-      text-shadow: none;
-    }
-  }
-
-  @include mobile {
-    padding: 0;
-    background-color: transparent;
-    border: none;
-    span {
-      font-size: 15px;
-    }
-  }
-}
-
-@keyframes fadeInMessage {
-  from {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
-  to {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-  }
-}
-
-@keyframes fadeOutMessage {
-  from {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-  }
-  to {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
-}
+//   @include mobile {
+//     padding: 0;
+//     background-color: transparent;
+//     border: none;
+//     span {
+//       font-size: 15px;
+//     }
+//   }
+// }

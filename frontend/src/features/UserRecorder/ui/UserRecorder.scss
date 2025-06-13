@@ -13,8 +13,7 @@
   align-items: center;
   
   position: absolute;
-  bottom: 2rem;
-  animation: RecorderFadeIn 0.4s forwards;
+  bottom: 1.375rem;
 
   &.--enter {
     animation: RecorderFadeIn 0.4s forwards;
@@ -219,12 +218,16 @@
 @keyframes RecorderFadeIn {
   from {
     transform: translateY(150px);
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
   }
 
   to {
     transform: translateX(0);
     visibility: visible;
     pointer-events: auto;
+    opacity: 1;
   }
 }
 
@@ -233,8 +236,12 @@
     transform: translateX(0);
     visibility: visible;
     pointer-events: auto;
+    opacity: 1;
   }
   to {
     transform: translateY(150px);
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
   }
 }

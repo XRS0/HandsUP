@@ -85,7 +85,7 @@ const UserComposer = () => {
       fullness: conspectFullness,
       lang: language === "English" ? "en" : "ru",
       text: lastBotMessage ? lastBotMessage.text : message,
-      topic: Object.keys(currentTopic!)[0].split(" ").join("_")
+      topic: currentTopic!
     }));
 
     clear();
@@ -103,7 +103,7 @@ const UserComposer = () => {
       name="short"
       onclick={handleOptionClick} 
       cssClass={createClassName("config", isClicked["short"] && "actived")} 
-      children={"Краткий"} 
+      children={document.body.offsetWidth > 950 ? "Краткий" : "Крат."} 
       isFilled={false}
     />
 
@@ -111,7 +111,7 @@ const UserComposer = () => {
       name="without_changes"
       onclick={handleOptionClick} 
       cssClass={createClassName("config", isClicked["without_changes"] && "actived")} 
-      children={"Без изменений"} 
+      children={document.body.offsetWidth > 950 ? "Без изменений" : "Базовый"}
       isFilled={false}
     />
 
@@ -119,7 +119,7 @@ const UserComposer = () => {
       name="expanded"
       onclick={handleOptionClick} 
       cssClass={createClassName("config", isClicked["expanded"] && "actived")}
-      children={"Объемный"} 
+      children={document.body.offsetWidth > 950 ? "Объемный" : "Расш."} 
       isFilled={false} 
     />
   </div>
@@ -137,7 +137,7 @@ const UserComposer = () => {
 
         <Button
           IconLeft={stormIcon}
-          children="Сгенерировать"
+          children={"Сгенерировать"}
           cssClass="record-button"
           onclick={handleSendMessage}
         />
@@ -153,7 +153,7 @@ const UserComposer = () => {
         ref={textareaRef as React.Ref<HTMLTextAreaElement>}
         value={value}
         onChange={onChange}
-        placeholder="Напиши что нибудь для конфигурации"
+        placeholder="Напиши что нибудь для конфигурации.."
       />
 
       <div className="hint-text">
@@ -161,11 +161,15 @@ const UserComposer = () => {
       </div>
 
       <div className="input-tools">
-        {conspectConfigButtons}
+        {document.body.offsetWidth > 660 && conspectConfigButtons}
 
         <div className="actions">
           <Button 
-            children={isCopied ? "Скопировано" : "Копировать"}
+            children={isCopied 
+              ? document.body.offsetWidth > 950 
+              ? "Скопировано" : "Скоп." 
+              : document.body.offsetWidth > 950 
+              ? "Копировать" : "Коп."}
             cssClass="copy-button" 
             IconLeft={linkIcon} 
             onclick={copyToCLipboard}
@@ -173,7 +177,7 @@ const UserComposer = () => {
 
           <Button
             IconLeft={stormIcon}
-            children="Сгенерировать"
+            children={document.body.offsetWidth > 950 ? "Сгенерировать" : "Далее"}
             cssClass="record-button"
             onclick={handleSendMessage}
           />

@@ -42,6 +42,13 @@ const SignIn = () => {
     handleAnimationEnd,
   } = useAnimation();
 
+  const handlePopupOpen = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const target = e.target as HTMLElement;
+    if (!target.classList.contains("overflow")) return;
+    
+    handleOpen(e);
+  }
+
   if (isSuccess) return <Navigate to={"/chat"} replace />
 
   return (
@@ -68,14 +75,14 @@ const SignIn = () => {
         />
       </label>
 
-      <div className="reset-pass">Забыли пароль?</div>
+      <div className="reset-pass" onClick={handleOpen}>Забыли пароль?</div>
 
-      {/* <ModalOverflow isOpen={!isFadeOut} onClick={handleOpen}>
+      {isVisible && <ModalOverflow isOpen={!isFadeOut} onClick={handlePopupOpen}>
           <ForgotPassword
             isFadeOut={isFadeOut}
             onAnimationEnd={handleAnimationEnd}
           />
-      </ModalOverflow> */}
+      </ModalOverflow>}
 
       <Button onclick={handleButtonClick}>
         {isLoading 

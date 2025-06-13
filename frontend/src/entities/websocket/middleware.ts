@@ -43,6 +43,7 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
 
       socket.on('close', () => {
         if (wsAction.url === "ws://localhost:8083/ws/generate?") {
+          store.dispatch(SocketSliceActions.handlePause());
           store.dispatch(ChatSliceActions.setMessage());
         }
         socket.disconnect();
@@ -57,7 +58,7 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
     
     case 'socket/sendMessage':
       // console.log("после ответа", wsAction.payload);
-      socket.send(wsAction.payload);
+      // socket.send(wsAction.payload);
       break;
 
     default:

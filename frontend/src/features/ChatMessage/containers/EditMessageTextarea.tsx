@@ -14,15 +14,16 @@ const EditMessageTextarea = () => {
 
   useEffect(() => {
     dispatch(SocketSliceActions.editMessage(value));
-
     if (!textRef.current) return;
       textRef.current.style.height = 'auto';
-      textRef.current.style.height = `${textRef.current.scrollHeight}px`;
+      if (textRef.current.scrollHeight >= 520) textRef.current.style.height = "520px";
+      else textRef.current.style.height = `${textRef.current.scrollHeight}px`;
   }, [value]);
 
   return (
-    <div className="edit-textarea custom-scroll">
+    <div className="edit-textarea">
       <textarea
+        className="custom-scroll"
         ref={textRef}
         autoComplete="off"
         value={value}
@@ -38,7 +39,7 @@ const EditMessageTextarea = () => {
         
         <Button 
           children={"Accept"} 
-          onclick={() => dispatch(SocketSliceActions.allowEdit())} 
+          onclick={() => dispatch(SocketSliceActions.allowEdit())}
         />
       </div>
     </div>

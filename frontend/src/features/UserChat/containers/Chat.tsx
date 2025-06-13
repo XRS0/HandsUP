@@ -1,5 +1,5 @@
 import UserComposer from "@/features/UserComposer/UserComposer";
-import { JSX } from "react";
+import { JSX, useMemo } from "react";
 import { useAppSelector } from "@/hooks/redux";
 import { UserFirstAction } from "@/features/UserFirstAction";
 import useAnimation from "@/hooks/useAnimation";
@@ -16,6 +16,8 @@ const Chat = () => {
   const { currentTopic } = useAppSelector(state => state.topics);
   const { isRecording } = useAppSelector(state => state.socket);
 
+  const isChatEmpty = chatMessages.length === 0;
+
   const {
     handleAnimationEnd,
     handleOpen: handleBlockClose,
@@ -30,17 +32,28 @@ const Chat = () => {
     isFadeOut: isRecorderFadeOut
   } = useAnimation({trigger: "click", initialVsibility: true});
 
-  let currentComposer: JSX.Element | null = null;
+  const currentComposer = useMemo(() => {
+    if (!isChatEmpty) return <UserComposer />
 
-  if (chatMessages.length !== 0) currentComposer = <UserComposer />;
-  else if ((isFadeOutBlock || !isVisible) && isRecorderVisible) {
-    currentComposer = <UserRecorder
-      isFadeOut={isRecorderFadeOut}
-      onAnimationEnd={handleRecorderUnmount}
-      onStop={handleComposerOpen}
-    />
-  }
-  else if (isRecorderFadeOut || !isRecorderVisible) currentComposer = <UserComposer />
+    else if ((isFadeOutBlock || !isVisible) && isRecorderVisible) {
+      return <UserRecorder
+        isFadeOut={isRecorderFadeOut}
+        onAnimationEnd={handleRecorderUnmount}
+        onStop={handleComposerOpen}
+      />
+    }
+
+    else if (isRecorderFadeOut || !isRecorderVisible) return <UserComposer />
+  }, [
+    isVisible, 
+    isChatEmpty, 
+    isFadeOutBlock, 
+    isRecorderVisible,
+    handleComposerOpen,
+    handleRecorderUnmount,
+  ]);
+
+  const reversedMessages = useMemo(() => [...chatMessages].reverse(), [chatMessages]);
 
   if (!currentTopic) return (
     <div className="without-topic">
@@ -52,24 +65,22 @@ const Chat = () => {
     </div>
   );
 
-  if (chatMessages.length === 0 && isVisible) return (
+  if (isChatEmpty && isVisible) return (
     <UserFirstAction
       onVoice={handleBlockClose}
       onAnimationEnd={handleAnimationEnd}
       isFadeOut={isFadeOutBlock}
     />
   );
-  
+
   return (
     <div className="loaded-chat">
       <div className="messages-wrapper">
         <div className="gradient-top" />
 
-        <div 
-          className={"loaded-messages custom-scroll"}
-        >
-          {chatMessages.map(({from, text}) => <StaticMessage from={from} message={text} />)}
-          {isRecording && <MessageBlock />}
+        <div className="loaded-messages custom-scroll" style={isChatEmpty ? {justifyContent: "center"} : {}}>
+          {((!isChatEmpty && isRecording) || isChatEmpty) && <MessageBlock />}                                  {/*Если чат пустой или если чат не пустой и идет запись*/}
+          {reversedMessages.map(({from, text}) => <StaticMessage from={from} message={text} />)}
         </div>
 
         <div className="gradient-bottom" />

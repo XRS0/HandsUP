@@ -20,7 +20,7 @@ const socketSlice = createSlice({
   initialState,
   reducers: {
     addMessage(state, action: PayloadAction<string>) {
-      state.message = action.payload;
+      state.message += action.payload;
     },
     allowEdit(state) {
       state.isEditingNow = !state.isEditingNow;

@@ -1,6 +1,7 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MessageForGeneration, Topic, TopicMessage } from '../types';
 import { getKey, getValue } from '@/shared/utils/hashMapGet';
+import { RootState } from '@/app/store';
 
 export type ChatState = {
   cachedChats: Topic[];
@@ -42,3 +43,5 @@ export const ChatSliceActions = {
 };
 
 export default chatSlice.reducer;
+
+export const selectChatMessages = (state: RootState) => state.chat.chatMessages;

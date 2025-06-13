@@ -24,7 +24,7 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
 
   const [isCopied, setIsCopied] = useState(false);
   const [timer, setTimer] = useState(0);
-  const timerId= useRef<NodeJS.Timeout | null>(null);
+  const timerId = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (isRecording) {
@@ -57,7 +57,7 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
   const handlePauseRecord = () => isRecording ? pauseRecording() : continueRecording();   // for testing
   const handleStopRecording = (e: React.MouseEvent<HTMLElement>) => {
     onStop(e);
-    stopRecording();
+    stopRecording(message);
   }
 
   const actionButtons = <div className="conspect-interaction">

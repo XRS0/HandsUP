@@ -1,5 +1,6 @@
 import { registerTopicApiInstance } from "@/entities/axios/registerTopicApi";
 import { selectToken } from "@/features/AuthUser";
+import { ChatSliceActions } from "@/features/UserChat/models/slice";
 import { TopicPreview } from "@/features/UserChat/types";
 import { TopicSliceActions } from "@/features/UserTopics";
 import { selectTopics } from "@/features/UserTopics/models/slice";
@@ -18,8 +19,12 @@ export function* getTopicSaga({payload}: {payload: TopicPreview}) {
     
     yield put(TopicSliceActions.addTopic(payload));
     yield put(TopicSliceActions.switchTopic(payload.topic));
+    yield put(ChatSliceActions.switchChat(payload.topic));
 
   } catch (error: any) {
+    if (error.message === "Name of topic was already taken") {
+      yield put(TopicSliceActions.createFailure("Имя топика занято, попробуйте другое"));
+    }
     console.error(error.message);
   }
 }

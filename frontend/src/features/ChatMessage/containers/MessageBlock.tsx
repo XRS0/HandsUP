@@ -6,33 +6,38 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { SocketSliceActions } from "@/entities/websocket/models/slice";
 
 import "@/features/ChatMessage/ui/StaticMessage.scss";
+import { createClassName } from "@/shared/utils/createClassName";
 
 const MessageBlock = () => {
   const { message, isEditingNow, newMessage } = useAppSelector(state => state.socket);
+  const { chatMessages } = useAppSelector(state => state.chat);
   const dispatch = useAppDispatch();
   const [, updateState] = useState({});
   const forceUpdate = useCallback(() => updateState({}), []);
 
   const renderedMessage = useRef<string[]>([]);
   
-  useEffect(() => {
-    if (renderedMessage.current.join("") === Object.values(message)[0]) return;
+  // useEffect(() => {
+  //   if (renderedMessage.current.join("") === message) return;
 
-    const charsToRender = renderedMessage.current.length
-      ? message.slice(renderedMessage.current.length).split(" ")
-      : message.split(" ");
+  //   const wordsToRender = renderedMessage.current.length
+  //     ? message.slice(renderedMessage.current.length).split(" ")
+  //     : message.split(" ");
 
-    charsToRender.forEach((char, i) => {
-      setTimeout(() => {
-        renderedMessage.current.push(char);
-        forceUpdate();
-      }, 80 * i);
-    });
-  }, [message]);
+  //   console.log(renderedMessage.current);
+    
+  //   wordsToRender.forEach((word, i) => {
+  //     setTimeout(() => {
+  //       renderedMessage.current.push(word);
+  //       forceUpdate();
+  //     }, 80 * i);
+  //   });
+  // }, [message]);
 
   useEffect(() => {
     if (!isEditingNow && newMessage) {
       renderedMessage.current = newMessage.split(" ");
+
       dispatch(SocketSliceActions.setMessage());
       // messageHeightRef.current = "auto";
     }
@@ -41,10 +46,13 @@ const MessageBlock = () => {
   if (isEditingNow) return <EditMessageTextarea />
 
   return (
-    <div className="chat-message-container --enter">
+    <div className={createClassName("chat-message-container", 
+    chatMessages.length === 0 && "--recording")}>
       <div className="static-message">
         <Markdown components={{h1: 'h2'}}>
-          {renderedMessage.current.join("")}
+          {/* {renderedMessage.current.join("")}
+           */}
+          {message}
         </Markdown>
       </div>
     </div>

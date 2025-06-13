@@ -96,7 +96,8 @@ p {
   font-family: "Jost";
   font-size: 16px;
   font-weight: 400;
-  margin: 10px 0;
+  margin: 0;
+  margin-bottom: 12px;
 }
 
 span {
@@ -115,8 +116,10 @@ span {
 }
 
 .error-message {
+  font-family: "Jost";
   font-size: 12px;
   min-height: 18px;
+  text-align: center;
   margin-block: 0.5rem;
   color: #C50730;
 }

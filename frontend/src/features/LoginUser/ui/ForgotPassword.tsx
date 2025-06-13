@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import "./ForgotPassword.scss";
 import { createClassName } from "@/shared/utils/createClassName";
@@ -12,6 +12,7 @@ type OwnProps = {
 
 const ForgotPassword: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd }) => {
   const {value, onChange, clear} = useInput();
+  const [isSended, setIsSended] = useState(false);  // template, needs to be Feature
 
   return (
     <div 
@@ -31,8 +32,9 @@ const ForgotPassword: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd }) => {
 
       <Button
         // cssClass="warning-button"
-        children="Отправить код"
-        onclick={() => window.open("https://www.artstation.com/reinmar")}
+        isDisabled={isSended || !value}
+        children={ isSended ? "Код отправлен" : "Отправить код"}
+        onclick={() => setIsSended(true)}
       />
     </div>
   );

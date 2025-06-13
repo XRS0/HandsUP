@@ -41,7 +41,7 @@ const Sidebar = () => {
             <div className="upgrade-price-plan">
               <div>
                 <img src={priceIcon} alt="icon" className="price-icon" />
-                Upgrade plan
+                {document.body.offsetWidth > 768 ? "Upgrade plan" : "Plan"}
               </div>
 
               <div className="plan-level">Free</div>
@@ -50,7 +50,7 @@ const Sidebar = () => {
             <div className="profile" onClick={handleOpen}>
               <div>
                 <img src={avatarIcon} className="avatar" alt="icon" />
-                My profile
+                {document.body.offsetWidth > 768 ? "My profile" : "Profile"}
               </div>
 
               <img src={settingsIcon} alt="icon" />

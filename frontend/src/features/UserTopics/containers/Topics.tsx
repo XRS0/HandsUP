@@ -8,6 +8,7 @@ import NewTopic from "@/features/NewTopicButton/containers/NewTopic";
 import { TopicMessage } from "@/features/UserChat/types";
 import { TopicSliceActions } from "../models/slice";
 import { getKey, getValue } from "@/shared/utils/hashMapGet";
+import { ChatSliceActions } from "@/features/UserChat/models/slice";
 
 const Topics = () => {
   const { isTopicCreating, currentTopic, topics } = useAppSelector(state => state.topics);
@@ -15,8 +16,6 @@ const Topics = () => {
   const dispatch = useAppDispatch();
 
   if (topics.length === 0) return <div className="history custom-scroll">{isTopicCreating && <NewTopic />}</div>;
-
-  const currentChat = cachedChats.filter(topic => getKey(topic) === currentTopic)[0];
   const groupedTopics: { [topic: string]: string[] } = {}
 
   try {
@@ -37,18 +36,18 @@ const Topics = () => {
 
   const handleTopicClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    const topicName = e.currentTarget.innerText.split(" ").join("_");
 
-    const topicName = e.currentTarget.innerText;
-    
-    if (currentChat) {
-      const switchedTopic = getValue(currentChat).find((t: TopicMessage) => getKey(t) === topicName);
-      dispatch(TopicSliceActions.switchTopic(getKey(switchedTopic)));
-    } else {
-      dispatch(TopicSliceActions.openTopic(topicName));
+    const currentChatInCache = cachedChats.find(topic => getKey(topic) === topicName);
+
+    if (currentChatInCache) {
+      dispatch(TopicSliceActions.switchTopic(getKey(currentChatInCache)));
+      dispatch(ChatSliceActions.switchChat(getKey(currentChatInCache)));
     }
+    else dispatch(TopicSliceActions.openTopic(topicName));
   }
 
-  const selected = currentTopic && Object.keys(currentTopic)[0];
+  const selected = currentTopic && currentTopic.split("_").join(" ");
 
   return (
     <div className="history custom-scroll">

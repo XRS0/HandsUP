@@ -1,18 +1,14 @@
 import { selectToken } from "@/features/AuthUser";
 import { ChatSliceActions } from "@/features/UserChat/models/slice";
-import { Topic } from "@/features/UserChat/types";
-import { selectCurrentTopic } from "@/features/UserTopics/models/slice";
 import { put, select, takeLatest } from "redux-saga/effects";
 
 function* generateMessageSaga({payload}: ReturnType<typeof ChatSliceActions.generateMessage>) {
   try {
     const token: string = yield select(selectToken); 
-
-    if (payload.text) {
-      const topic: Topic = yield select(selectCurrentTopic);
-      const lastTopicMsg = Object.values(topic!)[0].filter(topic => topic.from === false).at(-1);
-      if (lastTopicMsg?.text !== payload.text) yield put(ChatSliceActions.addMessage({from: false, text: payload.text}));
-    }
+    
+    console.log(payload);
+    
+    // if (payload.text) yield put(ChatSliceActions.addMessage({from: false, text: payload.text}));
     if (payload.user_prompt) yield put(ChatSliceActions.addMessage({from: true, text: payload.user_prompt}));
     
     yield put({type: 'socket/connect', url: process.env.WS_SUMMARISE_URL, payload: {...payload, token}});

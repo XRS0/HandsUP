@@ -6,6 +6,91 @@
   margin-block: 15px;
 }
 
+.static-message {
+  animation: fadeInMessage 0.4s forwards;
+
+  &::selection {
+    background: #22252e!important;
+    text-shadow: none;
+  }
+
+  &::-moz-selection {
+    background: #22252e !important;
+    text-shadow: none;
+  }
+
+  & p:last-child {
+    margin: 0;
+  }
+
+  h2, h3, p, span,
+  ul, pre, a, ol, ul, li {
+    font-family: "Jost";
+    // color: var(--light-gray) !important;
+  }
+
+  ol {
+    margin-block: 0 0.5rem;
+    padding-left: 1.5rem;
+  }
+
+  ul {
+    margin-block: 0.5rem 0.75rem;
+  }
+
+  li > ul {
+    padding-left: 1rem;
+  }
+
+  ol > li {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--gray);
+  }
+
+  ul > li {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--light-gray);
+  }
+
+  h2 {
+    color: var(--light-gray);
+    font-size: 1.2rem;
+    text-align: start;
+    font-weight: 600;
+    margin: 0;
+    // margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: var(--light-gray);
+    font-size: 1rem;
+    text-align: start;
+  }
+
+  a {
+    color: var(--main-color);
+  }
+
+  hr {
+    border-radius: 2px;
+    border-color: var(--gray);
+  }
+
+  pre {
+    margin: 10px 0;
+  }
+
+  code {
+    width: max-content;
+    padding: 6px;
+    border-radius: 0.5rem;
+    color: #bbbbbb;
+    background-color: #656c7633;
+  }
+}
+
 .chat-message-container {
   justify-content: flex-start;
 
@@ -13,21 +98,42 @@
     color: #D0D0D0;
     font-family: "Jost";
     font-size: 1rem;
-    min-height: 65px;
+    min-height: 50px;
     background-color: var(--secondary-color);
     border: 1px solid var(--main-border-color);
     border-radius: 20px;
     border-top-left-radius: 4px !important;
     padding: 16px;
-    max-width: 760px;
+    width: 85%;
+
+    @include desktop {
+      width: 94%;
+    }
+
+    @include tablet {
+      width: 100%;
+    }
 
     @include mobile {
-      width: 100%;
+      // width: 100%;
       padding: 0;
       background-color: transparent;
       border: none;
       border-radius: 0;
     }
+  }
+
+  &.--recording {
+    margin-bottom: 0 !important;
+
+    .static-message {
+      width: 100% !important;
+    }
+  }
+
+  &.--exit {
+    animation: fadeOutMessage var(--long-transition) forwards;
+    cursor: default !important;
   }
 }
 
@@ -38,18 +144,58 @@
     color: #D0D0D0;
     font-family: "Jost";
     font-size: 1rem;
-    max-width: 760px;
-    min-height: 54px;
+    // min-height: 54px;
+    max-width: 85%;
     padding: 16px;
     border-radius: 20px;
     border-top-right-radius: 3px;
     background-color: #22252E;
 
+    @include desktop {
+      max-width: 94%;
+    }
+
+    @include tablet {
+      max-width: 100%;
+    }
+
     @include mobile {
-      max-width: 85%;
+      max-width: 80%;
       min-height: 0;
       padding: 5px 20px;
     }
   }
 }
 
+@keyframes fadeInMessage {
+  from {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+@keyframes fadeOutMessage {
+  from {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+// @keyframes fade-word {
+//   100% {
+//     opacity: 1;
+//     filter: blur(0);
+//   }
+// }

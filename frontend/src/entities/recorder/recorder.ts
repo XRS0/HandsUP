@@ -1,6 +1,7 @@
 import { store } from "@/app/store";
 import { globalSocket } from "../websocket/middleware";
 import { SocketSliceActions } from "../websocket/models/slice";
+import { ChatSliceActions } from "@/features/UserChat/models/slice";
 
 let stream: MediaStream;
 let audioContext: AudioContext;
@@ -53,7 +54,7 @@ export const continueRecording = () => {
   }
 };
 
-export const stopRecording = () => {
+export const stopRecording = (message: string) => {
   if (workletNode) {
     workletNode.port.onmessage = null;
     workletNode.disconnect();
@@ -64,7 +65,9 @@ export const stopRecording = () => {
     
     workletNode = null;
     console.log("[AudioWorklet]: Recording was stopped");
+    
     store.dispatch(SocketSliceActions.handlePause());
     store.dispatch({type: 'socket/disconnect'});
+    store.dispatch(ChatSliceActions.addMessage({from: true, text: message}))
   }
 };
