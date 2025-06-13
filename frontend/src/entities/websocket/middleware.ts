@@ -4,7 +4,6 @@ import { SocketSliceActions } from "./models/slice";
 import { Middleware } from "@reduxjs/toolkit";
 import { startRecording } from "../recorder/recorder";
 import { RootState, store } from "@/app/store";
-import { TopicSliceActions } from "@/features/UserTopics";
 import { ChatSliceActions } from "@/features/UserChat/models/slice";
 
 export let globalSocket: Socket; // for sending raw binary unserialized data
@@ -15,7 +14,7 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
   globalSocket = socket;
 
   switch (wsAction.type) {
-    case 'socket/connect':      
+    case 'socket/connect':;  
       socket.connect(wsAction.url, wsAction.payload);
 
       socket.on('open', () => {
@@ -30,15 +29,9 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
       });
       
       socket.on('message', (event: MessageEvent) => {
-        try {
-          if (wsAction.url === "ws://localhost:8083/ws/generate?") {
-            store.dispatch(SocketSliceActions.addMessage(event.data));
-          } else {
-            store.dispatch(SocketSliceActions.handleMessage(event.data));
-          }
-        } catch (err) {
-          console.error("[WS]: Parsing json error:", err);
-        }
+        //if (wsAction.url === "ws://localhost:8083/ws/generate?") {
+        ///} else store.dispatch(SocketSliceActions.handleMessage(event.data));
+        store.dispatch(SocketSliceActions.handleMessage(event.data));
       });
 
       socket.on('close', () => {
@@ -46,8 +39,9 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
           store.dispatch(SocketSliceActions.handlePause());
           store.dispatch(ChatSliceActions.setMessage());
         }
-        socket.disconnect();
+        store.dispatch(SocketSliceActions.setMessage());
         socket.readyState = 0;
+        socket.disconnect();
         console.log("[WS]: Connection closed");
       });
       break;

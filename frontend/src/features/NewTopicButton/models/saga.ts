@@ -19,6 +19,7 @@ export function* getTopicSaga({payload}: {payload: TopicPreview}) {
     
     yield put(TopicSliceActions.addTopic(payload));
     yield put(TopicSliceActions.switchTopic(payload.topic));
+    yield put(ChatSliceActions.cashTopic({[payload.topic]: []}));
     yield put(ChatSliceActions.switchChat(payload.topic));
 
   } catch (error: any) {

@@ -14,7 +14,7 @@ import logo from "@assets/welcome-page/logo.svg";
 const Chat = () => {
   const { chatMessages } = useAppSelector(state => state.chat);
   const { currentTopic } = useAppSelector(state => state.topics);
-  const { isRecording } = useAppSelector(state => state.socket);
+  const { isRecording, message } = useAppSelector(state => state.socket);
 
   const isChatEmpty = chatMessages.length === 0;
 
@@ -55,6 +55,12 @@ const Chat = () => {
 
   const reversedMessages = useMemo(() => [...chatMessages].reverse(), [chatMessages]);
 
+  const mesasgesStyle = useMemo(() => {
+    if (currentComposer?.type.name === "UserRecorder") {
+      if (message.length < 2400) return {justifyContent: "center"}
+    } else return {}
+  }, [message, currentComposer]);
+
   if (!currentTopic) return (
     <div className="without-topic">
       <img src={logo} alt="Logo" className="side-logo" />
@@ -75,11 +81,11 @@ const Chat = () => {
 
   return (
     <div className="loaded-chat">
-      <div className="messages-wrapper">
+      <div className="messages-wrapper" style={currentComposer?.type.name === "UserRecorder" ? {paddingBottom: "17%"} : {}}>
         <div className="gradient-top" />
 
-        <div className="loaded-messages custom-scroll" style={isChatEmpty ? {justifyContent: "center"} : {}}>
-          {((!isChatEmpty && isRecording) || isChatEmpty) && <MessageBlock />}                                  {/*Если чат пустой или если чат не пустой и идет запись*/}
+        <div className="loaded-messages custom-scroll" style={mesasgesStyle}>
+          {((!isChatEmpty && isRecording) || isChatEmpty) && <MessageBlock />}
           {reversedMessages.map(({from, text}) => <StaticMessage from={from} message={text} />)}
         </div>
 

@@ -54,7 +54,7 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
     setTimeout(() => setIsCopied(false), 1500);
   }
 
-  const handlePauseRecord = () => isRecording ? pauseRecording() : continueRecording();   // for testing
+  const handlePauseRecord = () => isRecording ? pauseRecording() : continueRecording();
   const handleStopRecording = (e: React.MouseEvent<HTMLElement>) => {
     onStop(e);
     stopRecording(message);
@@ -62,7 +62,8 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
 
   const actionButtons = <div className="conspect-interaction">
     <Button 
-      children={"Изменить"}  
+      children={document.body.offsetWidth >= 670 || document.body.offsetWidth <= 480
+        ? "Изменить" : "Изм."}
       cssClass="interaction" 
       isDisabled={isRecording || isEditingNow}
       IconLeft={editIcon} 
@@ -70,7 +71,12 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
     />
 
     <Button 
-      children={isCopied ? "Скопировано" : "Копировать"}
+      children={ isCopied 
+        ? document.body.offsetWidth >= 670 || document.body.offsetWidth <= 480
+        ? "Скопировано" : "Скоп." 
+        : document.body.offsetWidth >= 670 || document.body.offsetWidth <= 480
+        ? "Копировать" : "Коп."
+      }
       cssClass="copy-button interaction"
       isDisabled={isRecording || isEditingNow}
       IconLeft={linkIcon} 

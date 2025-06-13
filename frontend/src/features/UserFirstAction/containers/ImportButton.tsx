@@ -1,3 +1,4 @@
+import { SocketSliceActions } from "@/entities/websocket/models/slice";
 import { useAppDispatch } from "@/hooks/redux";
 import Button from "@/views/Button/ui/Button";
 import Dropdown from "@/views/Dropdown/Dropdown";
@@ -10,17 +11,20 @@ import { useRef } from "react";
 type OwnProps =  {
   isVisible: boolean,
   isDropdownFadeOut: boolean,
-  handleOpen: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  // handleOpen: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-const ImportButton: React.FC<OwnProps> = ({isDropdownFadeOut, isVisible, handleOpen}) => {
+const ImportButton: React.FC<OwnProps> = ({isDropdownFadeOut, isVisible}) => {
   const dispatch = useAppDispatch();
   const uploadRef = useRef<HTMLInputElement>(null)  
+  
   const handleUpload = () => {
     uploadRef.current?.click();
-  }
 
-  //TODO: convert a file and dispatch it
+    if (uploadRef.current?.files) {
+      dispatch(SocketSliceActions.uploadMessage(uploadRef.current.files[0]));
+    }
+  }
 
   return (
     <>
@@ -44,6 +48,7 @@ const ImportButton: React.FC<OwnProps> = ({isDropdownFadeOut, isVisible, handleO
           />
           <Button
             children="Text file on computer"
+            isDisabled
             cssClass="dropdown-button"
             IconLeft={computerIcon}
             onclick={handleUpload}
@@ -51,7 +56,7 @@ const ImportButton: React.FC<OwnProps> = ({isDropdownFadeOut, isVisible, handleO
         </Dropdown>
       }
 
-      <input type="file" ref={uploadRef} 
+      <input type="file" accept=".wav,.mp3" ref={uploadRef} 
         onChange={() => console.log('Файл для загрузки выбран')} 
         style={{ display: 'none' }} 
       />

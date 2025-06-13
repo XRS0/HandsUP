@@ -103,7 +103,7 @@ const UserComposer = () => {
       name="short"
       onclick={handleOptionClick} 
       cssClass={createClassName("config", isClicked["short"] && "actived")} 
-      children={document.body.offsetWidth > 950 ? "Краткий" : "Крат."} 
+      children={document.body.offsetWidth > 950 || document.body.offsetWidth <= 480 ? "Краткий" : "Крат."} 
       isFilled={false}
     />
 
@@ -111,7 +111,7 @@ const UserComposer = () => {
       name="without_changes"
       onclick={handleOptionClick} 
       cssClass={createClassName("config", isClicked["without_changes"] && "actived")} 
-      children={document.body.offsetWidth > 950 ? "Без изменений" : "Базовый"}
+      children={document.body.offsetWidth > 950 || document.body.offsetWidth <= 480 ? "Без изменений" : "Базовый"}
       isFilled={false}
     />
 
@@ -119,7 +119,7 @@ const UserComposer = () => {
       name="expanded"
       onclick={handleOptionClick} 
       cssClass={createClassName("config", isClicked["expanded"] && "actived")}
-      children={document.body.offsetWidth > 950 ? "Объемный" : "Расш."} 
+      children={document.body.offsetWidth > 950 || document.body.offsetWidth <= 480 ? "Объемный" : "Расш."} 
       isFilled={false} 
     />
   </div>
@@ -137,7 +137,7 @@ const UserComposer = () => {
 
         <Button
           IconLeft={stormIcon}
-          children={"Сгенерировать"}
+          children={"Генерировать"}
           cssClass="record-button"
           onclick={handleSendMessage}
         />
@@ -177,7 +177,7 @@ const UserComposer = () => {
 
           <Button
             IconLeft={stormIcon}
-            children={document.body.offsetWidth > 950 ? "Сгенерировать" : "Далее"}
+            children={document.body.offsetWidth > 950 || document.body.offsetWidth <= 480 ? "Сгенерировать" : "Далее"}
             cssClass="record-button"
             onclick={handleSendMessage}
           />

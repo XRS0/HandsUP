@@ -20,7 +20,7 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
     isVisible,
     isFadeOut: isDropdownFadeOut,
     eventHandlers,
-    handleOpen,
+    // handleOpen,
     handleAnimationEnd
   } = useAnimation<HTMLDivElement>({
     trigger: "hover",
@@ -43,7 +43,7 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
         <div className="actions">
           <StartRecordingButton startAnimation={onVoice} />
           
-          {document.body.offsetWidth <= 480
+          {document.body.offsetWidth <= 1330
             ? <Button
                 onclick={() => {}}
                 children="Import"
@@ -57,7 +57,7 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
               {...eventHandlers}
             >
               <ImportButton
-                handleOpen={handleOpen}
+                // handleOpen={handleOpen}
                 isVisible={isVisible}
                 isDropdownFadeOut={isDropdownFadeOut}
               />

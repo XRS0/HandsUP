@@ -10,7 +10,7 @@ export type WebSocketState = {
 
 export const initialState: WebSocketState = {
   message: "",
-  newMessage: '',   //проверяться через новое сообщение, если чел отменил то мы откатываемся до сообщения
+  newMessage: '',
   isRecording: false,
   isEditingNow: false
 };
@@ -19,7 +19,8 @@ const socketSlice = createSlice({
   name: "ws",
   initialState,
   reducers: {
-    addMessage(state, action: PayloadAction<string>) {
+    addMessage(state, action: PayloadAction<{text: string, is_updated: boolean}>) {
+      if (action.payload.is_updated) state.message = action.payload.text;
       state.message += action.payload;
     },
     allowEdit(state) {
@@ -41,7 +42,7 @@ const socketSlice = createSlice({
       state.isRecording = true;
     },
     handlePause(state) {
-      state.isRecording = false;
+      state.isRecording = !state.isRecording;
     },
   }
 });
@@ -49,6 +50,7 @@ const socketSlice = createSlice({
 export const SocketSliceActions = {
   ...socketSlice.actions,
   handleMessage: createAction<string>(`${socketSlice.name}/handleMessage`),
+  uploadMessage: createAction<File>(`${socketSlice.name}/uploadMessage`),
 };
 
 export default socketSlice.reducer;

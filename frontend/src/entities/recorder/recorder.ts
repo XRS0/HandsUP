@@ -49,8 +49,8 @@ export const continueRecording = () => {
         globalSocket.send(event.data);
       }
     };
+    store.dispatch(SocketSliceActions.handlePause());
     console.log("[AudioWorklet]: Recording continues");
-    store.dispatch(SocketSliceActions.handleOpen());
   }
 };
 
@@ -66,7 +66,6 @@ export const stopRecording = (message: string) => {
     workletNode = null;
     console.log("[AudioWorklet]: Recording was stopped");
     
-    store.dispatch(SocketSliceActions.handlePause());
     store.dispatch({type: 'socket/disconnect'});
     store.dispatch(ChatSliceActions.addMessage({from: true, text: message}))
   }

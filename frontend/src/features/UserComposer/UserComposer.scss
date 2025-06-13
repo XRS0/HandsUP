@@ -82,7 +82,7 @@
     @include mixin.flex-between;
 
     button {
-      padding: 7px 13px !important;
+      padding: 7px 13px;
     }
   
     .actions {
@@ -138,7 +138,7 @@
 
     .record-button {
       height: 46px;
-      padding: 0 5px;
+      padding: 0 10px !important;
       border-radius: 2rem;
     }
   }

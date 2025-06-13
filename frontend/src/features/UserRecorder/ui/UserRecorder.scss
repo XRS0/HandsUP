@@ -5,7 +5,7 @@
   border-radius: 20px;
   padding: 15px;
   height: 100px;
-  width: 80%;
+  width: 100%;
   max-width: 800px;
   background-color: var(--secondary-color);
   border: 0.8px solid var(--main-border-color);
@@ -148,9 +148,17 @@
           }
         }
 
+        @include tablet {
+          margin-left: 0.625rem;
+        }
+
         @include mobile {
           margin-left: 1rem;
         }
+      }
+
+      @include tablet {
+        margin-left: 0;
       }
     }
 
@@ -171,6 +179,10 @@
 
   .conspect-interaction {
     .interaction {
+      @include tablet {
+        margin-right: 0.5rem !important;
+      }
+
       @include mobile {
         height: 38px;
         padding-inline: 14px;
@@ -185,6 +197,20 @@
       justify-content: space-between;
       margin-top: 1rem;
     }
+  }
+
+  @media (max-width: 1250px) {
+    max-width: 750px;
+  }
+
+  @include desktop {
+    max-width: 800px;
+    width: 94%;
+  }
+
+  @include tablet {
+    max-width: 768px;
+    width: 96%;
   }
 
   @include mobile {

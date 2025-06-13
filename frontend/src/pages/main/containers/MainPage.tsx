@@ -12,7 +12,6 @@ import Chat from "@/features/UserChat/containers/Chat";
 import "../ui/MainPage.scss";
 
 const MainPage = () => {
-  // const parentRef = useRef(null);
   const [isOpened, setIsOpened] = useState(false);
   const { isLoading, token, username } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
@@ -36,11 +35,10 @@ const MainPage = () => {
 
   const openSidebar = () => setIsOpened(prev => !prev);   // for mobile
   
-  // if (!isLoading && !token) <Navigate to={"/auth"} replace />
+  if (!isLoading && !token) <Navigate to={"/auth"} replace />
 
   return (
     <div 
-      // ref={parentRef}
       data-testid="main-page"
       className={createClassName("wrapper", isOpened && "sidebar-open")} 
     >

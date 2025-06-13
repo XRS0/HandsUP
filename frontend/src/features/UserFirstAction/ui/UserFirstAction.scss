@@ -24,6 +24,21 @@
       color: var(--main-color);
     }
 
+    @include desktop {
+      text-align: center;
+      font-family: "Jost";
+      margin-block: 0.75rem;
+      line-height: 1.2;
+      font-size: 2rem;
+      font-weight: 700;
+
+      span {
+        white-space: nowrap;
+        font-family: "Jost";
+        color: var(--main-color);
+      }
+    }
+
     @include mobile {
       text-align: center;
       font-family: "Jost";
@@ -53,8 +68,13 @@
       max-width: 540px;
       color: var(--light-gray);
 
+      @include desktop {
+        margin-inline: 1.25rem;
+      }
+
       @include mobile {
         font-size: 15px;
+        // margin-inline: 1.25rem; 
       }
     }
 
@@ -72,11 +92,19 @@
         height: 100%;
         border-radius: 40px;
 
+        @include desktop {
+          font-size: 1.25rem;
+          width: 130px;
+          height: 60px;
+          max-height: unset;
+          border-radius: 1rem;
+          margin-top: 2rem;
+        }
+
         @include mobile {
           font-size: 20px;
-          height: 54px !important;
-          max-height: none;
           width: 180px;
+          height: 54px !important;
           margin-top: 2.5rem;
         }
       }
@@ -106,12 +134,26 @@
         }
       }
 
+      @include desktop {
+        width: 80%;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-inline: 1rem;
+      }
+
+      @include tablet {
+        width: 96%;
+      }
+
       @include mobile {
+        justify-content: unset;
+        width: unset;
+        padding: 0;
         flex-direction: column;
       }
     }
 
-    @include mobile {
+    @include desktop {
       align-items: center;
       flex-direction: column;
 
@@ -128,6 +170,10 @@
         }
       }
     }
+    // @include mobile {
+    //   align-items: center;
+    //   flex-direction: column;
+    // }
   }
 
   @include mobile {

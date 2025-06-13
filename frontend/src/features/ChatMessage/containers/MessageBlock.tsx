@@ -7,13 +7,14 @@ import { SocketSliceActions } from "@/entities/websocket/models/slice";
 
 import "@/features/ChatMessage/ui/StaticMessage.scss";
 import { createClassName } from "@/shared/utils/createClassName";
+import Loader from "@/views/Loader/Loader";
 
 const MessageBlock = () => {
   const { message, isEditingNow, newMessage } = useAppSelector(state => state.socket);
   const { chatMessages } = useAppSelector(state => state.chat);
   const dispatch = useAppDispatch();
   const [, updateState] = useState({});
-  const forceUpdate = useCallback(() => updateState({}), []);
+  // const forceUpdate = useCallback(() => updateState({}), []);
 
   const renderedMessage = useRef<string[]>([]);
   
@@ -49,14 +50,15 @@ const MessageBlock = () => {
     <div className={createClassName("chat-message-container", 
     chatMessages.length === 0 && "--recording")}>
       <div className="static-message">
-        <Markdown components={{h1: 'h2'}}>
-          {/* {renderedMessage.current.join("")}
-           */}
-          {message}
-        </Markdown>
+        { chatMessages.length !== 0 && !message 
+          ? <Loader />
+          : <Markdown components={{h1: 'h2'}}>{message}</Markdown>
+        }
       </div>
     </div>
   );
 }
 
 export default MessageBlock;
+
+{/* {renderedMessage.current.join("")} */}

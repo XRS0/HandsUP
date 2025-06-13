@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 import googleIcon from "@assets/authorize/gmail-sign-in.svg";
 import mailIcon from "@assets/authorize/email-sign-in.svg";
@@ -14,6 +14,8 @@ import ForgotPassword from "../ui/ForgotPassword";
 const SignIn = () => {
   const dispatch = useAppDispatch();
   const { error, isSuccess, isLoading } = useAppSelector(state => state.login);
+
+  const [token, setToken] = useState(false);
 
   const [value, setValue] = useState({
     email: "",
@@ -33,7 +35,7 @@ const SignIn = () => {
       return;
     }
     dispatch(LoginSliceActions.fetchRequest(value));
-  };
+  }
 
   const {
     isVisible,
@@ -49,7 +51,12 @@ const SignIn = () => {
     handleOpen(e);
   }
 
-  if (isSuccess) return <Navigate to={"/chat"} replace />
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) setToken(true);
+  }, []);
+
+  if (isSuccess || token) return <Navigate to={"/chat"} replace />
 
   return (
     <>
