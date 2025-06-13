@@ -78,9 +78,9 @@ describe("Test for login slice", () => {
     expect(state.isRecording).toBe(false);
   });
 
-  test("handleMessage action has correct type", () => {
-    expect(SocketSliceActions.handleMessage.type).toBe("ws/handleMessage");
-  });
+  // test("handleMessage action has correct type", () => {
+  //   expect(SocketSliceActions.handleMessage.type).toBe("ws/handleMessage");
+  // });
 
   test("selectToken selector returns correct value", () => {
     const state = mockRootState({ socket: { ...initialState, message: "Bubbles" } });

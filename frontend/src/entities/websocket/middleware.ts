@@ -29,9 +29,12 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
       });
       
       socket.on('message', (event: MessageEvent) => {
-        //if (wsAction.url === "ws://localhost:8083/ws/generate?") {
-        ///} else store.dispatch(SocketSliceActions.handleMessage(event.data));
-        store.dispatch(SocketSliceActions.handleMessage(event.data));
+        try {
+          const data = JSON.parse(event.data);
+          store.dispatch(SocketSliceActions.addMessage(data));
+        } catch (err: any) {
+          console.error(console.error("[WS]: Parsing json error:", err));
+        }
       });
 
       socket.on('close', () => {

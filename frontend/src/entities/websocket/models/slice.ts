@@ -52,7 +52,7 @@ const socketSlice = createSlice({
 
 export const SocketSliceActions = {
   ...socketSlice.actions,
-  handleMessage: createAction<string>(`${socketSlice.name}/handleMessage`),
+  // handleMessage: createAction<string>(`${socketSlice.name}/handleMessage`),
   uploadMessage: createAction<File>(`${socketSlice.name}/uploadMessage`),
 };
 
