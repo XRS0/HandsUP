@@ -61,7 +61,7 @@ async def transcribe_and_send(samples: np.ndarray, websocket):
         for segment in segments:
             text = clean_transcription(segment.text)
             if text:
-                await websocket.send(text)
+                await websocket.send(text, False)
 
     finally:
         try:
