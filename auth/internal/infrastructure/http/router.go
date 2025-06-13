@@ -112,7 +112,7 @@ func (router *Router) InitRoutes(tokenService *jwt.TokenService) {
 				check = check[len("Bearer "):] // Remove "Bearer " prefix
 				if _, err := tokenService.ValidateToken(check); err != nil {
 					c.JSON(401, gin.H{
-						"error": "Unauthorized",
+						"error": err.Error() + " " + check,
 					})
 					return
 				} else {
