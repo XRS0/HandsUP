@@ -38,6 +38,8 @@ const MessageBlock = () => {
   useEffect(() => {
     if (!isEditingNow && newMessage) {
       renderedMessage.current = newMessage.split(" ");
+
+      dispatch(SocketSliceActions.setMessage());
       // messageHeightRef.current = "auto";
     }
   }, [isEditingNow]);

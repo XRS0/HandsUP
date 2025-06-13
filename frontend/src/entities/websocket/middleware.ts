@@ -32,8 +32,8 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
         try {
           const data = JSON.parse(event.data);
           store.dispatch(SocketSliceActions.addMessage(data));
-        } catch (err: any) {
-          console.error(console.error("[WS]: Parsing json error:", err));
+        } catch {
+          store.dispatch(SocketSliceActions.addMessage(event.data));
         }
       });
 
@@ -42,7 +42,7 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
           store.dispatch(SocketSliceActions.handlePause());
           store.dispatch(ChatSliceActions.setMessage());
         }
-        store.dispatch(SocketSliceActions.setMessage());
+        // store.dispatch(SocketSliceActions.setMessage());
         socket.readyState = 0;
         socket.disconnect();
         console.log("[WS]: Connection closed");
