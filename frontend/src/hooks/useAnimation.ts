@@ -54,12 +54,18 @@ const useAnimation = <T extends HTMLElement = HTMLElement>(
     }),
   };
 
+  const reset = () => {
+    setIsFadeOut(false);
+    setIsVisible(initialVsibility)
+  };
+
   return {
     ...(trigger === 'hover' && { containerRef, eventHandlers }),
+    reset,
     isVisible,
     isFadeOut,
     handleOpen,
-    handleAnimationEnd
+    handleAnimationEnd,
   };
 }
 

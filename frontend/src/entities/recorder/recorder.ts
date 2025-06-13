@@ -67,6 +67,6 @@ export const stopRecording = (message: string) => {
     console.log("[AudioWorklet]: Recording was stopped");
     
     store.dispatch({type: 'socket/disconnect'});
-    store.dispatch(ChatSliceActions.addMessage({from: true, text: message}))
+    store.dispatch(ChatSliceActions.addMessage({from: true, text: message}));
   }
 };

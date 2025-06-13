@@ -1,5 +1,5 @@
 import UserComposer from "@/features/UserComposer/UserComposer";
-import { JSX, useMemo } from "react";
+import { JSX, useEffect, useMemo } from "react";
 import { useAppSelector } from "@/hooks/redux";
 import { UserFirstAction } from "@/features/UserFirstAction";
 import useAnimation from "@/hooks/useAnimation";
@@ -22,15 +22,22 @@ const Chat = () => {
     handleAnimationEnd,
     handleOpen: handleBlockClose,
     isVisible,
-    isFadeOut: isFadeOutBlock
+    isFadeOut: isFadeOutBlock,
+    reset: resetBlockAnimation
   } = useAnimation({trigger: "click", initialVsibility: true});
 
   const {
     handleAnimationEnd: handleRecorderUnmount,
     handleOpen: handleComposerOpen,
     isVisible: isRecorderVisible,
-    isFadeOut: isRecorderFadeOut
+    isFadeOut: isRecorderFadeOut,
+    reset: resetRecorderAnimation
   } = useAnimation({trigger: "click", initialVsibility: true});
+
+  useEffect(() => {
+    resetBlockAnimation();
+    resetRecorderAnimation();
+  }, [currentTopic]);
 
   const currentComposer = useMemo(() => {
     if (!isChatEmpty) return <UserComposer />

@@ -40,9 +40,8 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
       socket.on('close', () => {
         if (wsAction.url === "ws://localhost:8083/ws/generate?") {
           store.dispatch(SocketSliceActions.handlePause());
-          store.dispatch(ChatSliceActions.setMessage());
+          store.dispatch(ChatSliceActions.setSumMessage());
         }
-        // store.dispatch(SocketSliceActions.setMessage());
         socket.readyState = 0;
         socket.disconnect();
         console.log("[WS]: Connection closed");

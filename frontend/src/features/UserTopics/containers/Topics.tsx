@@ -9,6 +9,8 @@ import { TopicMessage } from "@/features/UserChat/types";
 import { TopicSliceActions } from "../models/slice";
 import { getKey, getValue } from "@/shared/utils/hashMapGet";
 import { ChatSliceActions } from "@/features/UserChat/models/slice";
+import Socket from "@/entities/websocket/models/socket";
+import { SocketSliceActions } from "@/entities/websocket/models/slice";
 
 const Topics = () => {
   const { isTopicCreating, currentTopic, topics } = useAppSelector(state => state.topics);
@@ -19,7 +21,7 @@ const Topics = () => {
   const groupedTopics: { [topic: string]: string[] } = {}
 
   try {
-    [...topics].reverse()     //I CANT CHANGE REDUX DATA BUT REVERCE TRIES TO CJANGE THEM!
+    [...topics].reverse()     //I CANT CHANGE REDUX DATA BUT REVERSE TRIES TO CHANGE THEM!
     .map(({topic, created_at}) => {
       if (!topic) return;
       
@@ -41,8 +43,9 @@ const Topics = () => {
     const currentChatInCache = cachedChats.find(topic => getKey(topic) === topicName);
 
     if (currentChatInCache) {
+      dispatch(ChatSliceActions.switchChat({to: getKey(currentChatInCache), from: currentTopic!}));
       dispatch(TopicSliceActions.switchTopic(getKey(currentChatInCache)));
-      dispatch(ChatSliceActions.switchChat(getKey(currentChatInCache)));
+      dispatch(SocketSliceActions.setMessage());  // for cleaning message for stt
     }
     else dispatch(TopicSliceActions.openTopic(topicName));
   }

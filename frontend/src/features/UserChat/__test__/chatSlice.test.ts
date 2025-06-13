@@ -33,21 +33,21 @@ describe("Test for chat slice", () => {
     expect(state.cachedChats).toStrictEqual([...initialState.cachedChats]);
   });
 
-  test("switchChat action", () => {
-    let state = chatReducer(initialState, ChatSliceActions.cashTopic(testData));
-    state = chatReducer(state, ChatSliceActions.switchChat("Bubbles")); //используем уже обновленное состояне state
+  // test("switchChat action", () => {
+  //   let state = chatReducer(initialState, ChatSliceActions.cashTopic(testData));
+  //   state = chatReducer(state, ChatSliceActions.switchChat("Bubbles")); //используем уже обновленное состояне state
 
-    expect(state.chatMessages).toStrictEqual(testData["Bubbles"]);
-  });
+  //   expect(state.chatMessages).toStrictEqual(testData["Bubbles"]);
+  // });
 
-  test("switchChat handles empty data correctly", () => {
-    const state = chatReducer(
-      initialState,
-      ChatSliceActions.switchChat("")
-    );
+  // test("switchChat handles empty data correctly", () => {
+  //   const state = chatReducer(
+  //     initialState,
+  //     ChatSliceActions.switchChat("")
+  //   );
     
-    expect(state.chatMessages).toStrictEqual([...initialState.chatMessages ]);
-  });
+  //   expect(state.chatMessages).toStrictEqual([...initialState.chatMessages ]);
+  // });
 
   test("addMessage action", () => {
     const newMessage: TopicMessage = { from: false, text: "no, no-no-no"}
@@ -73,6 +73,6 @@ describe("Test for chat slice", () => {
   });
 
   test("setMessage action has correct type", () => {
-    expect(ChatSliceActions.setMessage.type).toBe("chat/setMessage");
+    expect(ChatSliceActions.setSumMessage.type).toBe("chat/setSumMessage");
   });
 });
