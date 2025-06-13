@@ -10,7 +10,7 @@ describe("Test for login slice", () => {
   test("addMessage action", () => { 
     const state = wsReducer(
       initialState,
-      SocketSliceActions.addMessage("Hello Word!")
+      SocketSliceActions.addMessage({text: "Hello Word!", is_updated: false})
     );
 
     expect(state.message).toBe("Hello Word!");
