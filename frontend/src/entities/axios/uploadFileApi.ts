@@ -1,9 +1,6 @@
 import { uploadApiInstance } from "./instance/axiosInstance";
-import { uploadApiInstance } from "./instance/axiosInstance";
 
 export const uploadFileApiInstance = async (payload: FormData, token: string) => {
-  const response = await uploadApiInstance({
-export const uploadFileApiInstance = async (payload: File, token: string) => {
   const response = await uploadApiInstance({
     method: 'post',
     url: `/upload`,
