@@ -13,3 +13,7 @@ export const userApiInstance = axios.create({
 export const topicApiInstance = axios.create({
   baseURL: process.env.CHAT_BASE_URL,
 });
+
+export const uploadApiInstance = axios.create({
+  baseURL: process.env.UPLOAD_BASE_URL,
+});
