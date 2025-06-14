@@ -7,8 +7,8 @@ export const uploadFileApiInstance = async (payload: File, token: string) => {
     data: payload,
     headers: { 
       Authorization: `Bearer ${token}`,
-      ContentType: payload.type,
-      ContentLength: `${payload.size}`,
+      "Content-Type":  `${payload.type}`,
+      "Content-Length": `${payload.size}`,
     },
   });
 

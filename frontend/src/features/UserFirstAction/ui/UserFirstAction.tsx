@@ -20,7 +20,7 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
     isVisible,
     isFadeOut: isDropdownFadeOut,
     eventHandlers,
-    // handleOpen,
+    handleOpen,
     handleAnimationEnd
   } = useAnimation<HTMLDivElement>({
     trigger: "hover",
@@ -57,7 +57,7 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
               {...eventHandlers}
             >
               <ImportButton
-                // handleOpen={handleOpen}
+                handleOpen={handleOpen}
                 isVisible={isVisible}
                 isDropdownFadeOut={isDropdownFadeOut}
               />

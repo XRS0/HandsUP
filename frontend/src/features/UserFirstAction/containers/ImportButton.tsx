@@ -6,26 +6,24 @@ import Dropdown from "@/views/Dropdown/Dropdown";
 import computerIcon from "@assets/main-page/icons/computer.svg?react";
 import importIcon from "@assets/main-page/icons/import-icon.svg?react";
 import linkIcon from "@assets/main-page/icons/link.svg?react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 type OwnProps =  {
   isVisible: boolean,
   isDropdownFadeOut: boolean,
-  // handleOpen: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  handleOpen: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-const ImportButton: React.FC<OwnProps> = ({isDropdownFadeOut, isVisible}) => {
+const ImportButton: React.FC<OwnProps> = ({ isDropdownFadeOut, isVisible }) => {
   const dispatch = useAppDispatch();
   const uploadRef = useRef<HTMLInputElement>(null)  
   
-  const handleUpload = () => {
-    uploadRef.current?.click();
-
-    if (uploadRef.current?.files) {
+  useEffect(() => {
+    console.log(uploadRef.current?.files);
+    if (uploadRef.current?.files?.length) {
       dispatch(SocketSliceActions.uploadMessage(uploadRef.current.files[0]));
     }
-  }
-
+  }, [uploadRef.current?.files]);
   return (
     <>
       <Button
@@ -36,7 +34,7 @@ const ImportButton: React.FC<OwnProps> = ({isDropdownFadeOut, isVisible}) => {
       />
       {isVisible && 
         <Dropdown
-        isOpen={isVisible}
+          isOpen={isVisible}
           doesAnimate={!isDropdownFadeOut}
           orientation="column"
         >
@@ -44,14 +42,14 @@ const ImportButton: React.FC<OwnProps> = ({isDropdownFadeOut, isVisible}) => {
             children="Import you audio file"
             cssClass="dropdown-button"
             IconLeft={linkIcon}
-            onclick={handleUpload}
+            onclick={() => uploadRef.current?.click()}
           />
           <Button
             children="Text file on computer"
             isDisabled
             cssClass="dropdown-button"
             IconLeft={computerIcon}
-            onclick={handleUpload}
+            onclick={() => {}}
           />
         </Dropdown>
       }
