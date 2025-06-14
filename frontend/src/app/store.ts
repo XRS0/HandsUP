@@ -13,8 +13,8 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ['auth/getUser'],
-        ignoredActionPaths: ['meta.navigate'],
+        ignoredActions: ['auth/getUser', 'ws/uploadMessage'],
+        ignoredActionPaths: ['payload.file'],
       },
     })
     .concat([

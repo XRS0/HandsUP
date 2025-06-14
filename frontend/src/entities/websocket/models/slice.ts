@@ -53,7 +53,7 @@ const socketSlice = createSlice({
 export const SocketSliceActions = {
   ...socketSlice.actions,
   // handleMessage: createAction<string>(`${socketSlice.name}/handleMessage`),
-  uploadMessage: createAction<File>(`${socketSlice.name}/uploadMessage`),
+  uploadMessage: createAction<{ file: File }>(`${socketSlice.name}/uploadMessage`),
 };
 
 export default socketSlice.reducer;

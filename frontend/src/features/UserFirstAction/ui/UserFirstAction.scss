@@ -153,10 +153,7 @@
       }
     }
 
-    @include desktop {
-      align-items: center;
-      flex-direction: column;
-
+    @media (max-width: 1330px) {
       .secondary-button {
         &:active {
           background-color: var(--main-background-color) !important;
@@ -169,6 +166,11 @@
           }
         }
       }
+    }
+
+    @include desktop {
+      align-items: center;
+      flex-direction: column;
     }
     // @include mobile {
     //   align-items: center;

@@ -6,9 +6,11 @@ import { call, select, takeEvery } from "redux-saga/effects";
 
 function* uploadAudioSaga(action: ReturnType<typeof SocketSliceActions.uploadMessage>) {
   try {
-    console.log(action.payload);
+    const formData = new FormData();  // convert to 'multipart/form-data'
+    formData.append('audio', action.payload.file);
+
     const token: string = yield select(selectToken);
-    const response: AxiosResponse<any> = yield call(uploadFileApiInstance, action.payload, token);
+    const response: AxiosResponse<any> = yield call(uploadFileApiInstance, formData, token);
 
     console.log(response.data);
   } catch (err) {

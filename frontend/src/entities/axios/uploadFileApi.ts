@@ -1,5 +1,8 @@
 import { uploadApiInstance } from "./instance/axiosInstance";
+import { uploadApiInstance } from "./instance/axiosInstance";
 
+export const uploadFileApiInstance = async (payload: FormData, token: string) => {
+  const response = await uploadApiInstance({
 export const uploadFileApiInstance = async (payload: File, token: string) => {
   const response = await uploadApiInstance({
     method: 'post',
@@ -7,8 +10,7 @@ export const uploadFileApiInstance = async (payload: File, token: string) => {
     data: payload,
     headers: { 
       Authorization: `Bearer ${token}`,
-      "Content-Type":  `${payload.type}`,
-      "Content-Length": `${payload.size}`,
+      'Content-Type': 'multipart/form-data',
     },
   });
 
