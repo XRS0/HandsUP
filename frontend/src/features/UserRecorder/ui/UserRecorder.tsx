@@ -20,6 +20,7 @@ type OwnProps = {
 
 const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) => {
   const { isRecording, isEditingNow, message } = useAppSelector(state => state.socket);
+  const topic = useAppSelector(state => state.topics.currentTopic);
   const dispatch = useAppDispatch();
 
   const [isCopied, setIsCopied] = useState(false);
@@ -57,7 +58,7 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
   const handlePauseRecord = () => isRecording ? pauseRecording() : continueRecording();
   const handleStopRecording = (e: React.MouseEvent<HTMLElement>) => {
     onStop(e);
-    stopRecording(message);
+    stopRecording(message, topic!);
   }
 
   const actionButtons = <div className="conspect-interaction">

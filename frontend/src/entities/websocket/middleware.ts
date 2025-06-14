@@ -43,12 +43,16 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
           store.dispatch(ChatSliceActions.setSumMessage());
         }
         socket.readyState = 0;
-        socket.disconnect();
+        socket.disconnect();  // if not me closed connection
         console.log("[WS]: Connection closed");
       });
       break;
 
     case 'socket/disconnect':
+      socket.send(JSON.stringify({
+        topic: wsAction.payload.topic,
+        message: wsAction.payload.message
+      }));
       socket.disconnect();
       break;
     

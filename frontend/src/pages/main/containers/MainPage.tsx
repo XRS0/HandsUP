@@ -1,6 +1,5 @@
 import Sidebar from "../ui/Sidebar";
-import { Navigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { UserSliceActions } from "@/features/AuthUser";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { TopicSliceActions } from "@/features/UserTopics/models/slice";
@@ -10,6 +9,7 @@ import { createClassName } from "@/shared/utils/createClassName";
 import Chat from "@/features/UserChat/containers/Chat";
 
 import "../ui/MainPage.scss";
+import { Navigate } from "react-router-dom";
 
 const MainPage = () => {
   const [isOpened, setIsOpened] = useState(false);
@@ -21,7 +21,7 @@ const MainPage = () => {
     if (!token) {
       const token = localStorage.getItem("token");
       if (token) dispatch(UserSliceActions.setToken(token));
-      else <Navigate to={"/auth"} replace />
+      else dispatch(UserSliceActions.getUserFailure())
     }
     else if (!username) {
       // if username does not exists, try get user
@@ -35,7 +35,9 @@ const MainPage = () => {
 
   const openSidebar = () => setIsOpened(prev => !prev);   // for mobile
   
-  if (!isLoading && !token) <Navigate to={"/auth"} replace />
+  console.log(!isLoading && !token);
+  
+  if (!isLoading && !token) return <Navigate to={"/auth"} />
 
   return (
     <div 

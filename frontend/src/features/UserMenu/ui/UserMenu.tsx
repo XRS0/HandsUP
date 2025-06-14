@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 
 import "./UserMenu.scss";
 import { createClassName } from "@/shared/utils/createClassName";
-import Profile from "../containers/profile/Profile";
-import Balance from "../containers/balance/Balance";
-import Settings from "../containers/settings/Settings";
+import Profile from "../containers/Profile";
+import Balance from "../containers/Balance";
+import Settings from "../containers/Settings";
 
 type OwnProps = {
   isFadeOut: boolean;

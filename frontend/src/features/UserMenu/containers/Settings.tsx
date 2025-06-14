@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
 
-import "../../ui/Topic.scss";
+import "../ui/Topic.scss";
 import "@views/Dropdown/Dropdown.scss";
 
-import MenuField from "../../ui/MenuField";
+import MenuField from "../ui/MenuField";
 import Dropdown from "@/views/Dropdown/Dropdown";
 import Button from "@/views/Button/ui/Button";
 
@@ -11,7 +11,7 @@ import DropArrowIcon from "@/shared/assets/main-page/icons/dropdown-arrow.svg?re
 // import dropArrow from "@/shared/assets/main-page/icons/dropdown-arrow.svg";
 import { createPortal } from "react-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { appLanguage, appTheme, SettingsSliceActions } from "../../models/slice";
+import { appLanguage, appTheme, SettingsSliceActions } from "../models/slice";
 
 type OwnProps = {
   ref: React.Ref<HTMLDivElement> | undefined

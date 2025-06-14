@@ -1,8 +1,10 @@
 import { uploadFileApiInstance } from "@/entities/axios/uploadFileApi";
 import { SocketSliceActions } from "@/entities/websocket/models/slice";
 import { selectToken } from "@/features/AuthUser";
-import { AxiosResponse } from "axios";
-import { call, select, takeEvery } from "redux-saga/effects";
+import { call, put, select, takeEvery } from "redux-saga/effects";
+import { UploadResponse } from "../types";
+import { ChatSliceActions } from "@/features/UserChat/models/slice";
+import { selectCurrentTopic } from "@/features/UserTopics";
 
 function* uploadAudioSaga(action: ReturnType<typeof SocketSliceActions.uploadMessage>) {
   try {
@@ -10,9 +12,11 @@ function* uploadAudioSaga(action: ReturnType<typeof SocketSliceActions.uploadMes
     formData.append('audio', action.payload.file);
 
     const token: string = yield select(selectToken);
-    const response: AxiosResponse<any> = yield call(uploadFileApiInstance, formData, token);
+    const topic: string = yield select(selectCurrentTopic);
 
-    console.log(response.data);
+    const response: UploadResponse = yield call(uploadFileApiInstance, { payload: formData, topic }, token);
+
+    yield put(ChatSliceActions.addMessage({from: true, text: response.text}))
   } catch (err) {
     console.error(err)
   }

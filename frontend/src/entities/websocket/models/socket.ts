@@ -36,7 +36,7 @@ class Socket {
 
   disconnect() {
     if (this.socket) {
-      this.socket.close()
+      this.socket.close();
       this.socket = null;
     }
   }

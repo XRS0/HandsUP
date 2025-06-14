@@ -1,9 +1,9 @@
 import React from "react";
 
-import "../../ui/Topic.scss";
+import "../ui/Topic.scss";
 
 
-import MenuField from "../../ui/MenuField";
+import MenuField from "../ui/MenuField";
 import Button from "@/views/Button/ui/Button";
 
 import UpgradeIcon from "@/shared/assets/main-page/icons/upgrade.svg?react";
@@ -15,7 +15,6 @@ type OwnProps = {
 
 const Balance: React.FC<OwnProps> = ({ ref }) => {
   const user = useAppSelector(state => state.user);
-  if (!user) return;
 
   return (
     <div className="topic" ref={ref}>

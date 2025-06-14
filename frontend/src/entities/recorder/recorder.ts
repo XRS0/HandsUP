@@ -54,7 +54,7 @@ export const continueRecording = () => {
   }
 };
 
-export const stopRecording = (message: string) => {
+export const stopRecording = (message: string, topic: string) => {
   if (workletNode) {
     workletNode.port.onmessage = null;
     workletNode.disconnect();
@@ -66,7 +66,7 @@ export const stopRecording = (message: string) => {
     workletNode = null;
     console.log("[AudioWorklet]: Recording was stopped");
     
-    store.dispatch({type: 'socket/disconnect'});
+    store.dispatch({type: 'socket/disconnect', payload: {message, topic}});
     store.dispatch(ChatSliceActions.addMessage({from: true, text: message}));
   }
 };

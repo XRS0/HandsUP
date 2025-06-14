@@ -1,6 +1,7 @@
+import { UploadFilePayload } from "@/features/UserFirstAction/types";
 import { uploadApiInstance } from "./instance/axiosInstance";
 
-export const uploadFileApiInstance = async (payload: FormData, token: string) => {
+export const uploadFileApiInstance = async (payload: UploadFilePayload, token: string) => {
   const response = await uploadApiInstance({
     method: 'post',
     url: `/upload`,
@@ -15,5 +16,5 @@ export const uploadFileApiInstance = async (payload: FormData, token: string) =>
     throw new Error('Failed to upload file');
   }
 
-  return response;
+  return response.data;
 }
