@@ -35,8 +35,6 @@ const MainPage = () => {
 
   const openSidebar = () => setIsOpened(prev => !prev);   // for mobile
   
-  console.log(!isLoading && !token);
-  
   if (!isLoading && !token) return <Navigate to={"/auth"} />
 
   return (
