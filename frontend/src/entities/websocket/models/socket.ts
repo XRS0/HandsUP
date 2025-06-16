@@ -16,26 +16,18 @@ class Socket {
 
   connect(url: string, payload: (MessageForGeneration & {token: string}) | null) {
     if (!this.socket) {
-      if (!payload) this.socket = new WebSocket(url);
+      if (!payload?.fullness) this.socket = new WebSocket(url);   // or any other param in rest of topic/token
       else {
-        if (url !== "ws://localhost:8083/ws/generate?") {
-          this.socket = new WebSocket(
-          url + new URLSearchParams({
-            token: payload.token,
-            topic: payload.topic ? payload.topic : "",
-          }));
-        } else {
-          this.socket = new WebSocket(
-          url + new URLSearchParams({
-            token: payload.token,
-            lang: payload.lang,
-            user_prompt: payload.user_prompt ? payload.user_prompt : "",
-            fullness: payload.fullness.toString(),
-            topic: payload.topic ? payload.topic : "",
-            text: payload.text
-          }));
-          this.socket.binaryType = 'arraybuffer';
-        }
+        this.socket = new WebSocket(
+        url + new URLSearchParams({
+          token: payload.token,
+          lang: payload.lang,
+          user_prompt: payload.user_prompt ? payload.user_prompt : "",
+          fullness: payload.fullness.toString(),
+          topic: payload.topic ? payload.topic : "",
+          text: payload.text
+        }));
+        this.socket.binaryType = 'arraybuffer';
       }
     }
   }
