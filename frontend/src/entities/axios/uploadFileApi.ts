@@ -5,9 +5,11 @@ export const uploadFileApiInstance = async (payload: UploadFilePayload, token: s
   const response = await uploadApiInstance({
     method: 'post',
     url: `/upload`,
-    data: payload,
-    headers: { 
-      Authorization: `Bearer ${token}`,
+    data: {
+      ...payload,
+      token
+    },
+    headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
