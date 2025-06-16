@@ -8,7 +8,7 @@ type sendData = {
 
 type connectData = {
   url: string,
-  payload: MessageForGeneration & {token: string, topic: string} 
+  payload: MessageForGeneration & {token: string} 
 }
 
 // type disconnectData = {
