@@ -8,19 +8,19 @@ type sendData = {
 
 type connectData = {
   url: string,
-  payload: MessageForGeneration & {token: string}
+  payload: MessageForGeneration & {token: string, topic: string} 
 }
 
-type disconnectData = {
-  payload:  {
-    topic: string;
-    message: string;
-  }
-}
+// type disconnectData = {
+//   payload:  {
+//     topic: string;
+//     message: string;
+//   }
+// }
 
 type socketActionType = {
   "socket/connect": connectData,
-  "socket/disconnect": disconnectData,
+  "socket/disconnect": "",
   "socket/sendMessage": sendData,
 }
 

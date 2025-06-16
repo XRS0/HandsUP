@@ -21,7 +21,14 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
         console.log("[WS]: Connection opened");
         try {
           socket.readyState = 1;
-          if (wsAction.url !== "ws://localhost:8083/ws/generate?") startRecording();
+          if (wsAction.url !== "ws://localhost:8083/ws/generate?") {
+            startRecording();
+
+            socket.send(JSON.stringify({
+              topic: wsAction.payload.topic,
+              token: wsAction.payload.token
+            }));
+          }
           else store.dispatch(SocketSliceActions.handleOpen());
         } catch (err: any) {
           alert("Error inside ws opening: " + err.message);
@@ -49,10 +56,6 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
       break;
 
     case 'socket/disconnect':
-      socket.send(JSON.stringify({
-        topic: wsAction.payload.topic,
-        message: wsAction.payload.message
-      }));
       socket.disconnect();
       break;
     
