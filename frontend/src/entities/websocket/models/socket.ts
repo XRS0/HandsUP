@@ -2,10 +2,12 @@ import { MessageForGeneration } from "@/features/UserChat/types";
 
 class Socket {
   public socket: WebSocket | null;
+  public currentChat: string | null;
   public readyState = 0;
 
   constructor() {
     this.socket = null;
+    this.currentChat = null;
   }
 
   on(eventName: string, callback: (e: any) => void) {

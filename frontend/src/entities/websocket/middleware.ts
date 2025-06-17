@@ -21,6 +21,7 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
         console.log("[WS]: Connection opened");
         try {
           socket.readyState = 1;
+          socket.currentChat = wsAction.payload.topic!;
           if (wsAction.url !== "ws://localhost:8083/ws/generate?") {
             startRecording();
 
@@ -50,6 +51,7 @@ export const socketMiddleware = (socket: Socket): Middleware<{}, RootState> => (
           store.dispatch(ChatSliceActions.setSumMessage());
         }
         socket.readyState = 0;
+        socket.currentChat = null;
         socket.disconnect();  // if not me closed connection
         console.log("[WS]: Connection closed");
       });

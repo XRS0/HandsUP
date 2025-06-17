@@ -10,11 +10,12 @@ import { MessageBlock } from "@/features/ChatMessage";
 import "../ui/LoadedChat.scss";
 
 import logo from "@assets/welcome-page/logo.svg";
+import { globalSocket } from "@/entities/websocket/middleware";
 
 const Chat = () => {
   const { chatMessages } = useAppSelector(state => state.chat);
   const { currentTopic } = useAppSelector(state => state.topics);
-  const { isRecording, message } = useAppSelector(state => state.socket);
+  const { message } = useAppSelector(state => state.socket);
 
   const isChatEmpty = chatMessages.length === 0;
 
@@ -42,7 +43,7 @@ const Chat = () => {
   const currentComposer = useMemo(() => {
     if (!isChatEmpty) return <UserComposer />
 
-    else if ((isFadeOutBlock || !isVisible) && isRecorderVisible) {
+    else if ((currentTopic === globalSocket?.currentChat || isFadeOutBlock || !isVisible) && isRecorderVisible) {
       return <UserRecorder
         isFadeOut={isRecorderFadeOut}
         onAnimationEnd={handleRecorderUnmount}
@@ -92,7 +93,7 @@ const Chat = () => {
         <div className="gradient-top" />
 
         <div className="loaded-messages custom-scroll" style={mesasgesStyle}>
-          {((!isChatEmpty && isRecording) || isChatEmpty) && <MessageBlock />}
+          {((!isChatEmpty && currentTopic === globalSocket?.currentChat) || isChatEmpty) && <MessageBlock />}
           {reversedMessages.map(({from, text}) => <StaticMessage from={from} message={text} />)}
         </div>
 

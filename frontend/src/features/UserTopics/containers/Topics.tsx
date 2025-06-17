@@ -5,12 +5,11 @@ import "../ui/Topic.scss";
 import { getDateAgo } from "@/shared/utils/date";
 import ConspectHistoryElement from "../ui/ConspectHistoryElement";
 import NewTopic from "@/features/NewTopicButton/containers/NewTopic";
-import { TopicMessage } from "@/features/UserChat/types";
 import { TopicSliceActions } from "../models/slice";
-import { getKey, getValue } from "@/shared/utils/hashMapGet";
+import { getKey } from "@/shared/utils/hashMapGet";
 import { ChatSliceActions } from "@/features/UserChat/models/slice";
-import Socket from "@/entities/websocket/models/socket";
 import { SocketSliceActions } from "@/entities/websocket/models/slice";
+import { pauseRecording } from "@/entities/recorder/recorder";
 
 const Topics = () => {
   const { isTopicCreating, currentTopic, topics } = useAppSelector(state => state.topics);
@@ -21,7 +20,7 @@ const Topics = () => {
   const groupedTopics: { [topic: string]: string[] } = {}
 
   try {
-    [...topics].reverse()     //I CANT CHANGE REDUX DATA BUT REVERSE TRIES TO CHANGE THEM!
+    [...topics].reverse()     //I CANT CHANGE REDUX DATA BUT REVERSE() TRIES TO CHANGE THEM!
     .map(({topic, created_at}) => {
       if (!topic) return;
       
@@ -41,6 +40,8 @@ const Topics = () => {
     const topicName = e.currentTarget.innerText.split(" ").join("_");
 
     const currentChatInCache = cachedChats.find(topic => getKey(topic) === topicName);
+
+    pauseRecording();
 
     if (currentChatInCache) {
       dispatch(ChatSliceActions.switchChat({to: getKey(currentChatInCache), from: currentTopic!}));

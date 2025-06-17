@@ -3,7 +3,6 @@ import { TopicSliceActions } from "./slice";
 import { selectToken } from "@/features/AuthUser";
 import { getAllTopicApiInstance } from "@/entities/axios/getTopicApi";
 import { TopicPreview } from "@/features/UserChat/types";
-import { ChatSliceActions } from "@/features/UserChat/models/slice";
 
 export function* getUserTopicsSaga() {
   try {
@@ -13,8 +12,7 @@ export function* getUserTopicsSaga() {
     yield put(TopicSliceActions.setTopics(response.chats));
     // yield put(ChatSliceActions.cashTopic(response.chats));
   } catch (error: any) {
-    yield put(TopicSliceActions.createFailure("Ошибка создания топика"));
-    // добавить err для одинакового названия топика
+    yield put(TopicSliceActions.createFailure("Ошибка загрузки топиков"));
   }
 }
 
