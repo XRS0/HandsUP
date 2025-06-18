@@ -1,8 +1,5 @@
-//Types for websocket
+import { MessageForGeneration } from "@/features/UserChat/types";
 
-import { MessageForGeneration } from "@/features/UserTopics/types/topic";
-
-// export type callbackListener = (data: any) => void;
 export type ActionType = "socket/connect" | "socket/disconnect" | "socket/sendMessage";
 
 type sendData = {
@@ -11,8 +8,15 @@ type sendData = {
 
 type connectData = {
   url: string,
-  payload: MessageForGeneration & {token: string}
+  payload: MessageForGeneration & {token: string} 
 }
+
+// type disconnectData = {
+//   payload:  {
+//     topic: string;
+//     message: string;
+//   }
+// }
 
 type socketActionType = {
   "socket/connect": connectData,

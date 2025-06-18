@@ -1,27 +1,21 @@
-import { call, put, takeLatest } from "redux-saga/effects";
-import { topicSliceActions } from "./slice";
-import { getTopicApiInstance } from "@/app/api/getTopicApi";
-import { Topic } from "../types/topic";
+import { call, put, select, takeEvery } from "redux-saga/effects";
+import { TopicSliceActions } from "./slice";
+import { selectToken } from "@/features/AuthUser";
+import { getAllTopicApiInstance } from "@/entities/axios/getTopicApi";
+import { TopicPreview } from "@/features/UserChat/types";
 
-export function* getTopicSaga({payload}: {payload: string}) {
+export function* getUserTopicsSaga() {
   try {
-    const token: string = yield localStorage.getItem("token");
+    const token: string = yield select(selectToken);
+    const response: {chats: TopicPreview[]} = yield call(getAllTopicApiInstance, token);
 
-    const response: Topic = yield call(getTopicApiInstance, payload, token);  // give them type when i will
-
-    const formattedTopic: Topic = {
-      [Object.keys(response)[0].split("_").join(" ")]: Object.values(response)[0],
-    }
-
-    console.log(formattedTopic);
-
-    yield put(topicSliceActions.cashTopic(formattedTopic));
-    yield put(topicSliceActions.switchTopic(formattedTopic));
+    yield put(TopicSliceActions.setTopics(response.chats));
+    // yield put(ChatSliceActions.cashTopic(response.chats));
   } catch (error: any) {
-    console.error(error.message);
+    yield put(TopicSliceActions.createFailure("Ошибка загрузки топиков"));
   }
 }
 
-export default function* watchGetTopic() {
-  yield takeLatest(topicSliceActions.openTopic, getTopicSaga);
+export default function* watchGetTopics() {
+  yield takeEvery(TopicSliceActions.getTopics, getUserTopicsSaga);
 }

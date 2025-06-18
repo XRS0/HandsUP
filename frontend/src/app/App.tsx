@@ -1,20 +1,19 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import MainPage from "../pages/main/containers/MainPage";
+import { Navigate, Route, Routes } from "react-router-dom";
 
-import "./ui/index.scss";
-import WelcomePage from "@/pages/home/WelcomePage";
+import "../index.scss";
+
+import MainPage from "../pages/main/containers/MainPage";
+import WelcomePage from "@/pages/home/ui/WelcomePage";
 import Authorize from "@/pages/sign-in-up/Authorize";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" Component={WelcomePage} />
-        <Route path="/chat" Component={MainPage} />
-        <Route path="/auth" Component={Authorize} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" Component={WelcomePage} />
+      <Route path="/chat" Component={MainPage} />
+      <Route path="/auth" Component={Authorize} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 

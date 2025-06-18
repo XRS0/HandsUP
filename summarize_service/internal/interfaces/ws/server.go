@@ -86,6 +86,8 @@ func (h *GeneratorWSHandler) Handle(w http.ResponseWriter, r *http.Request) {
 		Prompt: userPrompt,
 	}
 
+	log.Println("UserMessage", UserMessage)
+
 	_, err = h.ChatSvc.AddMessageToChat(chat.ID, &UserMessage)
 	if err != nil {
 		conn.WriteMessage(websocket.TextMessage, []byte("Failed to save message: "+err.Error()))
@@ -117,6 +119,8 @@ func (h *GeneratorWSHandler) Handle(w http.ResponseWriter, r *http.Request) {
 		ChatID: chat.ID,
 		Prompt: "",
 	}
+
+	log.Println("LLMMessage", LLMMessage)
 
 	_, err = h.ChatSvc.AddMessageToChat(chat.ID, &LLMMessage)
 	if err != nil {

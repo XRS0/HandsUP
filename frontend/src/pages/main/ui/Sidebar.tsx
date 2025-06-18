@@ -6,10 +6,10 @@ import priceIcon from "@assets/main-page/icons/price-plan.svg";
 import settingsIcon from "@assets/main-page/icons/settings.svg";
 import avatarIcon from "@assets/main-page/avatar.svg";
 import useAnimation from "@/hooks/useAnimation";
-import UserMenu from "@/features/UserMenu";
+import UserMenu from "@/features/UserMenu/ui/UserMenu";
 import ModalOverflow from "@/features/UserMenu/ui/ModalOverflow";
 import Topics from "@/features/UserTopics/containers/Topics";
-import CreateTopicBtn from "@/features/CreateTopic/containers/CreateTopicBtn";
+import { CreateTopicBtn } from "@/features/NewTopicButton";
 
 const Sidebar = () => {
   const {
@@ -41,7 +41,7 @@ const Sidebar = () => {
             <div className="upgrade-price-plan">
               <div>
                 <img src={priceIcon} alt="icon" className="price-icon" />
-                Upgrade plan
+                {document.body.offsetWidth > 768 ? "Upgrade plan" : "Plan"}
               </div>
 
               <div className="plan-level">Free</div>
@@ -50,7 +50,7 @@ const Sidebar = () => {
             <div className="profile" onClick={handleOpen}>
               <div>
                 <img src={avatarIcon} className="avatar" alt="icon" />
-                My profile
+                {document.body.offsetWidth > 768 ? "My profile" : "Profile"}
               </div>
 
               <img src={settingsIcon} alt="icon" />

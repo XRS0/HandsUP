@@ -26,6 +26,10 @@
     font-weight: 500;
     white-space: nowrap;
 
+    @include desktop {
+      margin-top: 1.75rem;
+    }
+
     @include mobile {
       width: 75%;
       height: 50px;
@@ -39,7 +43,7 @@
     border-radius: 1px;
     border: 0;
     width: 92%;
-    margin-block: 1.5rem;
+    margin-block: 0.375rem 1.5rem;
     background-color: var(--main-border-color);
   }
 
@@ -154,6 +158,25 @@
         padding-inline: 0;
       }
     }
+  }
+
+  @media (max-width: 1250px) {
+    min-width: 240px;
+    padding-inline: 10px;
+  }
+
+  @include desktop {
+    min-width: 206px;
+    padding: 1rem 0.375rem;
+
+    .side-logo {
+      height: 35px;
+    }
+  }
+
+  @include tablet {
+    min-width: 170px;
+    padding-inline: 0.25rem;
   }
 
   @include mobile {

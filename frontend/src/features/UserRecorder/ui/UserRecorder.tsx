@@ -10,7 +10,7 @@ import linkIcon from "@/shared/assets/main-page/icons/link.svg?react";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { continueRecording, pauseRecording, stopRecording } from "@/entities/recorder/recorder";
 import { createClassName } from "@/shared/utils/createClassName";
-import { socketSliceActions } from "@/entities/websocket/slice";
+import { SocketSliceActions } from "@/entities/websocket/models/slice";
 
 type OwnProps = {
   onStop: (e: React.MouseEvent<HTMLElement>) => void;
@@ -20,11 +20,12 @@ type OwnProps = {
 
 const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) => {
   const { isRecording, isEditingNow, message } = useAppSelector(state => state.socket);
+  const topic = useAppSelector(state => state.topics.currentTopic);
   const dispatch = useAppDispatch();
 
   const [isCopied, setIsCopied] = useState(false);
   const [timer, setTimer] = useState(0);
-  const timerId= useRef<NodeJS.Timeout | null>(null);
+  const timerId = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (isRecording) {
@@ -46,7 +47,6 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
 
     const time = [hours, minutes, seconds].map(e => e.toString().padStart(2, "0"));
     return `${time.join(":")}`;
-    //${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}
   }
 
   const copyToCLipboard = () => {
@@ -55,28 +55,29 @@ const UserRecorder: React.FC<OwnProps> = ({ isFadeOut, onAnimationEnd, onStop}) 
     setTimeout(() => setIsCopied(false), 1500);
   }
 
-  const handlePauseRecord = () => isRecording ? pauseRecording() : continueRecording();   // for testing
+  const handlePauseRecord = () => isRecording ? pauseRecording() : continueRecording();
   const handleStopRecording = (e: React.MouseEvent<HTMLElement>) => {
     onStop(e);
-    stopRecording();
-
-    // dispatch(topicSliceActions.addMessage({
-    //   from: "chat",
-    //   message: message.join(" ")
-    // }));
+    stopRecording(message, topic!);
   }
 
   const actionButtons = <div className="conspect-interaction">
     <Button 
-      children={"Изменить"}  
+      children={document.body.offsetWidth >= 670 || document.body.offsetWidth <= 480
+        ? "Изменить" : "Изм."}
       cssClass="interaction" 
       isDisabled={isRecording || isEditingNow}
       IconLeft={editIcon} 
-      onclick={() => dispatch(socketSliceActions.allowEdit())} 
+      onclick={() => dispatch(SocketSliceActions.allowEdit())} 
     />
 
     <Button 
-      children={isCopied ? "Скопировано" : "Копировать"}
+      children={ isCopied 
+        ? document.body.offsetWidth >= 670 || document.body.offsetWidth <= 480
+        ? "Скопировано" : "Скоп." 
+        : document.body.offsetWidth >= 670 || document.body.offsetWidth <= 480
+        ? "Копировать" : "Коп."
+      }
       cssClass="copy-button interaction"
       isDisabled={isRecording || isEditingNow}
       IconLeft={linkIcon} 

@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React from "react";
 import "./Button.scss";
 import "@views/Dropdown/Dropdown.scss";
 import { createClassName } from "../../../shared/utils/createClassName";

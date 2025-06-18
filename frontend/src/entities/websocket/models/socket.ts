@@ -1,11 +1,13 @@
-import { MessageForGeneration } from "@/features/UserTopics/types/topic";
+import { MessageForGeneration } from "@/features/UserChat/types";
 
 class Socket {
   public socket: WebSocket | null;
+  public currentChat: string | null;
   public readyState = 0;
 
   constructor() {
     this.socket = null;
+    this.currentChat = null;
   }
 
   on(eventName: string, callback: (e: any) => void) {
@@ -15,30 +17,26 @@ class Socket {
   }
 
   connect(url: string, payload: (MessageForGeneration & {token: string}) | null) {
-    // console.log(payload)
     if (!this.socket) {
-      if (!payload) this.socket = new WebSocket(url);
+      if (!payload?.fullness) this.socket = new WebSocket(url);   // or any other param in rest of topic/token
       else {
-        // console.log(payload);
-        
         this.socket = new WebSocket(
-        url +
-        new URLSearchParams({
+        url + new URLSearchParams({
           token: payload.token,
           lang: payload.lang,
           user_prompt: payload.user_prompt ? payload.user_prompt : "",
           fullness: payload.fullness.toString(),
           topic: payload.topic ? payload.topic : "",
           text: payload.text
-        }))
+        }));
+        this.socket.binaryType = 'arraybuffer';
       }
-      this.socket.binaryType = 'arraybuffer';
     }
   }
 
   disconnect() {
     if (this.socket) {
-      this.socket.close()
+      this.socket.close();
       this.socket = null;
     }
   }

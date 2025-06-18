@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from "react";
+import React, { HTMLAttributes, useEffect, useRef, useState } from "react";
 import useAnimation from "@/hooks/useAnimation";
 
 import "./UserFirstAction.scss";
@@ -8,6 +8,8 @@ import ImportButton from "../containers/ImportButton";
 import Button from "@/views/Button/ui/Button";
 
 import importIcon from "@assets/main-page/icons/import-icon.svg?react";
+import { useAppDispatch } from "@/hooks/redux";
+import { SocketSliceActions } from "@/entities/websocket/models/slice";
 
 type OwnProps = HTMLAttributes<HTMLDivElement> & {
   isFadeOut: boolean;
@@ -15,6 +17,17 @@ type OwnProps = HTMLAttributes<HTMLDivElement> & {
 }
 
 const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd}) => {
+  const dispatch = useAppDispatch();
+  const uploadRef = useRef<HTMLInputElement>(null); 
+  const [file, setFile] = useState<File | null>(null);
+
+  useEffect(() => {
+    if (uploadRef.current?.files?.length) {
+      if (file) dispatch(SocketSliceActions.uploadMessage({ file }));
+      setFile(null);
+    }
+  }, [file]);
+  
   const {
     containerRef,
     isVisible,
@@ -43,9 +56,9 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
         <div className="actions">
           <StartRecordingButton startAnimation={onVoice} />
           
-          {document.body.offsetWidth <= 480
+          {document.body.offsetWidth <= 1330
             ? <Button
-                onclick={() => {}}
+                onclick={() => uploadRef.current?.click()}
                 children="Import"
                 IconLeft={importIcon}
                 cssClass={`secondary-button button`}
@@ -60,9 +73,21 @@ const UserFirstAction: React.FC<OwnProps> = ({onVoice, isFadeOut, onAnimationEnd
                 handleOpen={handleOpen}
                 isVisible={isVisible}
                 isDropdownFadeOut={isDropdownFadeOut}
+                onClick={() => uploadRef.current?.click()}
               />
             </div>
           }
+
+          <input type="file" accept=".wav,.mp3" ref={uploadRef}
+            onChange={() => {
+              if (uploadRef.current && uploadRef.current.files) {
+                setFile(uploadRef.current.files[0])
+              }
+              
+              console.log('Файл для загрузки выбран');
+            }}
+            style={{ display: 'none' }}
+          />
         </div>
       </div>
     </div>

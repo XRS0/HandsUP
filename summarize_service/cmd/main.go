@@ -5,11 +5,13 @@ import (
 	// "net"
 
 	"log"
+	"sync"
 
 	"github.com/XRS0/HandsUp/summarize_service/internal/domain/models"
 	"github.com/XRS0/HandsUp/summarize_service/internal/infrastructure/clients/auth"
 	"github.com/XRS0/HandsUp/summarize_service/internal/infrastructure/persistence/postgres"
 	"github.com/XRS0/HandsUp/summarize_service/internal/infrastructure/services"
+	server "github.com/XRS0/HandsUp/summarize_service/internal/interfaces/grpc"
 	summarizerHTTP "github.com/XRS0/HandsUp/summarize_service/internal/interfaces/http"
 	gorm_postgres "gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -38,7 +40,22 @@ func main() {
 	authClient := auth.NewAuthClient()
 
 	http_server := summarizerHTTP.NewServer(chatService, authClient, summarizeService)
-	http_server.Start(":8083")
+	grcp_server := server.NewSummarizeServer(authClient, chatService)
+	var wg sync.WaitGroup
+	wg.Add(2)
+	go func() {
+		defer wg.Done()
+		err := grcp_server.Start(":5002")
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
+	go func() {
+		defer wg.Done()
+		http_server.Start(":8083")
+	}()
+
+	wg.Wait()
 
 	// cfg := config.Init()
 

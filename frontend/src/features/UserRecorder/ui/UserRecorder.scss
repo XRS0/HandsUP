@@ -5,7 +5,7 @@
   border-radius: 20px;
   padding: 15px;
   height: 100px;
-  width: 80%;
+  width: 100%;
   max-width: 800px;
   background-color: var(--secondary-color);
   border: 0.8px solid var(--main-border-color);
@@ -13,8 +13,7 @@
   align-items: center;
   
   position: absolute;
-  bottom: 2rem;
-  animation: RecorderFadeIn 0.4s forwards;
+  bottom: 1.375rem;
 
   &.--enter {
     animation: RecorderFadeIn 0.4s forwards;
@@ -149,9 +148,17 @@
           }
         }
 
+        @include tablet {
+          margin-left: 0.625rem;
+        }
+
         @include mobile {
           margin-left: 1rem;
         }
+      }
+
+      @include tablet {
+        margin-left: 0;
       }
     }
 
@@ -172,6 +179,10 @@
 
   .conspect-interaction {
     .interaction {
+      @include tablet {
+        margin-right: 0.5rem !important;
+      }
+
       @include mobile {
         height: 38px;
         padding-inline: 14px;
@@ -186,6 +197,20 @@
       justify-content: space-between;
       margin-top: 1rem;
     }
+  }
+
+  @media (max-width: 1250px) {
+    max-width: 750px;
+  }
+
+  @include desktop {
+    max-width: 800px;
+    width: 94%;
+  }
+
+  @include tablet {
+    max-width: 768px;
+    width: 96%;
   }
 
   @include mobile {
@@ -219,12 +244,16 @@
 @keyframes RecorderFadeIn {
   from {
     transform: translateY(150px);
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
   }
 
   to {
     transform: translateX(0);
     visibility: visible;
     pointer-events: auto;
+    opacity: 1;
   }
 }
 
@@ -233,8 +262,12 @@
     transform: translateX(0);
     visibility: visible;
     pointer-events: auto;
+    opacity: 1;
   }
   to {
     transform: translateY(150px);
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
   }
 }

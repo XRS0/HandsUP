@@ -21,27 +21,29 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type GetChatsByUserIdRequest struct {
+type CreateMessageRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	Text          string                 `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
+	Topic         string                 `protobuf:"bytes,3,opt,name=topic,proto3" json:"topic,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetChatsByUserIdRequest) Reset() {
-	*x = GetChatsByUserIdRequest{}
+func (x *CreateMessageRequest) Reset() {
+	*x = CreateMessageRequest{}
 	mi := &file_proto_summarizer_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetChatsByUserIdRequest) String() string {
+func (x *CreateMessageRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetChatsByUserIdRequest) ProtoMessage() {}
+func (*CreateMessageRequest) ProtoMessage() {}
 
-func (x *GetChatsByUserIdRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateMessageRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_summarizer_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -53,137 +55,54 @@ func (x *GetChatsByUserIdRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetChatsByUserIdRequest.ProtoReflect.Descriptor instead.
-func (*GetChatsByUserIdRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateMessageRequest.ProtoReflect.Descriptor instead.
+func (*CreateMessageRequest) Descriptor() ([]byte, []int) {
 	return file_proto_summarizer_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GetChatsByUserIdRequest) GetUserId() string {
+func (x *CreateMessageRequest) GetToken() string {
 	if x != nil {
-		return x.UserId
+		return x.Token
 	}
 	return ""
 }
 
-type GetChatsByUserIdResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ChatList      []*Chat                `protobuf:"bytes,1,rep,name=chat_list,json=chatList,proto3" json:"chat_list,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetChatsByUserIdResponse) Reset() {
-	*x = GetChatsByUserIdResponse{}
-	mi := &file_proto_summarizer_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetChatsByUserIdResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetChatsByUserIdResponse) ProtoMessage() {}
-
-func (x *GetChatsByUserIdResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_summarizer_proto_msgTypes[1]
+func (x *CreateMessageRequest) GetText() string {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
+		return x.Text
 	}
-	return mi.MessageOf(x)
+	return ""
 }
 
-// Deprecated: Use GetChatsByUserIdResponse.ProtoReflect.Descriptor instead.
-func (*GetChatsByUserIdResponse) Descriptor() ([]byte, []int) {
-	return file_proto_summarizer_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *GetChatsByUserIdResponse) GetChatList() []*Chat {
-	if x != nil {
-		return x.ChatList
-	}
-	return nil
-}
-
-type Chat struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Topic         string                 `protobuf:"bytes,3,opt,name=topic,proto3" json:"topic,omitempty"`
-	Messages      []*ChatMessage         `protobuf:"bytes,5,rep,name=messages,proto3" json:"messages,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Chat) Reset() {
-	*x = Chat{}
-	mi := &file_proto_summarizer_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Chat) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Chat) ProtoMessage() {}
-
-func (x *Chat) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_summarizer_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Chat.ProtoReflect.Descriptor instead.
-func (*Chat) Descriptor() ([]byte, []int) {
-	return file_proto_summarizer_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *Chat) GetTopic() string {
+func (x *CreateMessageRequest) GetTopic() string {
 	if x != nil {
 		return x.Topic
 	}
 	return ""
 }
 
-func (x *Chat) GetMessages() []*ChatMessage {
-	if x != nil {
-		return x.Messages
-	}
-	return nil
-}
-
-type ChatMessage struct {
+type CreateMessageResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	From          bool                   `protobuf:"varint,1,opt,name=from,proto3" json:"from,omitempty"`      // true if from user, false if from AI
-	Payload       string                 `protobuf:"bytes,2,opt,name=payload,proto3" json:"payload,omitempty"` // Content of the message
+	Error         string                 `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ChatMessage) Reset() {
-	*x = ChatMessage{}
-	mi := &file_proto_summarizer_proto_msgTypes[3]
+func (x *CreateMessageResponse) Reset() {
+	*x = CreateMessageResponse{}
+	mi := &file_proto_summarizer_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ChatMessage) String() string {
+func (x *CreateMessageResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ChatMessage) ProtoMessage() {}
+func (*CreateMessageResponse) ProtoMessage() {}
 
-func (x *ChatMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_summarizer_proto_msgTypes[3]
+func (x *CreateMessageResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_summarizer_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -194,221 +113,14 @@ func (x *ChatMessage) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ChatMessage.ProtoReflect.Descriptor instead.
-func (*ChatMessage) Descriptor() ([]byte, []int) {
-	return file_proto_summarizer_proto_rawDescGZIP(), []int{3}
+// Deprecated: Use CreateMessageResponse.ProtoReflect.Descriptor instead.
+func (*CreateMessageResponse) Descriptor() ([]byte, []int) {
+	return file_proto_summarizer_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ChatMessage) GetFrom() bool {
+func (x *CreateMessageResponse) GetError() string {
 	if x != nil {
-		return x.From
-	}
-	return false
-}
-
-func (x *ChatMessage) GetPayload() string {
-	if x != nil {
-		return x.Payload
-	}
-	return ""
-}
-
-type SummarizeRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	FullText      string                 `protobuf:"bytes,2,opt,name=full_text,json=fullText,proto3" json:"full_text,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SummarizeRequest) Reset() {
-	*x = SummarizeRequest{}
-	mi := &file_proto_summarizer_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SummarizeRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SummarizeRequest) ProtoMessage() {}
-
-func (x *SummarizeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_summarizer_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SummarizeRequest.ProtoReflect.Descriptor instead.
-func (*SummarizeRequest) Descriptor() ([]byte, []int) {
-	return file_proto_summarizer_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *SummarizeRequest) GetSessionId() string {
-	if x != nil {
-		return x.SessionId
-	}
-	return ""
-}
-
-func (x *SummarizeRequest) GetFullText() string {
-	if x != nil {
-		return x.FullText
-	}
-	return ""
-}
-
-type SummarizeResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Summary       string                 `protobuf:"bytes,1,opt,name=summary,proto3" json:"summary,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SummarizeResponse) Reset() {
-	*x = SummarizeResponse{}
-	mi := &file_proto_summarizer_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SummarizeResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SummarizeResponse) ProtoMessage() {}
-
-func (x *SummarizeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_summarizer_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SummarizeResponse.ProtoReflect.Descriptor instead.
-func (*SummarizeResponse) Descriptor() ([]byte, []int) {
-	return file_proto_summarizer_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *SummarizeResponse) GetSummary() string {
-	if x != nil {
-		return x.Summary
-	}
-	return ""
-}
-
-type StreamSummarizeRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	PartialText   string                 `protobuf:"bytes,2,opt,name=partial_text,json=partialText,proto3" json:"partial_text,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *StreamSummarizeRequest) Reset() {
-	*x = StreamSummarizeRequest{}
-	mi := &file_proto_summarizer_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *StreamSummarizeRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StreamSummarizeRequest) ProtoMessage() {}
-
-func (x *StreamSummarizeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_summarizer_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StreamSummarizeRequest.ProtoReflect.Descriptor instead.
-func (*StreamSummarizeRequest) Descriptor() ([]byte, []int) {
-	return file_proto_summarizer_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *StreamSummarizeRequest) GetSessionId() string {
-	if x != nil {
-		return x.SessionId
-	}
-	return ""
-}
-
-func (x *StreamSummarizeRequest) GetPartialText() string {
-	if x != nil {
-		return x.PartialText
-	}
-	return ""
-}
-
-type StreamSummarizeResponse struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	SessionId      string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	UpdatedSummary string                 `protobuf:"bytes,2,opt,name=updated_summary,json=updatedSummary,proto3" json:"updated_summary,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *StreamSummarizeResponse) Reset() {
-	*x = StreamSummarizeResponse{}
-	mi := &file_proto_summarizer_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *StreamSummarizeResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StreamSummarizeResponse) ProtoMessage() {}
-
-func (x *StreamSummarizeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_summarizer_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StreamSummarizeResponse.ProtoReflect.Descriptor instead.
-func (*StreamSummarizeResponse) Descriptor() ([]byte, []int) {
-	return file_proto_summarizer_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *StreamSummarizeResponse) GetSessionId() string {
-	if x != nil {
-		return x.SessionId
-	}
-	return ""
-}
-
-func (x *StreamSummarizeResponse) GetUpdatedSummary() string {
-	if x != nil {
-		return x.UpdatedSummary
+		return x.Error
 	}
 	return ""
 }
@@ -417,35 +129,15 @@ var File_proto_summarizer_proto protoreflect.FileDescriptor
 
 const file_proto_summarizer_proto_rawDesc = "" +
 	"\n" +
-	"\x16proto/summarizer.proto\x12\x03gen\"2\n" +
-	"\x17GetChatsByUserIdRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\"B\n" +
-	"\x18GetChatsByUserIdResponse\x12&\n" +
-	"\tchat_list\x18\x01 \x03(\v2\t.gen.ChatR\bchatList\"K\n" +
-	"\x04Chat\x12\x14\n" +
-	"\x05topic\x18\x03 \x01(\tR\x05topic\x12-\n" +
-	"\bmessages\x18\x05 \x03(\v2\x11.gen.chat_messageR\bmessages\"<\n" +
-	"\fchat_message\x12\x12\n" +
-	"\x04from\x18\x01 \x01(\bR\x04from\x12\x18\n" +
-	"\apayload\x18\x02 \x01(\tR\apayload\"N\n" +
-	"\x10SummarizeRequest\x12\x1d\n" +
-	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1b\n" +
-	"\tfull_text\x18\x02 \x01(\tR\bfullText\"-\n" +
-	"\x11SummarizeResponse\x12\x18\n" +
-	"\asummary\x18\x01 \x01(\tR\asummary\"Z\n" +
-	"\x16StreamSummarizeRequest\x12\x1d\n" +
-	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\x12!\n" +
-	"\fpartial_text\x18\x02 \x01(\tR\vpartialText\"a\n" +
-	"\x17StreamSummarizeResponse\x12\x1d\n" +
-	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\x12'\n" +
-	"\x0fupdated_summary\x18\x02 \x01(\tR\x0eupdatedSummary2\xf2\x01\n" +
-	"\x11SummarizerService\x12:\n" +
-	"\tSummarize\x12\x15.gen.SummarizeRequest\x1a\x16.gen.SummarizeResponse\x12O\n" +
-	"\x10GetChatsByUserId\x12\x1c.gen.GetChatsByUserIdRequest\x1a\x1d.gen.GetChatsByUserIdResponse\x12P\n" +
-	"\x0fStreamSummarize\x12\x1b.gen.StreamSummarizeRequest\x1a\x1c.gen.StreamSummarizeResponse(\x010\x01B\aZ\x05./genb\x06proto3"
+	"\x16proto/summarizer.proto\x12\x03gen\"V\n" +
+	"\x14CreateMessageRequest\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x12\x12\n" +
+	"\x04text\x18\x02 \x01(\tR\x04text\x12\x14\n" +
+	"\x05topic\x18\x03 \x01(\tR\x05topic\"-\n" +
+	"\x15CreateMessageResponse\x12\x14\n" +
+	"\x05error\x18\x01 \x01(\tR\x05error2[\n" +
+	"\x11SummarizerService\x12F\n" +
+	"\rCreateMessage\x12\x19.gen.CreateMessageRequest\x1a\x1a.gen.CreateMessageResponseB\aZ\x05./genb\x06proto3"
 
 var (
 	file_proto_summarizer_proto_rawDescOnce sync.Once
@@ -459,31 +151,19 @@ func file_proto_summarizer_proto_rawDescGZIP() []byte {
 	return file_proto_summarizer_proto_rawDescData
 }
 
-var file_proto_summarizer_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_proto_summarizer_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_proto_summarizer_proto_goTypes = []any{
-	(*GetChatsByUserIdRequest)(nil),  // 0: gen.GetChatsByUserIdRequest
-	(*GetChatsByUserIdResponse)(nil), // 1: gen.GetChatsByUserIdResponse
-	(*Chat)(nil),                     // 2: gen.Chat
-	(*ChatMessage)(nil),              // 3: gen.chat_message
-	(*SummarizeRequest)(nil),         // 4: gen.SummarizeRequest
-	(*SummarizeResponse)(nil),        // 5: gen.SummarizeResponse
-	(*StreamSummarizeRequest)(nil),   // 6: gen.StreamSummarizeRequest
-	(*StreamSummarizeResponse)(nil),  // 7: gen.StreamSummarizeResponse
+	(*CreateMessageRequest)(nil),  // 0: gen.CreateMessageRequest
+	(*CreateMessageResponse)(nil), // 1: gen.CreateMessageResponse
 }
 var file_proto_summarizer_proto_depIdxs = []int32{
-	2, // 0: gen.GetChatsByUserIdResponse.chat_list:type_name -> gen.Chat
-	3, // 1: gen.Chat.messages:type_name -> gen.chat_message
-	4, // 2: gen.SummarizerService.Summarize:input_type -> gen.SummarizeRequest
-	0, // 3: gen.SummarizerService.GetChatsByUserId:input_type -> gen.GetChatsByUserIdRequest
-	6, // 4: gen.SummarizerService.StreamSummarize:input_type -> gen.StreamSummarizeRequest
-	5, // 5: gen.SummarizerService.Summarize:output_type -> gen.SummarizeResponse
-	1, // 6: gen.SummarizerService.GetChatsByUserId:output_type -> gen.GetChatsByUserIdResponse
-	7, // 7: gen.SummarizerService.StreamSummarize:output_type -> gen.StreamSummarizeResponse
-	5, // [5:8] is the sub-list for method output_type
-	2, // [2:5] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	0, // 0: gen.SummarizerService.CreateMessage:input_type -> gen.CreateMessageRequest
+	1, // 1: gen.SummarizerService.CreateMessage:output_type -> gen.CreateMessageResponse
+	1, // [1:2] is the sub-list for method output_type
+	0, // [0:1] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_proto_summarizer_proto_init() }
@@ -497,7 +177,7 @@ func file_proto_summarizer_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_summarizer_proto_rawDesc), len(file_proto_summarizer_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -42,4 +42,6 @@ func main() {
 		wg.Done()
 		log.Printf("GRPC server stopped")
 	}()
+
+	wg.Wait()
 }

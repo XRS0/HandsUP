@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 type UseAnimationOptions = {
   trigger?: 'hover' | 'click';
@@ -20,14 +20,14 @@ const useAnimation = <T extends HTMLElement = HTMLElement>(
 
   const containerRef = trigger === "hover" ? useRef<T>(null) : null;
 
-  const handleOpen = (newVisibility: React.MouseEvent<T>) => {
+  const handleOpen = useCallback((newVisibility: React.MouseEvent<T>) => {
     if (newVisibility && !isVisible) {
       setIsVisible(true);
       setIsFadeOut(false);
     } else {
       setIsFadeOut(true);
     }
-  }
+  }, [isVisible]);
 
   const handleAnimationEnd = (e: React.AnimationEvent<T>) => {
     //the animation name of blovk must be `fadeOut${blockName}`
@@ -54,12 +54,18 @@ const useAnimation = <T extends HTMLElement = HTMLElement>(
     }),
   };
 
+  const reset = () => {
+    setIsFadeOut(false);
+    setIsVisible(initialVsibility)
+  };
+
   return {
     ...(trigger === 'hover' && { containerRef, eventHandlers }),
+    reset,
     isVisible,
     isFadeOut,
     handleOpen,
-    handleAnimationEnd
+    handleAnimationEnd,
   };
 }
 

@@ -21,6 +21,11 @@ html, body, #root {
     height: 70px;
     margin-bottom: 1rem;
 
+    @media (max-width: 1250px) {
+      height: 60px;
+      margin-bottom: 0.5rem;
+    }
+
     @include mobile {
       margin-bottom: 0.5rem;
       height: 60px;
@@ -34,9 +39,17 @@ html, body, #root {
     font-weight: 400;
     color: var(--main-color);
 
+    @media (max-width: 1250px) {
+      font-size: 1rem;
+    }
+
     @include mobile {
       font-size: 1rem;
     }
+  }
+
+  @media (max-width: 1250px) {
+    font-size: 1rem;
   }
 
   @include mobile {
@@ -74,12 +87,12 @@ html, body, #root {
       }
 
       .chat-wrapper {
-        transform: translateX(70%);
+        transform: translateX(58%);
         opacity: 0.6;
       }
 
       .sidebar-icon {
-        left: 72%;
+        left: 60%;
         opacity: 0.6;
       }
     }
@@ -122,18 +135,18 @@ html, body, #root {
   position: relative;
   z-index: 1;
 
-  .chat {
-    width: 100%;
-    max-width: 800px;
-    height: 100%;
-    @include mixin.flex-center;
+  // .chat {
+  //   width: 100%;
+  //   max-width: 800px;
+  //   height: 100%;
+  //   @include mixin.flex-center;
 
-    @include mobile {
-      display: flex;
-      align-items: center;
-      padding-inline: 20px;
-    }
-  }
+  //   @include mobile {
+  //     display: flex;
+  //     align-items: center;
+  //     padding-inline: 20px;
+  //   }
+  // }
 
   @include mobile {
     width: 100%;
@@ -152,20 +165,13 @@ html, body, #root {
   }
 }
 
-.message-block {
-  font-family: "Jost";
-  font-size: 16px;
-  background-color: var(--secondary-color);
-  border: 0.8px solid var(--main-border-color);
-  border-radius: 20px;
-  padding: 20px;
-  max-width: 540px;
-  color: var(--light-gray);
-}
-
-@keyframes fade-word {
-  100% {
-    opacity: 1;
-    filter: blur(0);
-  }
-}
+// .message-block {
+//   font-family: "Jost";
+//   font-size: 16px;
+//   background-color: var(--secondary-color);
+//   border: 0.8px solid var(--main-border-color);
+//   border-radius: 20px;
+//   padding: 20px;
+//   max-width: 540px;
+//   color: var(--light-gray);
+// }

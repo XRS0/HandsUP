@@ -8,7 +8,7 @@ import stormIcon from "@/shared/assets/main-page/icons/storm_iocn.svg?react";
 import { createClassName } from "@/shared/utils/createClassName";
 import useInput from "@/hooks/useInput";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { topicSliceActions } from "../UserTopics/models/slice";
+import { ChatSliceActions } from "../UserChat/models/slice";
 
 const UserComposer = () => {
   const textareaRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
@@ -24,6 +24,7 @@ const UserComposer = () => {
   const { language } = useAppSelector(state => state.settings);
   const { message } = useAppSelector(state => state.socket);
   const { currentTopic } = useAppSelector(state => state.topics);
+  const { chatMessages } = useAppSelector(state => state.chat);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -77,21 +78,21 @@ const UserComposer = () => {
         break;
     }
 
-    const lastBotMessage = Object.values(currentTopic!)[0].filter(topic => topic.from === false).at(-1);
+    const lastBotMessage = chatMessages.filter(topic => topic.from === false).at(-1);
     
-    dispatch(topicSliceActions.generateMessage({
+    dispatch(ChatSliceActions.generateMessage({
       user_prompt: value,
       fullness: conspectFullness,
       lang: language === "English" ? "en" : "ru",
       text: lastBotMessage ? lastBotMessage.text : message,
-      topic: Object.keys(currentTopic!)[0].split(" ").join("_")
+      topic: currentTopic!
     }));
 
     clear();
   }
 
   const copyToCLipboard = () => {
-    const lastBotMessage = Object.values(currentTopic!)[0].filter(topic => topic.from === false).at(-1);
+    const lastBotMessage = chatMessages.filter(topic => topic.from === false).at(-1);
     navigator.clipboard.writeText(lastBotMessage!.text);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 1500);
@@ -102,7 +103,7 @@ const UserComposer = () => {
       name="short"
       onclick={handleOptionClick} 
       cssClass={createClassName("config", isClicked["short"] && "actived")} 
-      children={"Краткий"} 
+      children={document.body.offsetWidth > 950 || document.body.offsetWidth <= 480 ? "Краткий" : "Крат."} 
       isFilled={false}
     />
 
@@ -110,7 +111,7 @@ const UserComposer = () => {
       name="without_changes"
       onclick={handleOptionClick} 
       cssClass={createClassName("config", isClicked["without_changes"] && "actived")} 
-      children={"Без изменений"} 
+      children={document.body.offsetWidth > 950 || document.body.offsetWidth <= 480 ? "Без изменений" : "Базовый"}
       isFilled={false}
     />
 
@@ -118,7 +119,7 @@ const UserComposer = () => {
       name="expanded"
       onclick={handleOptionClick} 
       cssClass={createClassName("config", isClicked["expanded"] && "actived")}
-      children={"Объемный"} 
+      children={document.body.offsetWidth > 950 || document.body.offsetWidth <= 480 ? "Объемный" : "Расш."} 
       isFilled={false} 
     />
   </div>
@@ -136,7 +137,7 @@ const UserComposer = () => {
 
         <Button
           IconLeft={stormIcon}
-          children="Сгенерировать"
+          children={"Генерировать"}
           cssClass="record-button"
           onclick={handleSendMessage}
         />
@@ -152,7 +153,7 @@ const UserComposer = () => {
         ref={textareaRef as React.Ref<HTMLTextAreaElement>}
         value={value}
         onChange={onChange}
-        placeholder="Напиши что нибудь для конфигурации"
+        placeholder="Напиши что нибудь для конфигурации.."
       />
 
       <div className="hint-text">
@@ -160,11 +161,15 @@ const UserComposer = () => {
       </div>
 
       <div className="input-tools">
-        {conspectConfigButtons}
+        {document.body.offsetWidth > 660 && conspectConfigButtons}
 
         <div className="actions">
           <Button 
-            children={isCopied ? "Скопировано" : "Копировать"}
+            children={isCopied 
+              ? document.body.offsetWidth > 950 
+              ? "Скопировано" : "Скоп." 
+              : document.body.offsetWidth > 950 
+              ? "Копировать" : "Коп."}
             cssClass="copy-button" 
             IconLeft={linkIcon} 
             onclick={copyToCLipboard}
@@ -172,7 +177,7 @@ const UserComposer = () => {
 
           <Button
             IconLeft={stormIcon}
-            children="Сгенерировать"
+            children={document.body.offsetWidth > 950 || document.body.offsetWidth <= 480 ? "Сгенерировать" : "Далее"}
             cssClass="record-button"
             onclick={handleSendMessage}
           />

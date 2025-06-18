@@ -1,30 +1,23 @@
-import { selectCurrentTopic, topicSliceActions } from "@/features/UserTopics/models/slice";
-import { Topic } from "@/features/UserTopics/types/topic";
+import { SocketSliceActions } from "@/entities/websocket/models/slice";
+import { selectToken } from "@/features/AuthUser";
+import { ChatSliceActions } from "@/features/UserChat/models/slice";
+import { selectCurrentTopic } from "@/features/UserTopics";
 import { put, select, takeLatest } from "redux-saga/effects";
 
-export function* generateMessageSaga({payload}: ReturnType<typeof topicSliceActions.generateMessage>) {
+function* generateMessageSaga({payload}: ReturnType<typeof ChatSliceActions.generateMessage>) {
   try {
-    const token: string = yield localStorage.getItem("token"); 
-
-    if (payload.text) {
-      const topic: Topic = yield select(selectCurrentTopic);
-      const lastTopicMsg = Object.values(topic!)[0].filter(topic => topic.from === false).at(-1);
-      if (lastTopicMsg?.text !== payload.text) yield put(topicSliceActions.addMessage({from: false, text: payload.text}));
-    }
-    if (payload.user_prompt) yield put(topicSliceActions.addMessage({from: true, text: payload.user_prompt!}));
-
-    // console.log(payload.text);
+    const token: string = yield select(selectToken); 
+    
+    // if (payload.text) yield put(ChatSliceActions.addMessage({from: false, text: payload.text}));
+    if (payload.user_prompt) yield put(ChatSliceActions.addMessage({from: true, text: payload.user_prompt}));
     
     yield put({type: 'socket/connect', url: process.env.WS_SUMMARISE_URL, payload: {...payload, token}});
-    //const response: AxiosResponse<any> = yield call(sendMessageApiInstance, payload, token);
-    // if (response.status === 200) {
-    //   yield put({type: 'socket/connect', url: process.env.WS_SUMMARISE_URL});
-    // }
+    yield put(SocketSliceActions.setMessage());
   } catch (error: any) {
     console.error(error.message);
   }
 }
 
-export function* watchGenerateMessage() {
-  yield takeLatest(topicSliceActions.generateMessage, generateMessageSaga);
+export default function* watchGenerateMessage() {
+  yield takeLatest(ChatSliceActions.generateMessage, generateMessageSaga);
 }

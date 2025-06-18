@@ -3,25 +3,25 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import "../ui/Topic.scss";
 
 import { getDateAgo } from "@/shared/utils/date";
-import ConspectHistoryElement from "./ConspectHistoryElement";
-import { topicSliceActions } from "../models/slice";
-import NewTopic from "@/features/CreateTopic/containers/NewTopic";
+import ConspectHistoryElement from "../ui/ConspectHistoryElement";
+import NewTopic from "@/features/NewTopicButton/containers/NewTopic";
+import { TopicSliceActions } from "../models/slice";
+import { getKey } from "@/shared/utils/hashMapGet";
+import { ChatSliceActions } from "@/features/UserChat/models/slice";
+import { SocketSliceActions } from "@/entities/websocket/models/slice";
+import { pauseRecording } from "@/entities/recorder/recorder";
 
 const Topics = () => {
-  const { user } = useAppSelector(state => state.user);
-  const { isTopicCreating, cashedTopics, currentTopic } = useAppSelector(state => state.topics);
+  const { isTopicCreating, currentTopic, topics } = useAppSelector(state => state.topics);
+  const { cachedChats } = useAppSelector(state => state.chat);
   const dispatch = useAppDispatch();
 
-  if (!user) return;
-  if (!user?.topics) return <div className="history custom-scroll">{isTopicCreating && <NewTopic />}</div>;
-
-  const topics = [...user!.topics];   // sort not working without absolute copy
+  if (topics.length === 0) return <div className="history custom-scroll">{isTopicCreating && <NewTopic />}</div>;
   const groupedTopics: { [topic: string]: string[] } = {}
 
   try {
-    topics.reverse()
-    // .sort(({created_at: timeA}, {created_at: timeB}) => new Date(timeB!).getMinutes() - new Date(timeA!).getMinutes())
-    .map(({topic, created_at}, i) => {
+    [...topics].reverse()     //I CANT CHANGE REDUX DATA BUT REVERSE() TRIES TO CHANGE THEM!
+    .map(({topic, created_at}) => {
       if (!topic) return;
       
       if (groupedTopics[getDateAgo(new Date(created_at!))!]) {
@@ -32,27 +32,26 @@ const Topics = () => {
       }
     });
   } catch (err: any) {
-    console.error("Error while parsing a topic date", err.message);
+    console.error("Error while parsing a topic date:", err.message);
   }
 
   const handleTopicClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    const topicName = e.currentTarget.innerText.split(" ").join("_");
 
-    const topicName = e.currentTarget.innerText;
-    const switchedTopic = cashedTopics.find(t => Object.keys(t)[0] === topicName);   //get only keys (names) of topics
-    
-    console.log(topicName)
-    console.log(switchedTopic);
+    const currentChatInCache = cachedChats.find(topic => getKey(topic) === topicName);
 
-    if (switchedTopic) {
-      dispatch(topicSliceActions.switchTopic(switchedTopic));
-    } else {
-      dispatch(topicSliceActions.openTopic(topicName))  //action tries to get from server
+    pauseRecording();
+
+    if (currentChatInCache) {
+      dispatch(ChatSliceActions.switchChat({to: getKey(currentChatInCache), from: currentTopic!}));
+      dispatch(TopicSliceActions.switchTopic(getKey(currentChatInCache)));
+      dispatch(SocketSliceActions.setMessage());  // for cleaning message for stt
     }
+    else dispatch(TopicSliceActions.openTopic(topicName));
   }
 
-  const selected = currentTopic && Object.keys(currentTopic)[0];
-
+  const selected = currentTopic && currentTopic.split("_").join(" ");
 
   return (
     <div className="history custom-scroll">

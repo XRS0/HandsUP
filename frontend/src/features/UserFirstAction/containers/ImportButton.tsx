@@ -1,27 +1,18 @@
-import { useAppDispatch } from "@/hooks/redux";
 import Button from "@/views/Button/ui/Button";
 import Dropdown from "@/views/Dropdown/Dropdown";
 
 import computerIcon from "@assets/main-page/icons/computer.svg?react";
 import importIcon from "@assets/main-page/icons/import-icon.svg?react";
 import linkIcon from "@assets/main-page/icons/link.svg?react";
-import { useRef } from "react";
 
 type OwnProps =  {
   isVisible: boolean,
   isDropdownFadeOut: boolean,
   handleOpen: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  onClick: () => void
 }
 
-const ImportButton: React.FC<OwnProps> = ({isDropdownFadeOut, isVisible, handleOpen}) => {
-  const dispatch = useAppDispatch();
-  const uploadRef = useRef<HTMLInputElement>(null)  
-  const handleUpload = () => {
-    uploadRef.current?.click();
-  }
-
-  //TODO: convert a file and dispatch it
-
+const ImportButton: React.FC<OwnProps> = ({ isDropdownFadeOut, isVisible, onClick }) => {
   return (
     <>
       <Button
@@ -32,7 +23,7 @@ const ImportButton: React.FC<OwnProps> = ({isDropdownFadeOut, isVisible, handleO
       />
       {isVisible && 
         <Dropdown
-        isOpen={isVisible}
+          isOpen={isVisible}
           doesAnimate={!isDropdownFadeOut}
           orientation="column"
         >
@@ -40,21 +31,17 @@ const ImportButton: React.FC<OwnProps> = ({isDropdownFadeOut, isVisible, handleO
             children="Import you audio file"
             cssClass="dropdown-button"
             IconLeft={linkIcon}
-            onclick={handleUpload}
+            onclick={onClick}
           />
           <Button
             children="Text file on computer"
+            isDisabled
             cssClass="dropdown-button"
             IconLeft={computerIcon}
-            onclick={handleUpload}
+            onclick={() => {}}
           />
         </Dropdown>
       }
-
-      <input type="file" ref={uploadRef} 
-        onChange={() => console.log('Файл для загрузки выбран')} 
-        style={{ display: 'none' }} 
-      />
     </>
   );
 }

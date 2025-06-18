@@ -5,44 +5,15 @@ package gen;
 option go_package = "./gen";
 
 service SummarizerService {
-  rpc Summarize(SummarizeRequest) returns (SummarizeResponse);
-  // rpc GetChatsByUserId(GetChatsByUserIdRequest) returns (GetChatsByUserIdResponse);
-  rpc StreamSummarize(stream StreamSummarizeRequest) returns (stream StreamSummarizeResponse);
+  rpc CreateMessage(CreateMessageRequest) returns (CreateMessageResponse);
 }
 
-// message GetChatsByUserIdRequest {
-//   string user_id = 1;
-// }
-
-// message GetChatsByUserIdResponse {
-//   repeated Chat chat_list = 1;
-// }
-
-// message Chat {
-//   string topic = 3;
-//   repeated chat_message messages = 5;
-// }
-
-// message chat_message {
-//   bool from = 1; // true if from user, false if from AI
-//   string payload = 2; // Content of the message
-// }
-
-message SummarizeRequest {
-  string session_id = 1;
-  string full_text = 2;
+message CreateMessageRequest {
+  string token = 1;
+  string text = 2;
+  string topic = 3;
 }
 
-message SummarizeResponse {
-  string summary = 1;
-}
-
-message StreamSummarizeRequest {
-  string session_id = 1;
-  string partial_text = 2;
-}
-
-message StreamSummarizeResponse {
-  string session_id = 1;
-  string updated_summary = 2;
+message CreateMessageResponse {
+  string error = 1;
 }

@@ -19,18 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SummarizerService_Summarize_FullMethodName        = "/gen.SummarizerService/Summarize"
-	SummarizerService_GetChatsByUserId_FullMethodName = "/gen.SummarizerService/GetChatsByUserId"
-	SummarizerService_StreamSummarize_FullMethodName  = "/gen.SummarizerService/StreamSummarize"
+	SummarizerService_CreateMessage_FullMethodName = "/gen.SummarizerService/CreateMessage"
 )
 
 // SummarizerServiceClient is the client API for SummarizerService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SummarizerServiceClient interface {
-	Summarize(ctx context.Context, in *SummarizeRequest, opts ...grpc.CallOption) (*SummarizeResponse, error)
-	GetChatsByUserId(ctx context.Context, in *GetChatsByUserIdRequest, opts ...grpc.CallOption) (*GetChatsByUserIdResponse, error)
-	StreamSummarize(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[StreamSummarizeRequest, StreamSummarizeResponse], error)
+	CreateMessage(ctx context.Context, in *CreateMessageRequest, opts ...grpc.CallOption) (*CreateMessageResponse, error)
 }
 
 type summarizerServiceClient struct {
@@ -41,46 +37,21 @@ func NewSummarizerServiceClient(cc grpc.ClientConnInterface) SummarizerServiceCl
 	return &summarizerServiceClient{cc}
 }
 
-func (c *summarizerServiceClient) Summarize(ctx context.Context, in *SummarizeRequest, opts ...grpc.CallOption) (*SummarizeResponse, error) {
+func (c *summarizerServiceClient) CreateMessage(ctx context.Context, in *CreateMessageRequest, opts ...grpc.CallOption) (*CreateMessageResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SummarizeResponse)
-	err := c.cc.Invoke(ctx, SummarizerService_Summarize_FullMethodName, in, out, cOpts...)
+	out := new(CreateMessageResponse)
+	err := c.cc.Invoke(ctx, SummarizerService_CreateMessage_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
-
-func (c *summarizerServiceClient) GetChatsByUserId(ctx context.Context, in *GetChatsByUserIdRequest, opts ...grpc.CallOption) (*GetChatsByUserIdResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetChatsByUserIdResponse)
-	err := c.cc.Invoke(ctx, SummarizerService_GetChatsByUserId_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *summarizerServiceClient) StreamSummarize(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[StreamSummarizeRequest, StreamSummarizeResponse], error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &SummarizerService_ServiceDesc.Streams[0], SummarizerService_StreamSummarize_FullMethodName, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &grpc.GenericClientStream[StreamSummarizeRequest, StreamSummarizeResponse]{ClientStream: stream}
-	return x, nil
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type SummarizerService_StreamSummarizeClient = grpc.BidiStreamingClient[StreamSummarizeRequest, StreamSummarizeResponse]
 
 // SummarizerServiceServer is the server API for SummarizerService service.
 // All implementations must embed UnimplementedSummarizerServiceServer
 // for forward compatibility.
 type SummarizerServiceServer interface {
-	Summarize(context.Context, *SummarizeRequest) (*SummarizeResponse, error)
-	GetChatsByUserId(context.Context, *GetChatsByUserIdRequest) (*GetChatsByUserIdResponse, error)
-	StreamSummarize(grpc.BidiStreamingServer[StreamSummarizeRequest, StreamSummarizeResponse]) error
+	CreateMessage(context.Context, *CreateMessageRequest) (*CreateMessageResponse, error)
 	mustEmbedUnimplementedSummarizerServiceServer()
 }
 
@@ -91,14 +62,8 @@ type SummarizerServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedSummarizerServiceServer struct{}
 
-func (UnimplementedSummarizerServiceServer) Summarize(context.Context, *SummarizeRequest) (*SummarizeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Summarize not implemented")
-}
-func (UnimplementedSummarizerServiceServer) GetChatsByUserId(context.Context, *GetChatsByUserIdRequest) (*GetChatsByUserIdResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetChatsByUserId not implemented")
-}
-func (UnimplementedSummarizerServiceServer) StreamSummarize(grpc.BidiStreamingServer[StreamSummarizeRequest, StreamSummarizeResponse]) error {
-	return status.Errorf(codes.Unimplemented, "method StreamSummarize not implemented")
+func (UnimplementedSummarizerServiceServer) CreateMessage(context.Context, *CreateMessageRequest) (*CreateMessageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateMessage not implemented")
 }
 func (UnimplementedSummarizerServiceServer) mustEmbedUnimplementedSummarizerServiceServer() {}
 func (UnimplementedSummarizerServiceServer) testEmbeddedByValue()                           {}
@@ -121,48 +86,23 @@ func RegisterSummarizerServiceServer(s grpc.ServiceRegistrar, srv SummarizerServ
 	s.RegisterService(&SummarizerService_ServiceDesc, srv)
 }
 
-func _SummarizerService_Summarize_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SummarizeRequest)
+func _SummarizerService_CreateMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateMessageRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SummarizerServiceServer).Summarize(ctx, in)
+		return srv.(SummarizerServiceServer).CreateMessage(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SummarizerService_Summarize_FullMethodName,
+		FullMethod: SummarizerService_CreateMessage_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SummarizerServiceServer).Summarize(ctx, req.(*SummarizeRequest))
+		return srv.(SummarizerServiceServer).CreateMessage(ctx, req.(*CreateMessageRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
-
-func _SummarizerService_GetChatsByUserId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetChatsByUserIdRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SummarizerServiceServer).GetChatsByUserId(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SummarizerService_GetChatsByUserId_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SummarizerServiceServer).GetChatsByUserId(ctx, req.(*GetChatsByUserIdRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SummarizerService_StreamSummarize_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(SummarizerServiceServer).StreamSummarize(&grpc.GenericServerStream[StreamSummarizeRequest, StreamSummarizeResponse]{ServerStream: stream})
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type SummarizerService_StreamSummarizeServer = grpc.BidiStreamingServer[StreamSummarizeRequest, StreamSummarizeResponse]
 
 // SummarizerService_ServiceDesc is the grpc.ServiceDesc for SummarizerService service.
 // It's only intended for direct use with grpc.RegisterService,
@@ -172,21 +112,10 @@ var SummarizerService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*SummarizerServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Summarize",
-			Handler:    _SummarizerService_Summarize_Handler,
-		},
-		{
-			MethodName: "GetChatsByUserId",
-			Handler:    _SummarizerService_GetChatsByUserId_Handler,
+			MethodName: "CreateMessage",
+			Handler:    _SummarizerService_CreateMessage_Handler,
 		},
 	},
-	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "StreamSummarize",
-			Handler:       _SummarizerService_StreamSummarize_Handler,
-			ServerStreams: true,
-			ClientStreams: true,
-		},
-	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "proto/summarizer.proto",
 }

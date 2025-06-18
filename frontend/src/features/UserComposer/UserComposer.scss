@@ -16,7 +16,7 @@
   pointer-events: none;
   visibility: visible;
 
-  animation: ComposerFadeIn 0.5s forwards;
+  animation: ComposerFadeIn 0.4s forwards;
 
   textarea {
     display: block;
@@ -44,6 +44,10 @@
       margin-right: 14px;
       border-radius: 38px;
       white-space: nowrap;
+
+      @include desktop {
+        margin-right: 10px;
+      }
 
       @include mobile {
         width: 100%;
@@ -78,7 +82,7 @@
     @include mixin.flex-between;
 
     button {
-      padding: 7px 13px !important;
+      padding: 7px 13px;
     }
   
     .actions {
@@ -134,7 +138,7 @@
 
     .record-button {
       height: 46px;
-      padding: 0 5px;
+      padding: 0 10px !important;
       border-radius: 2rem;
     }
   }

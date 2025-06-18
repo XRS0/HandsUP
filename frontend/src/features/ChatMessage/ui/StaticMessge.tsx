@@ -6,7 +6,7 @@ type OwnProps = {
   from: boolean;
 }
 
-const Static: React.FC<OwnProps> = ({message, from}) => {
+const StaticMessage: React.FC<OwnProps> = ({ message, from }) => {
   return (
     <div className={from === false
       ? "chat-message-container"
@@ -21,4 +21,4 @@ const Static: React.FC<OwnProps> = ({message, from}) => {
   );
 }
 
-export default Static;
+export default StaticMessage;
