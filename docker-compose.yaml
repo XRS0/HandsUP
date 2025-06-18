@@ -1,4 +1,4 @@
-version: '3.8'
+# version: '3.8'
 
 services:
   postgres:
@@ -12,15 +12,15 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  stt_service:
-    build:
-      context: ./stt_service
-    ports:
-      - "8000:8000"  # WebSocket
-      - "8005:8005"  # HTTP
-    volumes:
-      - ./stt_service/recordings:/app/recordings
-    restart: unless-stopped
+  # stt_service:
+  #   build:
+  #     context: ./stt_service
+  #   ports:
+  #     - "8000:8000"  # WebSocket
+  #     - "8005:8005"  # HTTP
+  #   volumes:
+  #     - ./stt_service/recordings:/app/recordings
+  #   restart: unless-stopped
 
 volumes:
   postgres_data:

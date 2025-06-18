@@ -5,3 +5,6 @@ faster_whisper
 transformers
 numpy
 aiohttp
+aiohttp_cors
+sentencepiece
+torch

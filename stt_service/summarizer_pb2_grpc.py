@@ -5,7 +5,7 @@ import warnings
 
 import summarizer_pb2 as summarizer__pb2
 
-GRPC_GENERATED_VERSION = '1.71.0'
+GRPC_GENERATED_VERSION = '1.67.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -34,17 +34,17 @@ class SummarizerServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.GenerateFull = channel.unary_unary(
-                '/gen.SummarizerService/GenerateFull',
-                request_serializer=summarizer__pb2.SummarizeRequest.SerializeToString,
-                response_deserializer=summarizer__pb2.SummarizeResponse.FromString,
+        self.CreateMessage = channel.unary_unary(
+                '/gen.SummarizerService/CreateMessage',
+                request_serializer=summarizer__pb2.CreateMessageRequest.SerializeToString,
+                response_deserializer=summarizer__pb2.CreateMessageResponse.FromString,
                 _registered_method=True)
 
 
 class SummarizerServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def GenerateFull(self, request, context):
+    def CreateMessage(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -53,10 +53,10 @@ class SummarizerServiceServicer(object):
 
 def add_SummarizerServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GenerateFull': grpc.unary_unary_rpc_method_handler(
-                    servicer.GenerateFull,
-                    request_deserializer=summarizer__pb2.SummarizeRequest.FromString,
-                    response_serializer=summarizer__pb2.SummarizeResponse.SerializeToString,
+            'CreateMessage': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateMessage,
+                    request_deserializer=summarizer__pb2.CreateMessageRequest.FromString,
+                    response_serializer=summarizer__pb2.CreateMessageResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -70,7 +70,7 @@ class SummarizerService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def GenerateFull(request,
+    def CreateMessage(request,
             target,
             options=(),
             channel_credentials=None,
@@ -83,9 +83,9 @@ class SummarizerService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/gen.SummarizerService/GenerateFull',
-            summarizer__pb2.SummarizeRequest.SerializeToString,
-            summarizer__pb2.SummarizeResponse.FromString,
+            '/gen.SummarizerService/CreateMessage',
+            summarizer__pb2.CreateMessageRequest.SerializeToString,
+            summarizer__pb2.CreateMessageResponse.FromString,
             options,
             channel_credentials,
             insecure,
